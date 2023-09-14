@@ -1,20 +1,39 @@
-// Laboratorio Nro 1 - Actividad 4
+// Laboratorio Nro 1 - Actividad 5
 // Autor: Christian Mestas
 
-import java.util.Scanner;
+import java.util.Random;
 
 public class Actividades {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String[] nombresSoldados = new String[5];
-        int[] vidasSoldados = new int[5];
-        for (int i = 0; i < nombresSoldados.length; i++) {
-            nombresSoldados[i] = sc.nextLine();
-            vidasSoldados[i] = sc.nextInt();
-            sc.nextLine();
+        String[] ejercito1 = inicializarEjercito();
+        String[] ejercito2 = inicializarEjercito();
+        mostrarEjercito(ejercito1, 1);
+        mostrarEjercito(ejercito2, 2);
+        mostrarGanador(ejercito1, ejercito2);
+    }
+
+    public static String[] inicializarEjercito() {
+        Random random = new Random();
+        String[] ejercito = new String[random.nextInt(5) + 1];
+        for (int i = 0; i < ejercito.length; i++) {
+            ejercito[i] = "Soldado" + i;
         }
-        for (int i = 0; i < nombresSoldados.length; i++) {
-            System.out.println("Soldado " + (i + 1) + ": " + nombresSoldados[i] + ". Vida: " + vidasSoldados[i]);
+        return ejercito;
+    }
+
+    public static void mostrarEjercito(String[] ejercito, int numero) {
+        System.out.println("Ejercito " + numero + ":");
+        for (int i = 0; i < ejercito.length; i++) {
+            System.out.println("Soldado " + (i + 1) + ": " + ejercito[i]);
         }
+    }
+
+    public static void mostrarGanador(String[] ejercito1, String[] ejercito2) {
+        if (ejercito1.length > ejercito2.length)
+            System.out.println("Gana el ejercito 1!");
+        else if (ejercito1.length < ejercito2.length)
+            System.out.println("Gana el ejercito 2!");
+        else
+            System.out.println("Hubo un empate!");
     }
 }
