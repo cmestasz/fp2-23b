@@ -77,4 +77,38 @@ public class Ahorcado {
 
         System.out.println("\n");
     }
+
+    public static String getPalabraSecreta(String[] lasPalabras) {
+        String palSecreta;
+        int ind;
+        int indiceMayor = lasPalabras.length - 1;
+        int indiceMenor = 0;
+        ind = (int) ((Math.random() * (indiceMayor - indiceMenor + 1) + indiceMenor));
+        return lasPalabras[ind];
+    }
+
+    public static void mostrarBlancos(String palabra) {
+        for (int i = 0; i < palabra.length(); i++)
+            System.out.println("_ ");
+    }
+
+    public static String ingreseLetra() {
+        String laLetra;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingrese letra: ");
+        laLetra = sc.next();
+        while (laLetra.length() != 1) {
+            System.out.println("Ingrese letra: ");
+            laLetra = sc.next();
+        }
+        return laLetra;
+    }
+
+    public static boolean letraEnPalabraSecreta(String letra, String palSecreta) {
+        return false;
+    }
+
+    public static void mostrarBlancosActualizados(String letra) {
+        System.out.println("PROCESANDO.....");
+    }
 }
