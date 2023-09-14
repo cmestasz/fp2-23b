@@ -1,4 +1,4 @@
-// Laboratorio Nro 1 - Actividad 3
+// Laboratorio Nro 1 - Actividad 4
 // Autor: Christian Mestas
 
 import java.util.Scanner;
@@ -7,11 +7,14 @@ public class Actividades {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String[] nombresSoldados = new String[5];
+        int[] vidasSoldados = new int[5];
         for (int i = 0; i < nombresSoldados.length; i++) {
             nombresSoldados[i] = sc.nextLine();
+            vidasSoldados[i] = sc.nextInt();
+            sc.nextLine();
         }
         for (int i = 0; i < nombresSoldados.length; i++) {
-            System.out.println("Soldado " + (i + 1) + ": " + nombresSoldados[i]);
+            System.out.println("Soldado " + (i + 1) + ": " + nombresSoldados[i] + ". Vida: " + vidasSoldados[i]);
         }
     }
 }
