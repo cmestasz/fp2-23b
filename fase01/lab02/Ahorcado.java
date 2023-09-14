@@ -96,9 +96,9 @@ public class Ahorcado {
     public static String ingreseLetra() {
         String laLetra;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese letra: "); //TODO: validar caracteres permitidos
+        System.out.println("Ingrese letra: "); 
         laLetra = sc.next();
-        while (laLetra.length() != 1) {
+        while (!esLetraValida(laLetra)) {
             System.out.println("Ingrese letra: ");
             laLetra = sc.next();
         }
@@ -117,5 +117,12 @@ public class Ahorcado {
     public static void mostrarBlancosActualizados(String letra) {
         //TODO: metodo incompleto
         System.out.println("PROCESANDO.....");
+    }
+
+    public static boolean esLetraValida(String letra) {
+        if (letra.length() != 1)
+            return false;
+        char caracter = letra.charAt(0);
+        return Character.isLetter(caracter);
     }
 }
