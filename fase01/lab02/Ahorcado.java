@@ -1,4 +1,4 @@
-// Laboratorio Nro 1 - Actividad 1
+// Laboratorio Nro 2 - Actividad 1
 // Autor: Christian Mestas
 // Colaboró: Marco Aedo, version del ahorcado al 70%
 
@@ -74,7 +74,8 @@ public class Ahorcado {
                 System.out.println(figuras[contador]);
             contador = contador + 1;
         }
-
+        //TODO: indicar si gano, perdio y cantidad de turnos
+        
         System.out.println("\n");
     }
 
@@ -89,13 +90,13 @@ public class Ahorcado {
 
     public static void mostrarBlancos(String palabra) {
         for (int i = 0; i < palabra.length(); i++)
-            System.out.println("_ ");
+            System.out.print("_ ");
     }
 
     public static String ingreseLetra() {
         String laLetra;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese letra: ");
+        System.out.println("Ingrese letra: "); //TODO: validar caracteres permitidos
         laLetra = sc.next();
         while (laLetra.length() != 1) {
             System.out.println("Ingrese letra: ");
@@ -105,10 +106,16 @@ public class Ahorcado {
     }
 
     public static boolean letraEnPalabraSecreta(String letra, String palSecreta) {
+        char caracter = letra.charAt(0);
+        for (int i = 0; i < palSecreta.length(); i++) {
+            if (palSecreta.charAt(i) == caracter)
+                return true;
+        }
         return false;
     }
 
     public static void mostrarBlancosActualizados(String letra) {
+        //TODO: metodo incompleto
         System.out.println("PROCESANDO.....");
     }
 }
