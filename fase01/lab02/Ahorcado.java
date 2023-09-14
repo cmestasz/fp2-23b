@@ -66,10 +66,11 @@ public class Ahorcado {
         mostrarBlancos(palSecreta);
         System.out.println("\n");
 
+        boolean[] letrasEncontradas = new boolean[palSecreta.length()];
         while (contador <= 6) {
             letra = ingreseLetra();
             if (letraEnPalabraSecreta(letra, palSecreta))
-                mostrarBlancosActualizados(letra);
+                mostrarBlancosActualizados(letra, palSecreta, letrasEncontradas);
             else
                 System.out.println(figuras[contador]);
             contador = contador + 1;
@@ -106,17 +107,26 @@ public class Ahorcado {
     }
 
     public static boolean letraEnPalabraSecreta(String letra, String palSecreta) {
-        char caracter = letra.charAt(0);
+        char letraIngresada = letra.charAt(0);
         for (int i = 0; i < palSecreta.length(); i++) {
-            if (palSecreta.charAt(i) == caracter)
+            if (palSecreta.charAt(i) == letraIngresada)
                 return true;
         }
         return false;
     }
 
-    public static void mostrarBlancosActualizados(String letra) {
-        //TODO: metodo incompleto
-        System.out.println("PROCESANDO.....");
+    public static void mostrarBlancosActualizados(String letra, String palSecreta, boolean[] letrasEncontradas) {
+        char letraIngresada = letra.charAt(0);
+        for (int i = 0; i < palSecreta.length(); i++) {
+            char letraActual = palSecreta.charAt(i);
+            if (letraActual == letraIngresada || letrasEncontradas[i]) {
+                System.out.print(letraActual + " ");
+                letrasEncontradas[i] = true;
+            } else {
+                System.out.print("_ ");
+            }
+        }
+        System.out.println("\n");
     }
 
     public static boolean esLetraValida(String letra) {
