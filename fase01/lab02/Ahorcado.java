@@ -57,7 +57,7 @@ public class Ahorcado {
                        "=========";
         
         String[] figuras = {ahor1, ahor2, ahor3, ahor4, ahor5, ahor6, ahor7};
-        int contador = 1;
+        int contador = 1, turnos = 0;
         String letra;
         String[] palabras = {"programacion", "java", "indentacion", "clases", "objetos", "desarrollador", "pruebas"};
         
@@ -67,15 +67,23 @@ public class Ahorcado {
         System.out.println("\n");
 
         boolean[] letrasEncontradas = new boolean[palSecreta.length()];
-        while (contador <= 6) {
+        while (contador <= 6 && !verificarPalabraCompleta(letrasEncontradas)) {
             letra = ingreseLetra();
-            if (letraEnPalabraSecreta(letra, palSecreta))
+            if (letraEnPalabraSecreta(letra, palSecreta)) {
                 mostrarBlancosActualizados(letra, palSecreta, letrasEncontradas);
-            else
+            }
+            else {
                 System.out.println(figuras[contador]);
-            contador = contador + 1;
+                contador = contador + 1;
+            }
+            turnos = turnos + 1;
         }
-        //TODO: indicar si gano, perdio y cantidad de turnos
+        
+        if (verificarPalabraCompleta(letrasEncontradas))
+            System.out.println("Has ganado!");
+        else
+            System.out.println("Has perdido!");
+        System.out.println("El juego duro " + turnos + " turnos.");
         
         System.out.println("\n");
     }
@@ -134,5 +142,13 @@ public class Ahorcado {
             return false;
         char caracter = letra.charAt(0);
         return Character.isLetter(caracter);
+    }
+
+    public static boolean verificarPalabraCompleta(boolean[] letrasEncontradas) {
+        for (int i = 0; i < letrasEncontradas.length; i++) {
+            if (!letrasEncontradas[i])
+                return false;
+        }
+        return true;
     }
 }
