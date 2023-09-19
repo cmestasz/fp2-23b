@@ -1,6 +1,6 @@
 // Laboratorio Nro 2 - Actividad 1
 // Autor: Christian Mestas
-// Colaboró: Marco Aedo, version del ahorcado al 70%
+// Colaboro: Marco Aedo, version del ahorcado al 70%
 
 import java.util.Scanner;
 
