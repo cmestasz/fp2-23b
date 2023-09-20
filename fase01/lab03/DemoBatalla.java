@@ -6,13 +6,13 @@ import java.util.*;
 
 public class DemoBatalla {
     public static void main(String[] args) {
-        Nave[] misNaves = new Nave[3];
+        Nave[] misNaves = new Nave[10];
         Scanner sc = new Scanner(System.in);
         String nomb, col;
         int fil, punt;
         boolean est;
         for (int i = 0; i < misNaves.length; i++) {
-            System.out.println("\nNave " + (i + 1));
+            System.out.println("Nave " + (i + 1));
             System.out.print("Nombre: ");
             nomb = sc.next();
             System.out.println("Fila ");
@@ -29,12 +29,16 @@ public class DemoBatalla {
             misNaves[i].setColumna(col);
             misNaves[i].setEstado(est);
             misNaves[i].setPuntos(punt);
+            System.out.println();
         }
-        System.out.println("\nNaves creadas:");
+        System.out.println("Naves creadas:");
         mostrarNaves(misNaves);
         mostrarPorNombre(misNaves);
         mostrarPorPuntos(misNaves);
         System.out.println("Nave con mayor número de puntos: " + mostrarMayorPuntos(misNaves));
+        System.out.println();
+        System.out.println("Naves desordenadas: ");
+        mostrarNaves(desordenar(misNaves));
     }
 
     // Método para mostrar todas las naves
@@ -81,7 +85,20 @@ public class DemoBatalla {
         }
         return flota[maxIdx];
     }
+
     // Crear un método que devuelva un nuevo arreglo de objetos con todos los
     // objetos previamente ingresados
     // pero aleatoriamente desordenados
+    public static Nave[] desordenar(Nave[] flota) {
+        Nave[] nuevaFlota = new Nave[flota.length];
+        Random r = new Random();
+        System.arraycopy(flota, 0, nuevaFlota, 0, flota.length);
+        for (int idx = 0; idx < nuevaFlota.length; idx++) {
+            int nIdx = r.nextInt(nuevaFlota.length);
+            Nave t = nuevaFlota[idx];
+            nuevaFlota[idx] = nuevaFlota[nIdx];
+            nuevaFlota[nIdx] = t;
+        }
+        return nuevaFlota;
+    }
 }
