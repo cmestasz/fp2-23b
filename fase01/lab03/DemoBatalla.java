@@ -6,13 +6,13 @@ import java.util.*;
 
 public class DemoBatalla {
     public static void main(String[] args) {
-        Nave[] misNaves = new Nave[2];
+        Nave[] misNaves = new Nave[3];
         Scanner sc = new Scanner(System.in);
         String nomb, col;
         int fil, punt;
         boolean est;
         for (int i = 0; i < misNaves.length; i++) {
-            System.out.println("Nave " + (i + 1));
+            System.out.println("\nNave " + (i + 1));
             System.out.print("Nombre: ");
             nomb = sc.next();
             System.out.println("Fila ");
@@ -34,13 +34,14 @@ public class DemoBatalla {
         mostrarNaves(misNaves);
         mostrarPorNombre(misNaves);
         mostrarPorPuntos(misNaves);
-        System.out.println("\nNave con mayor número de puntos: " + mostrarMayorPuntos(misNaves));
+        System.out.println("Nave con mayor número de puntos: " + mostrarMayorPuntos(misNaves));
     }
 
     // Método para mostrar todas las naves
     public static void mostrarNaves(Nave[] flota) {
         for (Nave nave : flota)
             System.out.println(nave.toString());
+        System.out.println();
     }
 
     // Método para mostrar todas las naves de un nombre que se pide por teclado
@@ -53,6 +54,7 @@ public class DemoBatalla {
             if (nave.getNombre().equals(nombre))
                 System.out.println(nave.toString());
         }
+        System.out.println();
     }
 
     // Método para mostrar todas las naves con un número de puntos inferior o igual
@@ -67,11 +69,17 @@ public class DemoBatalla {
             if (nave.getPuntos() <= puntos)
                 System.out.println(nave.toString());
         }
+        System.out.println();
     }
 
     // Método que devuelve la Nave con mayor número de Puntos
     public static Nave mostrarMayorPuntos(Nave[] flota) {
-        return new Nave();
+        int maxIdx = 0;
+        for (int i = 0; i < flota.length; i++) {
+            if (flota[i].getPuntos() > flota[maxIdx].getPuntos())
+                maxIdx = i;
+        }
+        return flota[maxIdx];
     }
     // Crear un método que devuelva un nuevo arreglo de objetos con todos los
     // objetos previamente ingresados
