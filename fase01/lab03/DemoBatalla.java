@@ -45,6 +45,14 @@ public class DemoBatalla {
 
     // Método para mostrar todas las naves de un nombre que se pide por teclado
     public static void mostrarPorNombre(Nave[] flota) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingrese el nombre a buscar:");
+        String nombre = sc.nextLine();
+        System.out.println("Naves con el nombre " + nombre + ":");
+        for (Nave nave : flota) {
+            if (nave.getNombre().equals(nombre))
+                System.out.println(nave.toString());
+        }
     }
 
     // Método para mostrar todas las naves con un número de puntos inferior o igual
