@@ -6,7 +6,7 @@ import java.util.*;
 
 public class DemoBatalla {
     public static void main(String[] args) {
-        Nave[] misNaves = new Nave[10];
+        Nave[] misNaves = new Nave[2];
         Scanner sc = new Scanner(System.in);
         String nomb, col;
         int fil, punt;
@@ -39,6 +39,8 @@ public class DemoBatalla {
 
     // Método para mostrar todas las naves
     public static void mostrarNaves(Nave[] flota) {
+        for (Nave nave : flota)
+            System.out.println(nave.toString());
     }
 
     // Método para mostrar todas las naves de un nombre que se pide por teclado
@@ -52,6 +54,7 @@ public class DemoBatalla {
 
     // Método que devuelve la Nave con mayor número de Puntos
     public static Nave mostrarMayorPuntos(Nave[] flota) {
+        return new Nave();
     }
     // Crear un método que devuelva un nuevo arreglo de objetos con todos los
     // objetos previamente ingresados
