@@ -58,6 +58,15 @@ public class DemoBatalla {
     // Método para mostrar todas las naves con un número de puntos inferior o igual
     // al número de puntos que se pide por teclado
     public static void mostrarPorPuntos(Nave[] flota) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingrese la cantidad de puntos maximos:");
+        int puntos = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Naves con " + puntos + " puntos como maximo:");
+        for (Nave nave : flota) {
+            if (nave.getPuntos() <= puntos)
+                System.out.println(nave.toString());
+        }
     }
 
     // Método que devuelve la Nave con mayor número de Puntos
