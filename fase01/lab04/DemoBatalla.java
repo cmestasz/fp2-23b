@@ -6,7 +6,7 @@ import java.util.*;
 
 public class DemoBatalla {
     public static void main(String[] args) {
-        Nave[] misNaves = new Nave[10];
+        Nave[] misNaves = new Nave[5];
         Scanner sc = new Scanner(System.in);
         String nomb, col;
         int fil, punt;
@@ -14,15 +14,18 @@ public class DemoBatalla {
         for (int i = 0; i < misNaves.length; i++) {
             System.out.println("Nave " + (i + 1));
             System.out.print("Nombre: ");
-            nomb = sc.next();
-            System.out.println("Fila ");
+            nomb = sc.nextLine();
+            System.out.print("Fila: ");
             fil = sc.nextInt();
+            sc.nextLine();
             System.out.print("Columna: ");
-            col = sc.next();
+            col = sc.nextLine();
             System.out.print("Estado: ");
             est = sc.nextBoolean();
+            sc.nextLine();
             System.out.print("Puntos: ");
             punt = sc.nextInt();
+            sc.nextLine();
             misNaves[i] = new Nave(); // Se crea un objeto Nave y se asigna su referencia a misNaves
             misNaves[i].setNombre(nomb);
             misNaves[i].setFila(fil);
@@ -54,7 +57,13 @@ public class DemoBatalla {
 
         // mostrar los datos de la nave con dicho nombre, mensaje de “no encontrado” en
         // caso contrario
+        System.out.println("Ingrese el nombre a buscar:");
+        nombre = sc.nextLine();
         pos = busquedaBinariaNombre(misNaves, nombre);
+        if (pos == -1)
+            System.out.println("Nave no encontrada.");
+        else
+            System.out.println("Nave encontrada: " + misNaves[pos]);
         ordenarPorPuntosSeleccion(misNaves);
         mostrarNaves(misNaves);
         ordenarPorPuntosInsercion(misNaves);
@@ -132,7 +141,18 @@ public class DemoBatalla {
 
     // Método para buscar la primera nave con un nombre que se pidió por teclado
     public static int busquedaBinariaNombre(Nave[] flota, String s) {
-
+        int baja = 0, alta = flota.length - 1, media;
+        while (baja <= alta) {
+            media = (baja + alta) / 2;
+            String nombre = flota[media].getNombre();
+            if (nombre.equals(s))
+                return media;
+            if (nombre.compareTo(s) < 0)
+                baja = media + 1;
+            else
+                alta = media - 1;
+        }
+        return -1;
     }
 
     // Método que ordena por número de puntos de menor a mayor
