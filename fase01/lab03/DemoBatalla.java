@@ -14,15 +14,18 @@ public class DemoBatalla {
         for (int i = 0; i < misNaves.length; i++) {
             System.out.println("Nave " + (i + 1));
             System.out.print("Nombre: ");
-            nomb = sc.next();
-            System.out.println("Fila ");
+            nomb = sc.nextLine();
+            System.out.print("Fila: ");
             fil = sc.nextInt();
+            sc.nextLine();
             System.out.print("Columna: ");
-            col = sc.next();
+            col = sc.nextLine();
             System.out.print("Estado: ");
             est = sc.nextBoolean();
+            sc.nextLine();
             System.out.print("Puntos: ");
             punt = sc.nextInt();
+            sc.nextLine();
             misNaves[i] = new Nave(); // Se crea un objeto Nave y se asigna su referencia a misNaves
             misNaves[i].setNombre(nomb);
             misNaves[i].setFila(fil);
