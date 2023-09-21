@@ -6,7 +6,7 @@ import java.util.*;
 
 public class DemoBatalla {
     public static void main(String[] args) {
-        Nave[] misNaves = new Nave[3];
+        Nave[] misNaves = new Nave[5];
         Scanner sc = new Scanner(System.in);
         String nomb, col;
         int fil, punt;
@@ -47,7 +47,7 @@ public class DemoBatalla {
         String nombre = sc.nextLine();
         int pos = busquedaLinealNombre(misNaves, nombre);
         if (pos == -1)
-            System.out.println("Nave no encontrada.");
+            System.out.println("Nave no encontrada.\n");
         else
             System.out.println("Nave encontrada: " + misNaves[pos] + "\n");
         System.out.println("Naves ordenadas por puntos:");
@@ -63,7 +63,7 @@ public class DemoBatalla {
         nombre = sc.nextLine();
         pos = busquedaBinariaNombre(misNaves, nombre);
         if (pos == -1)
-            System.out.println("Nave no encontrada.");
+            System.out.println("Nave no encontrada.\n");
         else
             System.out.println("Nave encontrada: " + misNaves[pos] + "\n");
         System.out.println("Naves ordenadas por puntos:");
@@ -173,7 +173,14 @@ public class DemoBatalla {
 
     // Método que ordena por número de puntos de menor a mayor
     public static void ordenarPorPuntosSeleccion(Nave[] flota) {
-
+        for (int i = 0; i < flota.length - 1; i++) {
+            int idx = i;
+            for (int j = i + 1; j < flota.length; j++) {
+                if (flota[j].getPuntos() < flota[idx].getPuntos())
+                    idx = j;
+            }
+            intercambiar(flota, i, idx);
+        }
     }
 
     // Método que ordena por nombre de A a Z
