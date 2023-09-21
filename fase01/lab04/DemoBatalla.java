@@ -6,7 +6,7 @@ import java.util.*;
 
 public class DemoBatalla {
     public static void main(String[] args) {
-        Nave[] misNaves = new Nave[5];
+        Nave[] misNaves = new Nave[10];
         Scanner sc = new Scanner(System.in);
         String nomb, col;
         int fil, punt;
@@ -38,10 +38,10 @@ public class DemoBatalla {
         mostrarNaves(misNaves);
         mostrarPorNombre(misNaves);
         mostrarPorPuntos(misNaves);
-        System.out.println("Nave con mayor número de puntos: " + mostrarMayorPuntos(misNaves) + "\n");
+        System.out.println("Nave con mayor numero de puntos: " + mostrarMayorPuntos(misNaves) + "\n");
 
         // leer un nombre
-        // mostrar los datos de la nave con dicho nombre, mensaje de “no encontrado” en
+        // mostrar los datos de la nave con dicho nombre, mensaje de no encontrado en
         // caso contrario
         System.out.println("Ingrese el nombre a buscar:");
         String nombre = sc.nextLine();
@@ -57,7 +57,7 @@ public class DemoBatalla {
         ordenarPorNombreBurbuja(misNaves);
         mostrarNaves(misNaves);
 
-        // mostrar los datos de la nave con dicho nombre, mensaje de “no encontrado” en
+        // mostrar los datos de la nave con dicho nombre, mensaje de no encontrado en
         // caso contrario
         System.out.println("Ingrese el nombre a buscar:");
         nombre = sc.nextLine();
@@ -80,14 +80,14 @@ public class DemoBatalla {
         mostrarNaves(misNaves);
     }
 
-    // Método para mostrar todas las naves
+    // Metodo para mostrar todas las naves
     public static void mostrarNaves(Nave[] flota) {
         for (Nave nave : flota)
             System.out.println(nave.toString());
         System.out.println();
     }
 
-    // Método para mostrar todas las naves de un nombre que se pide por teclado
+    // Metodo para mostrar todas las naves de un nombre que se pide por teclado
     public static void mostrarPorNombre(Nave[] flota) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese el nombre a buscar:");
@@ -100,8 +100,8 @@ public class DemoBatalla {
         System.out.println();
     }
 
-    // Método para mostrar todas las naves con un número de puntos inferior o igual
-    // al número de puntos que se pide por teclado
+    // Metodo para mostrar todas las naves con un numero de puntos inferior o igual
+    // al numero de puntos que se pide por teclado
     public static void mostrarPorPuntos(Nave[] flota) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese la cantidad de puntos maximos:");
@@ -115,7 +115,7 @@ public class DemoBatalla {
         System.out.println();
     }
 
-    // Método que devuelve la Nave con mayor número de Puntos
+    // Metodo que devuelve la Nave con mayor numero de Puntos
     public static Nave mostrarMayorPuntos(Nave[] flota) {
         int maxIdx = 0;
         for (int i = 0; i < flota.length; i++) {
@@ -125,7 +125,7 @@ public class DemoBatalla {
         return flota[maxIdx];
     }
 
-    // Método para buscar la primera nave con un nombre que se pidió por teclado
+    // Metodo para buscar la primera nave con un nombre que se pidio por teclado
     public static int busquedaLinealNombre(Nave[] flota, String s) {
         for (int i = 0; i < flota.length; i++) {
             if (flota[i].getNombre().equals(s)) {
@@ -135,7 +135,7 @@ public class DemoBatalla {
         return -1;
     }
 
-    // Método que ordena por número de puntos de menor a mayor
+    // Metodo que ordena por numero de puntos de menor a mayor
     public static void ordenarPorPuntosBurbuja(Nave[] flota) {
         for (int i = 0; i < flota.length - 1; i++) {
             for (int j = 0; j < flota.length - i - 1; j++) {
@@ -145,7 +145,7 @@ public class DemoBatalla {
         }
     }
 
-    // Método que ordena por nombre de A a Z
+    // Metodo que ordena por nombre de A a Z
     public static void ordenarPorNombreBurbuja(Nave[] flota) {
         for (int i = 0; i < flota.length - 1; i++) {
             for (int j = 0; j < flota.length - i - 1; j++) {
@@ -155,7 +155,7 @@ public class DemoBatalla {
         }
     }
 
-    // Método para buscar la primera nave con un nombre que se pidió por teclado
+    // Metodo para buscar la primera nave con un nombre que se pidio por teclado
     public static int busquedaBinariaNombre(Nave[] flota, String s) {
         int baja = 0, alta = flota.length - 1, media;
         while (baja <= alta) {
@@ -171,7 +171,7 @@ public class DemoBatalla {
         return -1;
     }
 
-    // Método que ordena por número de puntos de menor a mayor
+    // Metodo que ordena por numero de puntos de menor a mayor
     public static void ordenarPorPuntosSeleccion(Nave[] flota) {
         for (int i = 0; i < flota.length - 1; i++) {
             int idx = i;
@@ -183,7 +183,7 @@ public class DemoBatalla {
         }
     }
 
-    // Método que ordena por nombre de A a Z
+    // Metodo que ordena por nombre de A a Z
     public static void ordenarPorNombreSeleccion(Nave[] flota) {
         for (int i = 0; i < flota.length - 1; i++) {
             int idx = i;
@@ -195,7 +195,7 @@ public class DemoBatalla {
         }
     }
 
-    // Método que muestra las naves ordenadas por número de puntos de mayor a menor
+    // Metodo que muestra las naves ordenadas por numero de puntos de mayor a menor
     public static void ordenarPorPuntosInsercion(Nave[] flota) {
         for (int i = 1; i < flota.length; i++) {
             int j = i;
@@ -206,7 +206,7 @@ public class DemoBatalla {
         }
     }
 
-    // Método que muestra las naves ordenadas por nombre de Z a A
+    // Metodo que muestra las naves ordenadas por nombre de Z a A
     public static void ordenarPorNombreInsercion(Nave[] flota) {
         for (int i = 1; i < flota.length; i++) {
             int j = i;

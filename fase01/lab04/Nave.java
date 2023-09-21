@@ -1,5 +1,3 @@
-import java.text.Format;
-
 public class Nave {
     private String nombre;
     private int fila;
@@ -57,5 +55,5 @@ public class Nave {
     public String toString() {
         return (nombre + ": (" + fila + ", " + columna + "). Estado: " + estado + ". Puntos: " + puntos);
     }
-    // Completar con otros métodos necesarios
+    // Completar con otros metodos necesarios
 }
