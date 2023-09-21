@@ -38,7 +38,7 @@ public class DemoBatalla {
         mostrarNaves(misNaves);
         mostrarPorNombre(misNaves);
         mostrarPorPuntos(misNaves);
-        System.out.println("Nave con mayor número de puntos: " + mostrarMayorPuntos(misNaves));
+        System.out.println("Nave con mayor número de puntos: " + mostrarMayorPuntos(misNaves) + "\n");
 
         // leer un nombre
         // mostrar los datos de la nave con dicho nombre, mensaje de “no encontrado” en
@@ -122,7 +122,6 @@ public class DemoBatalla {
             if (flota[i].getPuntos() > flota[maxIdx].getPuntos())
                 maxIdx = i;
         }
-        System.out.println();
         return flota[maxIdx];
     }
 
@@ -148,7 +147,12 @@ public class DemoBatalla {
 
     // Método que ordena por nombre de A a Z
     public static void ordenarPorNombreBurbuja(Nave[] flota) {
-
+        for (int i = 0; i < flota.length - 1; i++) {
+            for (int j = 0; j < flota.length - i - 1; j++) {
+                if (flota[j].getNombre().compareTo(flota[j + 1].getNombre()) > 0)
+                    intercambiar(flota, j, j + 1);
+            }
+        }
     }
 
     // Método para buscar la primera nave con un nombre que se pidió por teclado
