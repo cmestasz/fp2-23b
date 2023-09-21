@@ -6,7 +6,7 @@ import java.util.*;
 
 public class DemoBatalla {
     public static void main(String[] args) {
-        Nave[] misNaves = new Nave[5];
+        Nave[] misNaves = new Nave[3];
         Scanner sc = new Scanner(System.in);
         String nomb, col;
         int fil, punt;
@@ -49,9 +49,11 @@ public class DemoBatalla {
         if (pos == -1)
             System.out.println("Nave no encontrada.");
         else
-            System.out.println("Nave encontrada: " + misNaves[pos]);
+            System.out.println("Nave encontrada: " + misNaves[pos] + "\n");
+        System.out.println("Naves ordenadas por puntos:");
         ordenarPorPuntosBurbuja(misNaves);
         mostrarNaves(misNaves);
+        System.out.println("Naves ordenadas por nombre:");
         ordenarPorNombreBurbuja(misNaves);
         mostrarNaves(misNaves);
 
@@ -63,13 +65,17 @@ public class DemoBatalla {
         if (pos == -1)
             System.out.println("Nave no encontrada.");
         else
-            System.out.println("Nave encontrada: " + misNaves[pos]);
+            System.out.println("Nave encontrada: " + misNaves[pos] + "\n");
+        System.out.println("Naves ordenadas por puntos:");
         ordenarPorPuntosSeleccion(misNaves);
         mostrarNaves(misNaves);
-        ordenarPorPuntosInsercion(misNaves);
-        mostrarNaves(misNaves);
+        System.out.println("Naves ordenadas por nombre:");
         ordenarPorNombreSeleccion(misNaves);
         mostrarNaves(misNaves);
+        System.out.println("Naves ordenadas por puntos:");
+        ordenarPorPuntosInsercion(misNaves);
+        mostrarNaves(misNaves);
+        System.out.println("Naves ordenadas por nombre:");
         ordenarPorNombreInsercion(misNaves);
         mostrarNaves(misNaves);
     }
@@ -116,6 +122,7 @@ public class DemoBatalla {
             if (flota[i].getPuntos() > flota[maxIdx].getPuntos())
                 maxIdx = i;
         }
+        System.out.println();
         return flota[maxIdx];
     }
 
@@ -131,7 +138,12 @@ public class DemoBatalla {
 
     // Método que ordena por número de puntos de menor a mayor
     public static void ordenarPorPuntosBurbuja(Nave[] flota) {
-
+        for (int i = 0; i < flota.length - 1; i++) {
+            for (int j = 0; j < flota.length - i - 1; j++) {
+                if (flota[j].getPuntos() > flota[j + 1].getPuntos())
+                    intercambiar(flota, j, j + 1);
+            }
+        }
     }
 
     // Método que ordena por nombre de A a Z
@@ -173,5 +185,11 @@ public class DemoBatalla {
     // Método que muestra las naves ordenadas por nombre de Z a A
     public static void ordenarPorNombreInsercion(Nave[] flota) {
 
+    }
+
+    public static void intercambiar(Nave[] flota, int a, int b) {
+        Nave t = flota[a];
+        flota[a] = flota[b];
+        flota[b] = t;
     }
 }
