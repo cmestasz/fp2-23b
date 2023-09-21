@@ -197,7 +197,12 @@ public class DemoBatalla {
 
     // Método que muestra las naves ordenadas por número de puntos de mayor a menor
     public static void ordenarPorPuntosInsercion(Nave[] flota) {
-
+        for (int i = 1; i < flota.length; i++) {
+            int j = i;
+            while (j - 1 >= 0 && flota[j - 1].getPuntos() > flota[j].getPuntos()) {
+                intercambiar(flota, j - 1, j);
+            }
+        }
     }
 
     // Método que muestra las naves ordenadas por nombre de Z a A
