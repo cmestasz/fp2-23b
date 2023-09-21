@@ -185,7 +185,14 @@ public class DemoBatalla {
 
     // Método que ordena por nombre de A a Z
     public static void ordenarPorNombreSeleccion(Nave[] flota) {
-
+        for (int i = 0; i < flota.length - 1; i++) {
+            int idx = i;
+            for (int j = i + 1; j < flota.length; j++) {
+                if (flota[j].getNombre().compareTo(flota[idx].getNombre()) < 0)
+                    idx = j;
+            }
+            intercambiar(flota, i, idx);
+        }
     }
 
     // Método que muestra las naves ordenadas por número de puntos de mayor a menor
