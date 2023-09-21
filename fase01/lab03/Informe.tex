@@ -1,0 +1,470 @@
+%package list
+\documentclass{article}
+\usepackage[top=3cm, bottom=3cm, outer=3cm, inner=3cm]{geometry}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{url}
+%\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{array}
+%\usepackage{multicol}
+\newcolumntype{x}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\usepackage{natbib}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
+\usepackage{svg}
+\usepackage{xcolor}
+\usepackage{listings}
+\lstdefinestyle{ascii-tree}{
+    literate={├}{|}1 {─}{--}1 {└}{+}1 
+  }
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+}
+%\usepackage{booktabs}
+\usepackage[labelformat=empty]{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{array}
+
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{N}{@{}m{0pt}@{}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\itemEmail}{cmestasz@unsa.edu.pe}
+\newcommand{\itemStudent}{Christian Mestas Zegarra}
+\newcommand{\itemCourse}{Fundamentos de la Programación 2}
+\newcommand{\itemCourseCode}{1701213}
+\newcommand{\itemSemester}{II}
+\newcommand{\itemUniversity}{Universidad Nacional de San Agustín de Arequipa}
+\newcommand{\itemFaculty}{Facultad de Ingeniería de Producción y Servicios}
+\newcommand{\itemDepartment}{Departamento Académico de Ingeniería de Sistemas e Informática}
+\newcommand{\itemSchool}{Escuela Profesional de Ingeniería de Sistemas}
+\newcommand{\itemAcademic}{2023 - B}
+\newcommand{\itemInput}{Del 18 Setiembre 2023}
+\newcommand{\itemOutput}{Al 25 Setiembre 2023}
+\newcommand{\itemPracticeNumber}{03}
+\newcommand{\itemTheme}{Arreglos de Objetos}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[english,spanish]{babel}
+\usepackage[utf8]{inputenc}
+\AtBeginDocument{\selectlanguage{spanish}}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\refname}{Referencias}
+\renewcommand{\tablename}{Tabla} %esto no funciona cuando se usa babel
+\AtBeginDocument{%
+	\renewcommand\tablename{Tabla}
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{30pt}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead[L]{\raisebox{-0.2\height}{\includegraphics[width=3cm]{img/logo_episunsa.png}}}
+\fancyhead[C]{\fontsize{7}{7}\selectfont	\itemUniversity \\ \itemFaculty \\ \itemDepartment \\ \itemSchool \\ \textbf{\itemCourse}}
+\fancyhead[R]{\raisebox{-0.2\height}{\includegraphics[width=1.2cm]{img/logo_abet}}}
+\fancyfoot[L]{Christian Mestas}
+\fancyfoot[C]{\itemCourse}
+\fancyfoot[R]{Página \thepage}
+
+% para el codigo fuente
+\usepackage{listings}
+\usepackage{color, colortbl}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{codebackground}{rgb}{0.95, 0.95, 0.92}
+\definecolor{tablebackground}{rgb}{0.8, 0, 0}
+
+\lstset{frame=tb,
+	language=bash,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3,
+	backgroundcolor= \color{codebackground},
+}
+
+\begin{document}
+
+\vspace*{10px}
+
+\begin{center}
+	\fontsize{17}{17} \textbf{ Informe de Laboratorio \itemPracticeNumber}
+\end{center}
+\centerline{\textbf{\Large Tema: \itemTheme}}
+%\vspace*{0.5cm}	
+
+\begin{flushright}
+	\begin{tabular}{|M{2.5cm}|N|}
+		\hline
+		\rowcolor{tablebackground}
+		\color{white} \textbf{Nota} \\
+		\hline
+		\\[30pt]
+		\hline
+	\end{tabular}
+\end{flushright}
+
+\begin{table}[H]
+	\begin{tabular}{|M{4.7cm}|M{4.8cm}|M{4.8cm}|}
+		\hline
+		\rowcolor{tablebackground}
+		\color{white} \textbf{Estudiante} & \color{white}\textbf{Escuela} & \color{white}\textbf{Asignatura}                                        \\
+		\hline
+		{\itemStudent \par \itemEmail}    & \itemSchool                   & {\itemCourse \par Semestre: \itemSemester \par Código: \itemCourseCode} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\begin{tabular}{|M{4.7cm}|M{4.8cm}|M{4.8cm}|}
+		\hline
+		\rowcolor{tablebackground}
+		\color{white}\textbf{Laboratorio} & \color{white}\textbf{Tema} & \color{white}\textbf{Duración} \\
+		\hline
+		\itemPracticeNumber               & \itemTheme                 & 04 horas                       \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\begin{tabular}{|M{4.7cm}|M{4.8cm}|M{4.8cm}|}
+		\hline
+		\rowcolor{tablebackground}
+		\color{white}\textbf{Semestre académico} & \color{white}\textbf{Fecha de inicio} & \color{white}\textbf{Fecha de entrega} \\
+		\hline
+		\itemAcademic                            & \itemInput                            & \itemOutput                            \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\section{Tarea}
+\begin{itemize}
+	\item \textbf{Actividad 1:} Analice, complete y pruebe el Código de la clase DemoBatalla.
+	\item \textbf{Actividad 2:} Solucionar la Actividad 4 de la Práctica 1 pero usando arreglo de objetos.
+	\item \textbf{Actividad 3:} Solucionar la Actividad 5 de la Práctica 1 pero usando arreglos de objetos.
+\end{itemize}
+\pagebreak
+
+\section{Equipos, materiales y temas utilizados}
+\begin{itemize}
+	\item Sistema Operativo Microsoft Windows 10 Pro 64 bits
+	\item Visual Studio Code 1.82.2
+	\item Java Development Kit 17.0.1
+	\item Git 2.41.0.windows.1
+	\item Windows PowerShell 5.1.19041.3031
+	\item Cuenta en GitHub con el correo institucional.
+	\item Arreglos estándar.
+\end{itemize}
+
+\section{URL de Repositorio Github}
+\begin{itemize}
+	\item URL del Repositorio GitHub para clonar o recuperar.
+	\item \url{https://github.com/cmestasz/fp2-23b.git}
+	\item URL para el laboratorio 01 en el Repositorio GitHub.
+	\item \url{https://github.com/cmestasz/fp2-23b/tree/main/fase01/lab01}
+\end{itemize}
+
+\section{Actividades con el repositorio GitHub}
+
+\begin{lstlisting}[language=bash,caption={Creando plantillas}]
+		$ mkdir lab03
+		$ cd lab03
+		$ code Nave.java
+		$ code DemoBatalla.java
+		$ code Soldado.java
+		$ code Actividad2.java
+		$ code Actividad3.java
+	\end{lstlisting}
+\begin{lstlisting}[language=bash,caption={Primer Commit / Plantillas}]
+		$ git add .
+		$ git commit -m "Plantillas de archivos necesarios para resolver las actividades del laboratorio"
+		$ git push
+	\end{lstlisting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit01.jpg}
+	\caption{Primer Commit.}
+\end{figure}
+\begin{lstlisting}[language=bash,caption={Actualizando Nave.java y DemoBatalla.java}]
+		$ code Nave.java
+		$ code DemoBatalla.java
+	\end{lstlisting}
+\begin{lstlisting}[language=bash,caption={Segundo - Sexto Commit / Nave.java y DemoBatalla.java}]
+		$ git add .
+		$ git commit -m "Metodo mostrarNaves() y metodo toString() de la clase Nave"
+		$ code DemoBatalla.java
+		$ git add DemoBatalla.java
+		$ git commit -m "Metodo mostrarPorNombre()"
+		$ code DemoBatalla.java
+		$ git add DemoBatalla.java
+		$ git commit -m "Metodo mostrarPorPuntos()"
+		$ code DemoBatalla.java
+		$ git add DemoBatalla.java
+		$ git commit -m "Metodo mostrarMayorPuntos()"
+		$ code DemoBatalla.java
+		$ git add DemoBatalla.java
+		$ git commit -m "Metodo desordenar()"
+		$ git push
+	\end{lstlisting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit02.jpg}
+	\caption{Segundo Commit.}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit03.jpg}
+	\caption{Tercer Commit.}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit04.jpg}
+	\caption{Cuarto Commit.}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit05.jpg}
+	\caption{Quinto Commit.}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit06.jpg}
+	\caption{Sexto Commit.}
+\end{figure}
+\begin{lstlisting}[language=bash,caption={Actualizando Soldado.java}]
+	$ code Soldado.java
+\end{lstlisting}
+\begin{lstlisting}[language=bash,caption={Septimo Commit / Soldado.java}]
+	$ git add Soldado.java
+	$ git commit -m "Clase Soldado"
+	$ git push
+\end{lstlisting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit07.jpg}
+	\caption{Septimo Commit.}
+\end{figure}
+\begin{lstlisting}[language=bash,caption={Actualizando Actividad2.java}]
+	$ code Actividad2.java
+\end{lstlisting}
+\begin{lstlisting}[language=bash,caption={Octavo Commit / Soldado.java}]
+	$ git add Actividad2.java
+	$ git commit -m "Actividad 2"
+	$ git push
+\end{lstlisting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit08.jpg}
+	\caption{Octavo Commit.}
+\end{figure}
+\pagebreak
+\begin{lstlisting}[language=bash,caption={Actualizando Actividad3.java}]
+	$ code Actividad3.java
+\end{lstlisting}
+\begin{lstlisting}[language=bash,caption={Noveno Commit / Actividad3.java}]
+	$ git add Actividad3.java
+	$ git commit -m "Actividad 3"
+	$ git push
+\end{lstlisting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/commit09.jpg}
+	\caption{Noveno Commit.}
+\end{figure}
+\pagebreak
+
+\section{Código desarrollado}
+\lstinputlisting[language=Java, caption={Nave.java},numbers=left,]{Nave.java}
+\begin{itemize}
+	\item Clase que guarda nombre, fila, columna, estado y puntos de la nave.
+	\item Posee tanto setters como getters para todos los atributos.
+	\item Posee el metodo toString() para poder imprimir el objeto.
+\end{itemize}
+\pagebreak
+\lstinputlisting[language=Java, caption={DemoBatalla.java},numbers=left,]{DemoBatalla.java}
+\begin{itemize}
+	\item Se instancian 10 objetos de la clase nave en el arreglo misNaves, todos los datos son llenados por el usuario.
+	\item mostrarNaves() imprime todas las naves usando su metodo toString().
+	\item mostrarPorNombre() imprime todas las naves con el nombre que el usuario ingrese.
+	\item mostrarPorPuntos() imprime todas las naves con menor o igual numero de puntos a lo que el usuario ingrese.
+	\item mostrarMayorPuntos() retorna la nave que tiene la mayor cantidad de puntos, que luego es impresa.
+	\item desordenar() retorna un nuevo arreglo de naves con las naves desordenadas al azar, que luego es impreso con el método mostrarNaves().
+\end{itemize}
+\pagebreak
+\lstinputlisting[language=Java, caption={Soldado.java},numbers=left,]{Soldado.java}
+\begin{itemize}
+	\item Clase que guarda nombre y vida del soldado.
+	\item Posee tanto setters como getters para los atributos.
+	\item Posee el metodo toString() para poder imprimir el objeto.
+\end{itemize}
+\pagebreak
+\lstinputlisting[language=Java, caption={Actividad2.java},numbers=left,]{Actividad2.java}
+\begin{itemize}
+	\item Los 5 nombres y sus respectivas vidas son leídas, para luego instanciar objetos de la clase soldado con sus respectivos atributos.
+	\item Luego los atributos son impresos en el orden en el que se ingresaron.
+\end{itemize}
+\pagebreak
+\lstinputlisting[language=Java, caption={Actividad3.java},numbers=left,]{Actividad3.java}
+\begin{itemize}
+	\item Se crean 2 ejércitos con el método inicializarEjercito(), que crea un arreglo de soldados de tamaño al azar entre 1 y 5.
+	\item mostrarEjercito() imprime una lista de los soldados de cada ejército.
+	\item mostrarGanador() compara los tamaños de los ejércitos y declara al ganador como el ejército mas grande.
+\end{itemize}
+\pagebreak
+
+\section{Ejecución del código}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/ejec01.jpg}
+	\caption{DemoBatalla.java}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/ejec02.jpg}
+	\caption{Actividad2.java}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth,keepaspectratio]{img/ejec03.jpg}
+	\caption{Actividad3.java}
+\end{figure}
+\pagebreak
+
+\section{Estructura de laboratorio \itemPracticeNumber}
+\begin{itemize}
+	\item El contenido que se entrega en este laboratorio es el siguiente:
+\end{itemize}
+
+\begin{lstlisting}[style=ascii-tree]
+lab03/
+|--- Nave.java
+|--- DemoBatalla.java
+|--- Soldado.java
+|--- Actividad2.java
+|--- Actividad3.java
+|--- Informe.tex
+|--- Informe.pdf
+|--- img
+	|--- logo_abet.png
+	|--- logo_episunsa.png
+	|--- logo_unsa.jpg
+	|--- commit01.jpg
+	|--- commit02.jpg
+	|--- commit03.jpg
+	|--- commit04.jpg
+	|--- commit05.jpg
+	|--- commit06.jpg
+	|--- commit07.jpg
+	|--- commit08.jpg
+	|--- commit09.jpg
+	|--- ejec01.jpg
+	|--- ejec02.jpg
+	|--- ejec03.jpg
+\end{lstlisting}
+\pagebreak
+
+\section{\textcolor{red}{Rúbricas}}
+
+\subsection{\textcolor{red}{Entregable Informe}}
+\begin{table}[H]
+	\caption{Tipo de Informe}
+	\setlength{\tabcolsep}{0.5em} % for the horizontal padding
+	{\renewcommand{\arraystretch}{1.5}% for the vertical padding
+		\begin{tabular}{|M{3cm}|M{12cm}|}
+			\hline
+			\multicolumn{2}{|c|}{\textbf{\textcolor{red}{Informe}}}                                                                                                      \\
+			\hline
+			\textbf{\textcolor{red}{Latex}} & \textcolor{blue}{El informe está en formato PDF desde Latex,  con un formato limpio (buena presentación) y facil de leer.} \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+\subsection{\textcolor{red}{Rúbrica para el contenido del Informe y demostración}}
+\begin{itemize}
+	\item El alumno debe marcar o dejar en blanco en celdas de la columna \textbf{Checklist} si cumplio con el ítem correspondiente.
+	\item Si un alumno supera la fecha de entrega, su calificación será sobre la nota mínima aprobatoria, siempre y cuando cumpla con todos los items.
+	\item El alumno debe autocalificarse en la columna \textbf{Estudiante} de acuerdo a la siguiente tabla:
+
+	      \begin{table}[ht]
+		      \caption{Niveles de desempeño}
+		      \begin{center}
+			      \begin{tabular}{ccccc}
+				      \hline
+				                      & \multicolumn{4}{c}{Nivel}                                                              \\
+				      \cline{1-5}
+				      \textbf{Puntos} & Insatisfactorio 25\%      & En Proceso 50\% & Satisfactorio 75\% & Sobresaliente 100\% \\
+				      \textbf{2.0}    & 0.5                       & 1.0             & 1.5                & 2.0                 \\
+				      \textbf{4.0}    & 1.0                       & 2.0             & 3.0                & 4.0                 \\
+				      \hline
+			      \end{tabular}
+		      \end{center}
+	      \end{table}
+
+\end{itemize}
+
+\begin{table}[H]
+	\caption{Rúbrica para contenido del Informe y demostración}
+	\setlength{\tabcolsep}{0.5em} % for the horizontal padding
+	{\renewcommand{\arraystretch}{1.5}% for the vertical padding
+		%\begin{center}
+		\begin{tabular}{|M{2.3cm}|M{5cm}|M{1.2cm}|M{1.5cm}|M{1.8cm}|M{1.4cm}|}
+			\hline
+			\multicolumn{2}{|c|}{Contenido y demostración} & Puntos                                                                                                                                                                                                          & Checklist & Estudiante & Profesor   \\
+			\hline
+			\textbf{1. GitHub}                             & Hay enlace URL activo del directorio para el  laboratorio hacia su repositorio GitHub con código fuente terminado y fácil de revisar.                                                                           & 2         & X          & 2        & \\
+			\hline
+			\textbf{2. Commits}                            & Hay capturas de pantalla de los commits más importantes con sus explicaciones detalladas. (El profesor puede preguntar para refrendar calificación).                                                            & 4         & X          & 3        & \\
+			\hline
+			\textbf{3. Código fuente}                      & Hay porciones de código fuente importantes con numeración y explicaciones detalladas de sus funciones.                                                                                                          & 2         & X          & 2      & \\
+			\hline
+			\textbf{4. Ejecución}                          & Se incluyen ejecuciones/pruebas del código fuente  explicadas gradualmente.                                                                                                                                     & 2         & X          & 1.5      & \\
+			\hline
+			\textbf{5. Pregunta}                           & Se responde con completitud a la pregunta formulada en la tarea.  (El profesor puede preguntar para refrendar calificación).                                                                                    & 2         &            & 0        & \\
+			\hline
+			\textbf{6. Fechas}                             & Las fechas de modificación del código fuente estan dentro de los plazos de fecha de entrega establecidos.                                                                                                       & 2         & X          & 2        & \\
+			\hline
+			\textbf{7. Ortografía}                         & El documento no muestra errores ortográficos.                                                                                                                                                                   & 2         & X          & 2        & \\
+			\hline
+			\textbf{8. Madurez}                            & El Informe muestra de manera general una evolución de la madurez del código fuente,  explicaciones puntuales pero precisas y un acabado impecable.   (El profesor puede preguntar para refrendar calificación). & 4         & X          & 4        & \\
+			\hline
+			\multicolumn{2}{|c|}{\textbf{Total}}           & 20                                                                                                                                                                                                              &           & 16.5         &            \\
+			\hline
+		\end{tabular}
+		%\end{center}
+		%\label{tab:multicol}
+	}
+\end{table}
+
+\section{Referencias}
+\begin{itemize}
+	\item Aedo, M. y Castro, E. (2021). FUNDAMENTOS DE PROGRAMACIÓN 2 - Tópicos de Programación Orientada a Objetos. Editorial UNSA.
+\end{itemize}
+
+%\pagebreak
+%\bibliographystyle{apalike}
+%\bibliographystyle{IEEEtranN}
+%\bibliography{bibliography}
+
+\end{document}

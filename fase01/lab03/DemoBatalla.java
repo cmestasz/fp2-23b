@@ -35,20 +35,20 @@ public class DemoBatalla {
         mostrarNaves(misNaves);
         mostrarPorNombre(misNaves);
         mostrarPorPuntos(misNaves);
-        System.out.println("Nave con mayor número de puntos: " + mostrarMayorPuntos(misNaves));
+        System.out.println("Nave con mayor numero de puntos: " + mostrarMayorPuntos(misNaves));
         System.out.println();
         System.out.println("Naves desordenadas: ");
         mostrarNaves(desordenar(misNaves));
     }
 
-    // Método para mostrar todas las naves
+    // Metodo para mostrar todas las naves
     public static void mostrarNaves(Nave[] flota) {
         for (Nave nave : flota)
             System.out.println(nave.toString());
         System.out.println();
     }
 
-    // Método para mostrar todas las naves de un nombre que se pide por teclado
+    // Metodo para mostrar todas las naves de un nombre que se pide por teclado
     public static void mostrarPorNombre(Nave[] flota) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese el nombre a buscar:");
@@ -61,8 +61,8 @@ public class DemoBatalla {
         System.out.println();
     }
 
-    // Método para mostrar todas las naves con un número de puntos inferior o igual
-    // al número de puntos que se pide por teclado
+    // Metodo para mostrar todas las naves con un numero de puntos inferior o igual
+    // al numero de puntos que se pide por teclado
     public static void mostrarPorPuntos(Nave[] flota) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese la cantidad de puntos maximos:");
@@ -76,7 +76,7 @@ public class DemoBatalla {
         System.out.println();
     }
 
-    // Método que devuelve la Nave con mayor número de Puntos
+    // Metodo que devuelve la Nave con mayor numero de Puntos
     public static Nave mostrarMayorPuntos(Nave[] flota) {
         int maxIdx = 0;
         for (int i = 0; i < flota.length; i++) {
@@ -86,7 +86,7 @@ public class DemoBatalla {
         return flota[maxIdx];
     }
 
-    // Crear un método que devuelva un nuevo arreglo de objetos con todos los
+    // Crear un metodo que devuelva un nuevo arreglo de objetos con todos los
     // objetos previamente ingresados
     // pero aleatoriamente desordenados
     public static Nave[] desordenar(Nave[] flota) {
