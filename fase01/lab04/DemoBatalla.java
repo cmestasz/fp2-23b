@@ -72,10 +72,10 @@ public class DemoBatalla {
         System.out.println("Naves ordenadas por nombre:");
         ordenarPorNombreSeleccion(misNaves);
         mostrarNaves(misNaves);
-        System.out.println("Naves ordenadas por puntos:");
+        System.out.println("Naves ordenadas por puntos (Invertido):");
         ordenarPorPuntosInsercion(misNaves);
         mostrarNaves(misNaves);
-        System.out.println("Naves ordenadas por nombre:");
+        System.out.println("Naves ordenadas por nombre (Invertido):");
         ordenarPorNombreInsercion(misNaves);
         mostrarNaves(misNaves);
     }
@@ -199,15 +199,22 @@ public class DemoBatalla {
     public static void ordenarPorPuntosInsercion(Nave[] flota) {
         for (int i = 1; i < flota.length; i++) {
             int j = i;
-            while (j - 1 >= 0 && flota[j - 1].getPuntos() > flota[j].getPuntos()) {
+            while (j - 1 >= 0 && flota[j - 1].getPuntos() < flota[j].getPuntos()) {
                 intercambiar(flota, j - 1, j);
+                j--;
             }
         }
     }
 
     // Método que muestra las naves ordenadas por nombre de Z a A
     public static void ordenarPorNombreInsercion(Nave[] flota) {
-
+        for (int i = 1; i < flota.length; i++) {
+            int j = i;
+            while (j - 1 >= 0 && flota[j - 1].getNombre().compareTo(flota[j].getNombre()) < 0) {
+                intercambiar(flota, j - 1, j);
+                j--;
+            }
+        }
     }
 
     public static void intercambiar(Nave[] flota, int a, int b) {
