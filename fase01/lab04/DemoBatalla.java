@@ -1,4 +1,4 @@
-// Laboratorio Nro 3 - Actividad 1
+// Laboratorio Nro 4 - Actividad 1
 // Autor: Christian Mestas
 // Colaboro: Marco Aedo, clases DemoBatalla y Nave
 
@@ -36,9 +36,33 @@ public class DemoBatalla {
         mostrarPorNombre(misNaves);
         mostrarPorPuntos(misNaves);
         System.out.println("Nave con mayor número de puntos: " + mostrarMayorPuntos(misNaves));
-        System.out.println();
-        System.out.println("Naves desordenadas: ");
-        mostrarNaves(desordenar(misNaves));
+
+        // leer un nombre
+        // mostrar los datos de la nave con dicho nombre, mensaje de “no encontrado” en
+        // caso contrario
+        System.out.println("Ingrese el nombre a buscar:");
+        String nombre = sc.nextLine();
+        int pos = busquedaLinealNombre(misNaves, nombre);
+        if (pos == -1)
+            System.out.println("Nave no encontrada.");
+        else
+            System.out.println("Nave encontrada: " + misNaves[pos]);
+        ordenarPorPuntosBurbuja(misNaves);
+        mostrarNaves(misNaves);
+        ordenarPorNombreBurbuja(misNaves);
+        mostrarNaves(misNaves);
+
+        // mostrar los datos de la nave con dicho nombre, mensaje de “no encontrado” en
+        // caso contrario
+        pos = busquedaBinariaNombre(misNaves, nombre);
+        ordenarPorPuntosSeleccion(misNaves);
+        mostrarNaves(misNaves);
+        ordenarPorPuntosInsercion(misNaves);
+        mostrarNaves(misNaves);
+        ordenarPorNombreSeleccion(misNaves);
+        mostrarNaves(misNaves);
+        ordenarPorNombreInsercion(misNaves);
+        mostrarNaves(misNaves);
     }
 
     // Método para mostrar todas las naves
@@ -86,19 +110,48 @@ public class DemoBatalla {
         return flota[maxIdx];
     }
 
-    // Crear un método que devuelva un nuevo arreglo de objetos con todos los
-    // objetos previamente ingresados
-    // pero aleatoriamente desordenados
-    public static Nave[] desordenar(Nave[] flota) {
-        Nave[] nuevaFlota = new Nave[flota.length];
-        Random r = new Random();
-        System.arraycopy(flota, 0, nuevaFlota, 0, flota.length);
-        for (int idx = 0; idx < nuevaFlota.length; idx++) {
-            int nIdx = r.nextInt(nuevaFlota.length);
-            Nave t = nuevaFlota[idx];
-            nuevaFlota[idx] = nuevaFlota[nIdx];
-            nuevaFlota[nIdx] = t;
+    // Método para buscar la primera nave con un nombre que se pidió por teclado
+    public static int busquedaLinealNombre(Nave[] flota, String s) {
+        for (int i = 0; i < flota.length; i++) {
+            if (flota[i].getNombre().equals(s)) {
+                return i;
+            }
         }
-        return nuevaFlota;
+        return -1;
+    }
+
+    // Método que ordena por número de puntos de menor a mayor
+    public static void ordenarPorPuntosBurbuja(Nave[] flota) {
+
+    }
+
+    // Método que ordena por nombre de A a Z
+    public static void ordenarPorNombreBurbuja(Nave[] flota) {
+
+    }
+
+    // Método para buscar la primera nave con un nombre que se pidió por teclado
+    public static int busquedaBinariaNombre(Nave[] flota, String s) {
+
+    }
+
+    // Método que ordena por número de puntos de menor a mayor
+    public static void ordenarPorPuntosSeleccion(Nave[] flota) {
+
+    }
+
+    // Método que ordena por nombre de A a Z
+    public static void ordenarPorNombreSeleccion(Nave[] flota) {
+
+    }
+
+    // Método que muestra las naves ordenadas por número de puntos de mayor a menor
+    public static void ordenarPorPuntosInsercion(Nave[] flota) {
+
+    }
+
+    // Método que muestra las naves ordenadas por nombre de Z a A
+    public static void ordenarPorNombreInsercion(Nave[] flota) {
+
     }
 }
