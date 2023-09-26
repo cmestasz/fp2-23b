@@ -36,6 +36,20 @@ public class VideoJuego2 {
     }
 
     private static void imprimirTablero(Soldado[][] soldados) {
+        System.out.print("\t");
+        for (int i = 0; i < soldados[0].length; i++)
+            System.out.print(" " + intToChar(i + 1) + " ");
+        System.out.println();
+        for (int i = 0; i < soldados.length; i++) {
+            System.out.print("\t");
+            for (int j = 0; j < soldados[i].length; j++)
+                System.out.print("---");
+            System.out.println();
+            System.out.print((i + 1) + "\t");
+            for (int j = 0; j < soldados[i].length; j++)
+                System.out.print("| |");
+            System.out.println();
+        }
     }
 
     private static Soldado soldadoMayorVida(Soldado[][] soldados) {
