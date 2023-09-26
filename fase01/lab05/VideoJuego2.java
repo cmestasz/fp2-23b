@@ -1,3 +1,6 @@
+import java.util.Scanner;
+import java.util.Random;
+
 public class VideoJuego2 {
     public static void main(String[] args) {
         Soldado[][] soldados = new Soldado[10][10];
@@ -17,21 +20,34 @@ public class VideoJuego2 {
     }
 
     private static void inicializarSoldados(Soldado[][] soldados) {
+        Random r = new Random();
+        int cantidad = r.nextInt(10) + 1;
+        for (int i = 0; i < cantidad; i++) {
+            String nombre = "Soldado" + i;
+            int vida = r.nextInt(5) + 1;
+            int fila, columna;
+            do {
+                fila = r.nextInt(10);
+                columna = r.nextInt(10);
+            } while (soldados[fila][columna] != null);
+            soldados[fila][columna] = new Soldado(nombre, vida);
+        }
+
     }
 
     private static void imprimirTablero(Soldado[][] soldados) {
     }
 
     private static Soldado soldadoMayorVida(Soldado[][] soldados) {
-        
+        return null;
     }
 
     private static Soldado promedioPuntosVida(Soldado[][] soldados) {
-        
+        return null;
     }
 
     private static Soldado sumaPuntosVida(Soldado[][] soldados) {
-        
+    return null;
     }
 
     private static void ordenarSoldadosBurbuja(Soldado[][] soldados2) {
@@ -45,5 +61,9 @@ public class VideoJuego2 {
 
     public static int charToInt(char c) {
         return c - 'A' + 1;
+    }
+
+    public static char intToChar(int n) {
+        return (char) (n + 'A' - 1);
     }
 }
