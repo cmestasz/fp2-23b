@@ -36,20 +36,44 @@ public class VideoJuego2 {
     }
 
     private static void imprimirTablero(Soldado[][] soldados) {
-        System.out.print("\t");
-        for (int i = 0; i < soldados[0].length; i++)
-            System.out.print(" " + intToChar(i + 1) + " ");
-        System.out.println();
+        System.out.print(generarEncabezado(soldados));
+        String subfila0 = generarSubfila0(soldados);
         for (int i = 0; i < soldados.length; i++) {
-            System.out.print("\t");
-            for (int j = 0; j < soldados[i].length; j++)
-                System.out.print("---");
-            System.out.println();
-            System.out.print((i + 1) + "\t");
-            for (int j = 0; j < soldados[i].length; j++)
-                System.out.print("| |");
-            System.out.println();
+            System.out.print(subfila0);
+            System.out.print(generarSubfila1(soldados, i));
         }
+        System.out.print(subfila0);
+    }
+
+    public static String generarEncabezado(Soldado[][] soldados) {
+        String encabezado = "\t";
+        for (int i = 0; i < soldados.length; i++)
+            encabezado += ("  " + intToChar(i + 1) + " ");
+        encabezado += " \n";
+        return encabezado;
+    }
+
+    public static String generarSubfila0(Soldado[][] soldados) {
+        String fila = "\t";
+        for (int i = 0; i < soldados[0].length; i++)
+            fila += "----";
+        fila += "-\n";
+        return fila;
+    }
+
+    public static String generarSubfila1(Soldado[][] soldados, int f) {
+        String fila = (f + 1) + "\t";
+        for (int i = 0; i < soldados[f].length; i++) {
+            fila += "| ";
+            Soldado soldado = soldados[f][i];
+            if (soldado != null)
+                fila += soldado.getNombre().charAt(soldado.getNombre().length() - 1);
+            else
+                fila += " ";
+            fila += " ";
+        }
+        fila += "|\n";
+        return fila;
     }
 
     private static Soldado soldadoMayorVida(Soldado[][] soldados) {
@@ -61,7 +85,7 @@ public class VideoJuego2 {
     }
 
     private static Soldado sumaPuntosVida(Soldado[][] soldados) {
-    return null;
+        return null;
     }
 
     private static void ordenarSoldadosBurbuja(Soldado[][] soldados2) {
