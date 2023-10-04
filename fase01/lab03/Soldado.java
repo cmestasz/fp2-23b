@@ -1,3 +1,5 @@
+package fase01.lab03;
+
 public class Soldado {
     private String nombre;
     private int vida;

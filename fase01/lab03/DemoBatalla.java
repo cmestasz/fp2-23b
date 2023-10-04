@@ -2,6 +2,8 @@
 // Autor: Christian Mestas
 // Colaboro: Marco Aedo, clases DemoBatalla y Nave
 
+package fase01.lab03;
+
 import java.util.*;
 
 public class DemoBatalla {

@@ -2,6 +2,8 @@
 // Autor: Christian Mestas
 // Colaboro: Marco Aedo, version del ahorcado al 70%
 
+package fase01.lab02;
+
 import java.util.Scanner;
 
 public class Ahorcado {

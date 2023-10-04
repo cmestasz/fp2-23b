@@ -1,3 +1,5 @@
+package fase01.lab05;
+
 import java.util.Scanner;
 import java.util.Random;
 

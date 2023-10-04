@@ -1,6 +1,8 @@
 // Laboratorio Nro 3 - Actividad 2
 // Autor: Christian Mestas
 
+package fase01.lab03;
+
 import java.util.Scanner;
 
 public class Actividad2 {

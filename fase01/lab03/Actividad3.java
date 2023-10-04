@@ -1,6 +1,8 @@
 // Laboratorio Nro 3 - Actividad 3
 // Autor: Christian Mestas
 
+package fase01.lab03;
+
 import java.util.Random;
 
 public class Actividad3 {

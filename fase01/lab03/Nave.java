@@ -1,3 +1,5 @@
+package fase01.lab03;
+
 public class Nave {
     private String nombre;
     private int fila;
