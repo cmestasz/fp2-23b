@@ -1,40 +1,44 @@
 package fase01.lab05;
 
-import java.util.Scanner;
 import java.util.Random;
 
 public class VideoJuego2 {
     public static void main(String[] args) {
-        Soldado[][] soldados = new Soldado[10][10];
-        inicializarSoldados(soldados);
-        imprimirTablero(soldados);
-        System.out.println("Soldado con mayor vida: " + soldadoMayorVida(soldados));
-        System.out.println("Promedio de puntos de vida: " + promedioPuntosVida(soldados));
-        System.out.println("Nivel de vida del ejercito: " + sumaPuntosVida(soldados));
-        Soldado[][] soldados2 = new Soldado[10][10];
-        Soldado[][] soldados3 = new Soldado[10][10];
+        Random r = new Random();
+        int cantidad = r.nextInt(10) + 1;
+        Soldado[][] tablero = new Soldado[10][10];
+        Soldado[] soldados = new Soldado[cantidad];
+        inicializarSoldados(tablero, soldados);
+        imprimirTablero(tablero);
+        System.out.printf("Soldado con mayor vida: %s%n", soldadoMayorVida(soldados));
+        System.out.printf("Promedio de puntos de vida: %f%n", promedioPuntosVida(soldados));
+        System.out.printf("Nivel de vida del ejercito: %d%n", sumaPuntosVida(soldados));
+        Soldado[] soldados2 = new Soldado[soldados.length];
+        Soldado[] soldados3 = new Soldado[soldados.length];
         System.arraycopy(soldados, 0, soldados2, 0, soldados.length);
         System.arraycopy(soldados, 0, soldados3, 0, soldados.length);
+        System.out.println();
         ordenarSoldadosBurbuja(soldados2);
         imprimirSoldados(soldados2);
+        System.out.println();
         ordenarSoldadosSeleccion(soldados3);
         imprimirSoldados(soldados3);
     }
 
-    private static void inicializarSoldados(Soldado[][] soldados) {
+    private static void inicializarSoldados(Soldado[][] tablero, Soldado[] soldados) {
         Random r = new Random();
-        int cantidad = r.nextInt(10) + 1;
-        for (int i = 0; i < cantidad; i++) {
+        for (int i = 0; i < soldados.length; i++) {
             String nombre = "Soldado" + i;
             int vida = r.nextInt(5) + 1;
             int fila, columna;
             do {
                 fila = r.nextInt(10);
                 columna = r.nextInt(10);
-            } while (soldados[fila][columna] != null);
-            soldados[fila][columna] = new Soldado(nombre, vida);
+            } while (tablero[fila][columna] != null);
+            Soldado soldado = new Soldado(nombre, vida);
+            tablero[fila][columna] = soldado;
+            soldados[i] = soldado;
         }
-
     }
 
     private static void imprimirTablero(Soldado[][] soldados) {
@@ -78,25 +82,25 @@ public class VideoJuego2 {
         return fila;
     }
 
-    private static Soldado soldadoMayorVida(Soldado[][] soldados) {
+    private static Soldado soldadoMayorVida(Soldado[] soldados) {
         return null;
     }
 
-    private static Soldado promedioPuntosVida(Soldado[][] soldados) {
-        return null;
+    private static double promedioPuntosVida(Soldado[] soldados) {
+        return 0;
     }
 
-    private static Soldado sumaPuntosVida(Soldado[][] soldados) {
-        return null;
+    private static int sumaPuntosVida(Soldado[] soldados) {
+        return 0;
     }
 
-    private static void ordenarSoldadosBurbuja(Soldado[][] soldados2) {
+    private static void ordenarSoldadosBurbuja(Soldado[] soldados) {
     }
 
-    private static void ordenarSoldadosSeleccion(Soldado[][] soldados3) {
+    private static void ordenarSoldadosSeleccion(Soldado[] soldados) {
     }
 
-    private static void imprimirSoldados(Soldado[][] soldados3) {
+    private static void imprimirSoldados(Soldado[] soldados) {
     }
 
     public static int charToInt(char c) {
