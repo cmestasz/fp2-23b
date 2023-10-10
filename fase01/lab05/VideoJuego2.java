@@ -128,16 +128,14 @@ public class VideoJuego2 {
     }
 
     public static void imprimirSoldados(Soldado[] soldados) {
+        for (Soldado soldado : soldados)
+            System.out.println(soldado);
     }
 
     public static void intercambiar(Soldado[] soldados, int i, int j) {
         Soldado t = soldados[i];
         soldados[i] = soldados[j];
         soldados[j] = t;
-    }
-
-    public static int charToInt(char c) {
-        return c - 'A' + 1;
     }
 
     public static char intToChar(int n) {
