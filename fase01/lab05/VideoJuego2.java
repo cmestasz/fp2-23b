@@ -25,7 +25,7 @@ public class VideoJuego2 {
         imprimirSoldados(soldados3);
     }
 
-    private static void inicializarSoldados(Soldado[][] tablero, Soldado[] soldados) {
+    public static void inicializarSoldados(Soldado[][] tablero, Soldado[] soldados) {
         Random r = new Random();
         for (int i = 0; i < soldados.length; i++) {
             String nombre = "Soldado" + i;
@@ -41,7 +41,7 @@ public class VideoJuego2 {
         }
     }
 
-    private static void imprimirTablero(Soldado[][] soldados) {
+    public static void imprimirTablero(Soldado[][] soldados) {
         System.out.print(generarEncabezado(soldados));
         String subfila0 = generarSubfila0(soldados);
         for (int i = 0; i < soldados.length; i++) {
@@ -82,7 +82,7 @@ public class VideoJuego2 {
         return fila;
     }
 
-    private static Soldado soldadoMayorVida(Soldado[] soldados) {
+    public static Soldado soldadoMayorVida(Soldado[] soldados) {
         int idx = 0;
         for (int i = 1; i < soldados.length; i++) {
             if (soldados[i].getVida() > soldados[idx].getVida())
@@ -91,25 +91,39 @@ public class VideoJuego2 {
         return soldados[idx];
     }
 
-    private static double promedioPuntosVida(Soldado[] soldados) {
+    public static double promedioPuntosVida(Soldado[] soldados) {
         int suma = sumaPuntosVida(soldados);
         return 1.0 * suma / soldados.length;
     }
 
-    private static int sumaPuntosVida(Soldado[] soldados) {
+    public static int sumaPuntosVida(Soldado[] soldados) {
         int suma = 0;
         for (int i = 0; i < soldados.length; i++)
             suma += soldados[i].getVida();
         return suma;
     }
 
-    private static void ordenarSoldadosBurbuja(Soldado[] soldados) {
+    public static void ordenarSoldadosBurbuja(Soldado[] soldados) {
+        for (int i = 0; i < soldados.length - 1; i++) {
+            for (int j = 0; j < soldados.length - i - 1; j++) {
+                int vida1 = soldados[j].getVida();
+                int vida2 = soldados[j + 1].getVida();
+                if (vida1 < vida2)
+                    intercambiar(soldados, j, j + 1);
+            }
+        }
     }
 
-    private static void ordenarSoldadosSeleccion(Soldado[] soldados) {
+    public static void ordenarSoldadosSeleccion(Soldado[] soldados) {
     }
 
-    private static void imprimirSoldados(Soldado[] soldados) {
+    public static void imprimirSoldados(Soldado[] soldados) {
+    }
+
+    public static void intercambiar(Soldado[] soldados, int i, int j) {
+        Soldado t = soldados[i];
+        soldados[i] = soldados[j];
+        soldados[j] = t;
     }
 
     public static int charToInt(char c) {
