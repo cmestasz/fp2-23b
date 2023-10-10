@@ -115,6 +115,16 @@ public class VideoJuego2 {
     }
 
     public static void ordenarSoldadosSeleccion(Soldado[] soldados) {
+        for (int i = 0; i < soldados.length - 1; i++) {
+            int idx = i;
+            for (int j = i + 1; j < soldados.length; j++) {
+                int vida1 = soldados[j].getVida();
+                int vida2 = soldados[idx].getVida();
+                if (vida1 > vida2)
+                    idx = j;
+            }
+            intercambiar(soldados, i, idx);
+        }
     }
 
     public static void imprimirSoldados(Soldado[] soldados) {
