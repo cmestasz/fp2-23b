@@ -83,15 +83,24 @@ public class VideoJuego2 {
     }
 
     private static Soldado soldadoMayorVida(Soldado[] soldados) {
-        return null;
+        int idx = 0;
+        for (int i = 1; i < soldados.length; i++) {
+            if (soldados[i].getVida() > soldados[idx].getVida())
+                idx = i;
+        }
+        return soldados[idx];
     }
 
     private static double promedioPuntosVida(Soldado[] soldados) {
-        return 0;
+        int suma = sumaPuntosVida(soldados);
+        return 1.0 * suma / soldados.length;
     }
 
     private static int sumaPuntosVida(Soldado[] soldados) {
-        return 0;
+        int suma = 0;
+        for (int i = 0; i < soldados.length; i++)
+            suma += soldados[i].getVida();
+        return suma;
     }
 
     private static void ordenarSoldadosBurbuja(Soldado[] soldados) {

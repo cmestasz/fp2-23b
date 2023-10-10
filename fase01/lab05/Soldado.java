@@ -26,6 +26,6 @@ public class Soldado {
     }
 
     public String toString() {
-        return ("Nombre: " + nombre + ". Vida: " + vida);
+        return (nombre + " - " + vida);
     }
 }
