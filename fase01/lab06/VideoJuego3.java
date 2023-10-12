@@ -22,25 +22,23 @@ public class VideoJuego3 {
         System.out.println();
         ordenarSoldadosBurbuja(soldados1a);
         imprimirSoldados(soldados1a);
-        /*
-         * ordenarSoldadosSeleccion(soldados1b);
-         * imprimirSoldados(soldados1b);
-         * System.out.println();
-         * System.out.printf("Soldado con mayor vida del ejercito 2: %s%n",
-         * soldadoMayorVida(soldados2));
-         * System.out.printf("Promedio de puntos de vida del ejercito 2: %f%n",
-         * promedioPuntosVida(soldados2));
-         * imprimirSoldados(soldados2);
-         * ArrayList<Soldado> soldados2a = new ArrayList<Soldado>();
-         * ArrayList<Soldado> soldados2b = new ArrayList<Soldado>();
-         * copiarArrayList(soldados2, soldados2a);
-         * copiarArrayList(soldados2, soldados2b);
-         * System.out.println();
-         * ordenarSoldadosBurbuja(soldados2a);
-         * imprimirSoldados(soldados2a);
-         * ordenarSoldadosSeleccion(soldados2b);
-         * imprimirSoldados(soldados2b);
-         */
+        System.out.println();
+        ordenarSoldadosSeleccion(soldados1b);
+        imprimirSoldados(soldados1b);
+        System.out.println();
+        System.out.printf("Soldado con mayor vida del ejercito 2: %s%n", soldadoMayorVida(soldados2));
+        System.out.printf("Promedio de puntos de vida del ejercito 2: %f%n", promedioPuntosVida(soldados2));
+        imprimirSoldados(soldados2);
+        ArrayList<Soldado> soldados2a = new ArrayList<Soldado>();
+        ArrayList<Soldado> soldados2b = new ArrayList<Soldado>();
+        copiarArrayList(soldados2, soldados2a);
+        copiarArrayList(soldados2, soldados2b);
+        System.out.println();
+        ordenarSoldadosBurbuja(soldados2a);
+        imprimirSoldados(soldados2a);
+        System.out.println();
+        ordenarSoldadosSeleccion(soldados2b);
+        imprimirSoldados(soldados2b);
     }
 
     public static void inicializarTablero(ArrayList<ArrayList<Soldado>> tablero, int tam) {
@@ -145,6 +143,19 @@ public class VideoJuego3 {
                 if (vida1 < vida2)
                     intercambiar(soldados, j, j + 1);
             }
+        }
+    }
+
+    public static void ordenarSoldadosSeleccion(ArrayList<Soldado> soldados) {
+        for (int i = 0; i < soldados.size() - 1; i++) {
+            int idx = i;
+            for (int j = i + 1; j < soldados.size(); j++) {
+                int vida1 = soldados.get(j).getVida();
+                int vida2 = soldados.get(idx).getVida();
+                if (vida1 > vida2)
+                    idx = j;
+            }
+            intercambiar(soldados, i, idx);
         }
     }
 
