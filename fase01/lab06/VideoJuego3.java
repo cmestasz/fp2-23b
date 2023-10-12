@@ -39,6 +39,12 @@ public class VideoJuego3 {
         System.out.println();
         ordenarSoldadosSeleccion(soldados2b);
         imprimirSoldados(soldados2b);
+        System.out.println();
+        int ganador = obtenerGanador(soldados1, soldados2);
+        if (ganador == 0)
+            System.out.println("Hubo un empate!");
+        else
+            System.out.printf("Gana el ejercito %d!%n", ganador);
     }
 
     public static void inicializarTablero(ArrayList<ArrayList<Soldado>> tablero, int tam) {
@@ -119,9 +125,7 @@ public class VideoJuego3 {
     }
 
     public static double promedioPuntosVida(ArrayList<Soldado> soldados) {
-        int suma = 0;
-        for (int i = 0; i < soldados.size(); i++)
-            suma += soldados.get(i).getVida();
+        int suma = sumaPuntosVida(soldados);
         return 1.0 * suma / soldados.size();
     }
 
@@ -157,6 +161,23 @@ public class VideoJuego3 {
             }
             intercambiar(soldados, i, idx);
         }
+    }
+
+    public static int obtenerGanador(ArrayList<Soldado> soldados1, ArrayList<Soldado> soldados2) {
+        int suma1 = sumaPuntosVida(soldados1);
+        int suma2 = sumaPuntosVida(soldados2);
+        if (suma1 == suma2)
+            return 0;
+        if (suma1 > suma2)
+            return 1;
+        return 2;
+    }
+
+    public static int sumaPuntosVida(ArrayList<Soldado> soldados) {
+        int suma = 0;
+        for (int i = 0; i < soldados.size(); i++)
+            suma += soldados.get(i).getVida();
+        return suma;
     }
 
     public static void intercambiar(ArrayList<Soldado> soldados, int i, int j) {
