@@ -43,12 +43,12 @@ public class VideoJuego2 {
 
     public static void imprimirTablero(Soldado[][] soldados) {
         System.out.print(generarEncabezado(soldados));
-        String subfila0 = generarSubfila0(soldados);
+        String separacion = generarSeparacion(soldados);
         for (int i = 0; i < soldados.length; i++) {
-            System.out.print(subfila0);
-            System.out.print(generarSubfila1(soldados, i));
+            System.out.print(separacion);
+            System.out.print(generarFila(soldados, i));
         }
-        System.out.print(subfila0);
+        System.out.print(separacion);
     }
 
     public static String generarEncabezado(Soldado[][] soldados) {
@@ -59,7 +59,7 @@ public class VideoJuego2 {
         return encabezado;
     }
 
-    public static String generarSubfila0(Soldado[][] soldados) {
+    public static String generarSeparacion(Soldado[][] soldados) {
         String fila = "\t";
         for (int i = 0; i < soldados[0].length; i++)
             fila += "----";
@@ -67,7 +67,7 @@ public class VideoJuego2 {
         return fila;
     }
 
-    public static String generarSubfila1(Soldado[][] soldados, int f) {
+    public static String generarFila(Soldado[][] soldados, int f) {
         String fila = (f + 1) + "\t";
         for (int i = 0; i < soldados[f].length; i++) {
             fila += "| ";
