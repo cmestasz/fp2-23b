@@ -8,6 +8,7 @@ public class VideoJuego3 {
         ArrayList<ArrayList<Soldado>> tablero = new ArrayList<ArrayList<Soldado>>();
         ArrayList<Soldado> soldados1 = new ArrayList<Soldado>();
         ArrayList<Soldado> soldados2 = new ArrayList<Soldado>();
+        inicializarTablero(tablero, 10);
         inicializarSoldados(tablero, soldados1, 1);
         inicializarSoldados(tablero, soldados2, 2);
         imprimirTablero(tablero);
@@ -36,5 +37,14 @@ public class VideoJuego3 {
         imprimirSoldados(soldados2a);
         ordenarSoldadosSeleccion(soldados2b);
         imprimirSoldados(soldados2b);
+    }
+
+    public static void inicializarTablero(ArrayList<ArrayList<Soldado>> tablero, int tam) {
+        for (int i = 0; i < tam; i++) {
+            tablero.add(new ArrayList<Soldado>());
+            for (int j = 0; j < tam; j++) {
+                tablero.get(i).add(null);
+            }
+        }
     }
 }
