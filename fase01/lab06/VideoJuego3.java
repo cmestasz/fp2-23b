@@ -12,7 +12,7 @@ public class VideoJuego3 {
         inicializarSoldados(tablero, soldados1, 1);
         inicializarSoldados(tablero, soldados2, 2);
         imprimirTablero(tablero);
-        System.out.printf("Soldado con mayor vida del ejercito 1: %s%n", soldadoMayorVida(soldados1));
+        /*System.out.printf("Soldado con mayor vida del ejercito 1: %s%n", soldadoMayorVida(soldados1));
         System.out.printf("Promedio de puntos de vida del ejercito 1: %f%n", promedioPuntosVida(soldados1));
         imprimirSoldados(soldados1);
         ArrayList<Soldado> soldados1a = new ArrayList<Soldado>();
@@ -36,7 +36,7 @@ public class VideoJuego3 {
         ordenarSoldadosBurbuja(soldados2a);
         imprimirSoldados(soldados2a);
         ordenarSoldadosSeleccion(soldados2b);
-        imprimirSoldados(soldados2b);
+        imprimirSoldados(soldados2b);*/
     }
 
     public static void inicializarTablero(ArrayList<ArrayList<Soldado>> tablero, int tam) {
@@ -63,5 +63,50 @@ public class VideoJuego3 {
             tablero.get(fila).set(columna, soldado);
             soldados.add(soldado);
         }
+    }
+
+    public static void imprimirTablero(ArrayList<ArrayList<Soldado>> tablero) {
+        System.out.print(generarEncabezado(tablero));
+        String separacion = generarSeparacion(tablero);
+        for (int i = 0; i < tablero.size(); i++) {
+            System.out.print(separacion);
+            System.out.print(generarFila(tablero, i));
+        }
+        System.out.print(separacion);
+    }
+
+    public static String generarEncabezado(ArrayList<ArrayList<Soldado>> tablero) {
+        String encabezado = "\t";
+        for (int i = 0; i < tablero.size(); i++)
+            encabezado += ("   " + intToChar(i + 1) + "  ");
+        encabezado += " \n";
+        return encabezado;
+    }
+
+    public static String generarSeparacion(ArrayList<ArrayList<Soldado>> tablero) {
+        String fila = "\t";
+        for (int i = 0; i < tablero.get(0).size(); i++)
+            fila += "------";
+        fila += "-\n";
+        return fila;
+    }
+
+    public static String generarFila(ArrayList<ArrayList<Soldado>> tablero, int f) {
+        String fila = (f + 1) + "\t";
+        for (int i = 0; i < tablero.get(f).size(); i++) {
+            fila += "| ";
+            Soldado soldado = tablero.get(f).get(i);
+            if (soldado != null)
+                fila += soldado.getNombre().substring(soldado.getNombre().length() - 3);
+            else
+                fila += "   ";
+            fila += " ";
+        }
+        fila += "|\n";
+        return fila;
+    }
+
+    public static char intToChar(int n) {
+        return (char) (n + 'A' - 1);
     }
 }
