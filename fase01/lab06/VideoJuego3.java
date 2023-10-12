@@ -40,11 +40,7 @@ public class VideoJuego3 {
         ordenarSoldadosSeleccion(soldados2b);
         imprimirSoldados(soldados2b);
         System.out.println();
-        int ganador = obtenerGanador(soldados1, soldados2);
-        if (ganador == 0)
-            System.out.println("Hubo un empate!");
-        else
-            System.out.printf("Gana el ejercito %d!%n", ganador);
+        imprimirGanador(soldados1, soldados2);
     }
 
     public static void inicializarTablero(ArrayList<ArrayList<Soldado>> tablero, int tam) {
@@ -163,14 +159,15 @@ public class VideoJuego3 {
         }
     }
 
-    public static int obtenerGanador(ArrayList<Soldado> soldados1, ArrayList<Soldado> soldados2) {
+    public static void imprimirGanador(ArrayList<Soldado> soldados1, ArrayList<Soldado> soldados2) {
         int suma1 = sumaPuntosVida(soldados1);
         int suma2 = sumaPuntosVida(soldados2);
-        if (suma1 == suma2)
-            return 0;
-        if (suma1 > suma2)
-            return 1;
-        return 2;
+        if (suma1 == suma2) 
+            System.out.printf("Hay un empate con %d puntos de vida!");
+        else if (suma1 > suma2)
+            System.out.printf("Gana el ejercito 1 con %d a %d puntos de vida!", suma1, suma2);
+        else
+            System.out.printf("Gana el ejercito 2 con %d a %d puntos de vida!", suma2, suma1);
     }
 
     public static int sumaPuntosVida(ArrayList<Soldado> soldados) {
