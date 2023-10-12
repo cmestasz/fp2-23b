@@ -12,8 +12,8 @@ public class VideoJuego3 {
         inicializarSoldados(tablero, soldados1, 1);
         inicializarSoldados(tablero, soldados2, 2);
         imprimirTablero(tablero);
-        /*System.out.printf("Soldado con mayor vida del ejercito 1: %s%n", soldadoMayorVida(soldados1));
-        System.out.printf("Promedio de puntos de vida del ejercito 1: %f%n", promedioPuntosVida(soldados1));
+        System.out.printf("Soldado con mayor vida del ejercito 1: %s%n", soldadoMayorVida(soldados1));
+        /*System.out.printf("Promedio de puntos de vida del ejercito 1: %f%n", promedioPuntosVida(soldados1));
         imprimirSoldados(soldados1);
         ArrayList<Soldado> soldados1a = new ArrayList<Soldado>();
         ArrayList<Soldado> soldados1b = new ArrayList<Soldado>();
@@ -104,6 +104,15 @@ public class VideoJuego3 {
         }
         fila += "|\n";
         return fila;
+    }
+
+    public static Soldado soldadoMayorVida(ArrayList<Soldado> soldados) {
+        int idx = 0;
+        for (int i = 1; i < soldados.size(); i++) {
+            if (soldados.get(i).getVida() > soldados.get(idx).getVida())
+                idx = i;
+        }
+        return soldados.get(idx);
     }
 
     public static char intToChar(int n) {
