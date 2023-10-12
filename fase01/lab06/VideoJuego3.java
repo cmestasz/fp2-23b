@@ -47,4 +47,21 @@ public class VideoJuego3 {
             }
         }
     }
+
+    public static void inicializarSoldados(ArrayList<ArrayList<Soldado>> tablero, ArrayList<Soldado> soldados, int equipo) {
+        Random r = new Random();
+        int cantidad = r.nextInt(10) + 1;
+        for (int i = 0; i < cantidad; i++) {
+            String nombre = "Soldado" + i + "X" + equipo;
+            int vida = r.nextInt(5) + 1;
+            int fila, columna;
+            do {
+                fila = r.nextInt(10);
+                columna = r.nextInt(10);
+            } while (tablero.get(fila).get(columna) != null);
+            Soldado soldado = new Soldado(nombre, vida, equipo);
+            tablero.get(fila).set(columna, soldado);
+            soldados.add(soldado);
+        }
+    }
 }
