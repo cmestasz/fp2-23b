@@ -1,4 +1,4 @@
-package fase01.lab06;
+package fase02.lab06;
 
 public class Soldado {
     private String nombre;

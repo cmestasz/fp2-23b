@@ -1,4 +1,4 @@
-package fase01.lab05;
+package fase02.lab05;
 
 import java.util.Random;
 
