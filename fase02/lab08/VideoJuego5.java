@@ -134,6 +134,8 @@ public class VideoJuego5 {
     }
 
     public static void imprimirHashMap(HashMap<String, Soldado> soldados) {
+        for (Entry<String, Soldado> entrySet : soldados.entrySet())
+            System.out.println(entrySet.getValue());
     }
 
     public static void imprimirArrayList(ArrayList<Soldado> soldados) {
