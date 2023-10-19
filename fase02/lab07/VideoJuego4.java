@@ -115,6 +115,12 @@ public class VideoJuego4 {
     }
 
     public static Soldado soldadoMayorVida(ArrayList<Soldado> soldados) {
+        int idx = 0;
+        for (int i = 1; i < soldados.size(); i++) {
+            if (soldados.get(i).getVida() > soldados.get(idx).getVida())
+                idx = i;
+        }
+        return soldados.get(idx);
     }
 
     public static double promedioPuntosVida(ArrayList<Soldado> soldados) {
