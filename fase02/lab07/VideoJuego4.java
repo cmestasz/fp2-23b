@@ -129,6 +129,8 @@ public class VideoJuego4 {
     }
 
     public static void imprimirSoldados(ArrayList<Soldado> soldados) {
+        for (Soldado soldado : soldados)
+            System.out.println(soldado);
     }
 
     public static void copiarArrayList(ArrayList<Soldado> original, ArrayList<Soldado> copia) {
