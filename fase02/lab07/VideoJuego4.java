@@ -124,6 +124,8 @@ public class VideoJuego4 {
     }
 
     public static double promedioPuntosVida(ArrayList<Soldado> soldados) {
+        int suma = sumaPuntosVida(soldados);
+        return 1.0 * suma / soldados.size();
     }
 
     public static void imprimirSoldados(ArrayList<Soldado> soldados) {
