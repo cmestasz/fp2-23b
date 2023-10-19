@@ -134,6 +134,8 @@ public class VideoJuego4 {
     }
 
     public static void copiarArrayList(ArrayList<Soldado> original, ArrayList<Soldado> copia) {
+        for (Soldado soldado : original)
+            copia.add(soldado);
     }
 
     public static void ordenarSoldadosBurbuja(ArrayList<Soldado> soldados) {
