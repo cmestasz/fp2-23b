@@ -1,9 +1,20 @@
 package fase02.lab07;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class VideoJuego4 {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String ans = "s";
+        while (ans.equalsIgnoreCase("s")) {
+            simularBatalla();
+            System.out.print("Desea simular otra batalla? (S/N): ");
+            ans = sc.nextLine();
+        }
+    }
+
+    public static void simularBatalla() {
         Soldado[][] tablero = new Soldado[10][10];
         ArrayList<Soldado> soldados1 = new ArrayList<Soldado>();
         ArrayList<Soldado> soldados2 = new ArrayList<Soldado>();
