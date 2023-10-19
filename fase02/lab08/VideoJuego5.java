@@ -129,6 +129,8 @@ public class VideoJuego5 {
     }
 
     public static double promedioPuntosVida(HashMap<String, Soldado> soldados) {
+        int suma = sumaPuntosVida(soldados);
+        return 1.0 * suma / soldados.size();
     }
 
     public static void imprimirHashMap(HashMap<String, Soldado> soldados) {
@@ -150,6 +152,10 @@ public class VideoJuego5 {
     }
 
     public static int sumaPuntosVida(HashMap<String, Soldado> soldados) {
+        int suma = 0;
+        for (Entry<String, Soldado> entrySet : soldados.entrySet())
+            suma += entrySet.getValue().getVida();
+        return suma;
     }
 
     public static void intercambiar(ArrayList<Soldado> soldados, int i, int j) {
