@@ -163,9 +163,21 @@ public class VideoJuego4 {
     }
 
     public static void imprimirGanador(ArrayList<Soldado> soldados1, ArrayList<Soldado> soldados2) {
+        int suma1 = sumaPuntosVida(soldados1);
+        int suma2 = sumaPuntosVida(soldados2);
+        if (suma1 == suma2)
+            System.out.printf("Hay un empate con %d puntos de vida!%n", suma1);
+        else if (suma1 > suma2)
+            System.out.printf("Gana el ejercito 1 con %d a %d puntos de vida!%n", suma1, suma2);
+        else
+            System.out.printf("Gana el ejercito 2 con %d a %d puntos de vida!%n", suma2, suma1);
     }
 
     public static int sumaPuntosVida(ArrayList<Soldado> soldados) {
+        int suma = 0;
+        for (int i = 0; i < soldados.size(); i++)
+            suma += soldados.get(i).getVida();
+        return suma;
     }
 
     public static void intercambiar(ArrayList<Soldado> soldados, int i, int j) {
