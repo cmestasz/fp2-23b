@@ -149,6 +149,18 @@ public class VideoJuego5 {
     }
 
     public static ArrayList<Soldado> ordenarSoldadosBurbuja(HashMap<String, Soldado> soldados) {
+        ArrayList<Soldado> arreglo = new ArrayList<Soldado>();
+        for (Entry<String, Soldado> entrySet : soldados.entrySet())
+            arreglo.add(entrySet.getValue());
+        for (int i = 0; i < arreglo.size() - 1; i++) {
+            for (int j = 0; j < arreglo.size() - i - 1; j++) {
+                int vida1 = arreglo.get(j).getVida();
+                int vida2 = arreglo.get(j + 1).getVida();
+                if (vida1 < vida2)
+                    intercambiar(arreglo, j, j + 1);
+            }
+        }
+        return arreglo;
     }
 
     public static ArrayList<Soldado> ordenarSoldadosSeleccion(HashMap<String, Soldado> soldados) {
@@ -165,6 +177,9 @@ public class VideoJuego5 {
     }
 
     public static void intercambiar(ArrayList<Soldado> soldados, int i, int j) {
+        Soldado t = soldados.get(i);
+        soldados.set(i, soldados.get(j));
+        soldados.set(j, t);
     }
 
     public static char intToChar(int n) {
