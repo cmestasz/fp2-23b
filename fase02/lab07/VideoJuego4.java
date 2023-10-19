@@ -74,15 +74,44 @@ public class VideoJuego4 {
     }
 
     public static void imprimirTablero(Soldado[][] tablero) {
+        System.out.print(generarEncabezado(tablero));
+        String separacion = generarSeparacion(tablero);
+        for (int i = 0; i < tablero.length; i++) {
+            System.out.print(separacion);
+            System.out.print(generarFila(tablero, i));
+        }
+        System.out.print(separacion);
     }
 
     public static String generarEncabezado(Soldado[][] tablero) {
+        String encabezado = "\t";
+        for (int i = 0; i < tablero.length; i++)
+            encabezado += ("   " + intToChar(i + 1) + "  ");
+        encabezado += " \n";
+        return encabezado;
     }
 
     public static String generarSeparacion(Soldado[][] tablero) {
+        String fila = "\t";
+        for (int i = 0; i < tablero[0].length; i++)
+            fila += "------";
+        fila += "-\n";
+        return fila;
     }
 
     public static String generarFila(Soldado[][] tablero, int f) {
+        String fila = (f + 1) + "\t";
+        for (int i = 0; i < tablero[f].length; i++) {
+            fila += "| ";
+            Soldado soldado = tablero[f][i];
+            if (soldado != null)
+                fila += soldado.getNombre().substring(soldado.getNombre().length() - 3);
+            else
+                fila += "   ";
+            fila += " ";
+        }
+        fila += "|\n";
+        return fila;
     }
 
     public static Soldado soldadoMayorVida(ArrayList<Soldado> soldados) {
@@ -113,5 +142,6 @@ public class VideoJuego4 {
     }
 
     public static char intToChar(int n) {
+        return (char) (n + 'A' - 1);
     }
 }
