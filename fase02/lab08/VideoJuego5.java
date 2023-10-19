@@ -181,6 +181,14 @@ public class VideoJuego5 {
     }
 
     public static void imprimirGanador(HashMap<String, Soldado> soldados1, HashMap<String, Soldado> soldados2) {
+        int suma1 = sumaPuntosVida(soldados1);
+        int suma2 = sumaPuntosVida(soldados2);
+        if (suma1 == suma2)
+            System.out.printf("Hay un empate con %d puntos de vida!%n", suma1);
+        else if (suma1 > suma2)
+            System.out.printf("Gana el ejercito 1 con %d a %d puntos de vida!%n", suma1, suma2);
+        else
+            System.out.printf("Gana el ejercito 2 con %d a %d puntos de vida!%n", suma2, suma1);
     }
 
     public static int sumaPuntosVida(HashMap<String, Soldado> soldados) {
