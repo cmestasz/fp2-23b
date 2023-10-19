@@ -1,8 +1,7 @@
 # CREACION DE CARPETAS Y ARCHIVOS COMO PLANTILLA
 $ mkdir lab07
-$ cd lab07
-$ code Soldado.java
-$ code VideoJuego4.java
+$ code lab07/Soldado.java
+$ code lab07/VideoJuego4.java
 $ git add fase02/lab07/Soldado.java
 $ git add fase02/lab07/VideoJuego4.java
 $ git commit -m "Plantilla en main"
