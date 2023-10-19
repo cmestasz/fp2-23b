@@ -73,15 +73,49 @@ public class VideoJuego5 {
     }
 
     public static void imprimirTablero(HashMap<String, Soldado> soldados1, HashMap<String, Soldado> soldados2) {
+        System.out.print(generarEncabezado());
+        String separacion = generarSeparacion();
+        for (int i = 0; i < 10; i++) {
+            System.out.print(separacion);
+            System.out.print(generarFila(soldados1, soldados2, i));
+        }
+        System.out.print(separacion);
     }
 
     public static String generarEncabezado() {
+        String encabezado = "\t";
+        for (int i = 0; i < 10; i++)
+            encabezado += ("   " + intToChar(i + 1) + "  ");
+        encabezado += " \n";
+        return encabezado;
     }
 
     public static String generarSeparacion() {
+        String fila = "\t";
+        for (int i = 0; i < 10; i++)
+            fila += "------";
+        fila += "-\n";
+        return fila;
     }
 
     public static String generarFila(HashMap<String, Soldado> soldados1, HashMap<String, Soldado> soldados2, int f) {
+        String fila = (f + 1) + "\t";
+        for (int i = 0; i < 10; i++) {
+            fila += "| ";
+            Soldado soldado = null;
+            String llave = f + "," + i;
+            if (soldados1.containsKey(llave))
+                soldado = soldados1.get(llave);
+            else if (soldados2.containsKey(llave))
+                soldado = soldados2.get(llave);
+            else
+                fila += "   ";
+            if (soldado != null)
+                fila += soldado.getNombre().substring(soldado.getNombre().length() - 3);
+            fila += " ";
+        }
+        fila += "|\n";
+        return fila;
     }
 
     public static Soldado soldadoMayorVida(HashMap<String, Soldado> soldados) {
@@ -115,5 +149,6 @@ public class VideoJuego5 {
     }
 
     public static char intToChar(int n) {
+        return (char) (n + 'A' - 1);
     }
 }
