@@ -3,6 +3,7 @@ package fase02.lab08;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
 
 public class VideoJuego5 {
@@ -119,6 +120,12 @@ public class VideoJuego5 {
     }
 
     public static Soldado soldadoMayorVida(HashMap<String, Soldado> soldados) {
+        String llave = null;
+        for (Entry<String, Soldado> entrySet : soldados.entrySet()) {
+            if (llave == null || entrySet.getValue().getVida() > soldados.get(llave).getVida())
+                llave = entrySet.getKey();
+        }
+        return soldados.get(llave);
     }
 
     public static double promedioPuntosVida(HashMap<String, Soldado> soldados) {
