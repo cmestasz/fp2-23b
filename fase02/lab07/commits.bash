@@ -62,3 +62,12 @@ $ git commit -m "Metodo imprimirGanador() y auxiliar"
  1 file changed, 12 insertions(+)
 # PUSH FINAL
 $ git push
+Enumerating objects: 58, done.
+Counting objects: 100% (58/58), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (56/56), done.
+Writing objects: 100% (56/56), 6.07 KiB | 1.01 MiB/s, done.
+Total 56 (delta 31), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (31/31), completed with 1 local object.
+To https://github.com/cmestasz/fp2-23b.git
+   f98e335..7749073  main -> main
