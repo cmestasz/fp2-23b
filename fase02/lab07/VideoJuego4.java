@@ -150,6 +150,16 @@ public class VideoJuego4 {
     }
 
     public static void ordenarSoldadosSeleccion(ArrayList<Soldado> soldados) {
+        for (int i = 0; i < soldados.size() - 1; i++) {
+            int idx = i;
+            for (int j = i + 1; j < soldados.size(); j++) {
+                int vida1 = soldados.get(j).getVida();
+                int vida2 = soldados.get(idx).getVida();
+                if (vida1 > vida2)
+                    idx = j;
+            }
+            intercambiar(soldados, i, idx);
+        }
     }
 
     public static void imprimirGanador(ArrayList<Soldado> soldados1, ArrayList<Soldado> soldados2) {
