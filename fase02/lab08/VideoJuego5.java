@@ -139,6 +139,8 @@ public class VideoJuego5 {
     }
 
     public static void imprimirArrayList(ArrayList<Soldado> soldados) {
+        for (Soldado soldado : soldados)
+            System.out.println(soldado);
     }
 
     public static void copiarHashMap(HashMap<String, Soldado> original, HashMap<String, Soldado> copia) {
