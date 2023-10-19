@@ -164,6 +164,20 @@ public class VideoJuego5 {
     }
 
     public static ArrayList<Soldado> ordenarSoldadosSeleccion(HashMap<String, Soldado> soldados) {
+        ArrayList<Soldado> arreglo = new ArrayList<Soldado>();
+        for (Entry<String, Soldado> entrySet : soldados.entrySet())
+            arreglo.add(entrySet.getValue());
+        for (int i = 0; i < arreglo.size() - 1; i++) {
+            int idx = i;
+            for (int j = i + 1; j < arreglo.size(); j++) {
+                int vida1 = arreglo.get(j).getVida();
+                int vida2 = arreglo.get(idx).getVida();
+                if (vida1 > vida2)
+                    idx = j;
+            }
+            intercambiar(arreglo, i, idx);
+        }
+        return arreglo;
     }
 
     public static void imprimirGanador(HashMap<String, Soldado> soldados1, HashMap<String, Soldado> soldados2) {
