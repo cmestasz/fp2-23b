@@ -1,6 +1,7 @@
 package fase02.lab07;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class VideoJuego4 {
@@ -54,7 +55,22 @@ public class VideoJuego4 {
         imprimirGanador(soldados1, soldados2);
     }
 
-    public static void inicializarSoldados(Soldado[][] tablero, ArrayList<Soldado> soldados, int equipo) {
+    public static void inicializarSoldados(Soldado[][] tablero, ArrayList<Soldado> soldados,
+            int equipo) {
+        Random r = new Random();
+        int cantidad = r.nextInt(10) + 1;
+        for (int i = 0; i < cantidad; i++) {
+            String nombre = "Soldado" + i + "X" + equipo;
+            int vida = r.nextInt(5) + 1;
+            int fila, columna;
+            do {
+                fila = r.nextInt(10);
+                columna = r.nextInt(10);
+            } while (tablero[fila][columna] != null);
+            Soldado soldado = new Soldado(nombre, vida, equipo);
+            tablero[fila][columna] = soldado;
+            soldados.add(soldado);
+        }
     }
 
     public static void imprimirTablero(Soldado[][] tablero) {
