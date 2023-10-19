@@ -144,6 +144,8 @@ public class VideoJuego5 {
     }
 
     public static void copiarHashMap(HashMap<String, Soldado> original, HashMap<String, Soldado> copia) {
+        for (Entry<String, Soldado> entrySet : original.entrySet())
+            copia.put(entrySet.getKey(), entrySet.getValue());
     }
 
     public static ArrayList<Soldado> ordenarSoldadosBurbuja(HashMap<String, Soldado> soldados) {
