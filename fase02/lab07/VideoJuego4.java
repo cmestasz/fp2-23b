@@ -139,6 +139,14 @@ public class VideoJuego4 {
     }
 
     public static void ordenarSoldadosBurbuja(ArrayList<Soldado> soldados) {
+        for (int i = 0; i < soldados.size() - 1; i++) {
+            for (int j = 0; j < soldados.size() - i - 1; j++) {
+                int vida1 = soldados.get(j).getVida();
+                int vida2 = soldados.get(j + 1).getVida();
+                if (vida1 < vida2)
+                    intercambiar(soldados, j, j + 1);
+            }
+        }
     }
 
     public static void ordenarSoldadosSeleccion(ArrayList<Soldado> soldados) {
@@ -151,6 +159,9 @@ public class VideoJuego4 {
     }
 
     public static void intercambiar(ArrayList<Soldado> soldados, int i, int j) {
+        Soldado t = soldados.get(i);
+        soldados.set(i, soldados.get(j));
+        soldados.set(j, t);
     }
 
     public static char intToChar(int n) {
