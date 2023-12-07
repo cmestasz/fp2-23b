@@ -152,6 +152,32 @@ public class VideoJuego9 {
     }
 
     private static void clonarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
+        if (listaSoldados.size() < 10) {
+            int filaI, columnaI, filaF, columnaF;
+            do {
+                System.out.print("Fila de origen: ");
+                String fila = sc.nextLine();
+                filaI = Integer.parseInt(fila) - 1;
+                System.out.print("Columna de origen: ");
+                String columna = sc.nextLine();
+                columnaI = charToInt(columna.charAt(0)) - 1;
+            } while (!coordenadaValida(mapaSoldados, filaI, columnaI)
+                    || !seleccionLlena(mapaSoldados, filaI, columnaI));
+            do {
+                System.out.print("Fila de destino: ");
+                String fila = sc.nextLine();
+                filaF = Integer.parseInt(fila) - 1;
+                System.out.print("Columna de destino: ");
+                String columna = sc.nextLine();
+                columnaF = charToInt(columna.charAt(0)) - 1;
+            } while (!coordenadaValida(mapaSoldados, filaF, columnaF)
+                    || seleccionOcupada(mapaSoldados, filaF, columnaF));
+            Soldado soldado = mapaSoldados.get(generarLlave(filaI, columnaI)).getCopia();
+            mapaSoldados.put(generarLlave(filaF, columnaF), soldado);
+            listaSoldados.add(soldado);
+        } else {
+            System.out.println("Ejercito lleno!");
+        }
     }
 
     private static void modificarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
