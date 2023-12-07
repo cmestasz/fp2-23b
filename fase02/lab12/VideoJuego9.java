@@ -131,6 +131,24 @@ public class VideoJuego9 {
 
     private static void eliminarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados,
             int equipo) {
+        if (listaSoldados.size() > 1) {
+            int filaI, columnaI;
+            do {
+                System.out.print("Fila: ");
+                String fila = sc.nextLine();
+                filaI = Integer.parseInt(fila) - 1;
+                System.out.print("Columna: ");
+                String columna = sc.nextLine();
+                columnaI = charToInt(columna.charAt(0)) - 1;
+            } while (!coordenadaValida(mapaSoldados, filaI, columnaI) ||
+                    !seleccionValida(mapaSoldados, filaI, columnaI, equipo));
+            String llave = generarLlave(filaI, columnaI);
+            Soldado soldado = mapaSoldados.get(llave);
+            listaSoldados.remove(soldado);
+            mapaSoldados.remove(llave);
+        } else {
+            System.out.println("No se puede tener un ejercito vacio!");
+        }
     }
 
     private static void clonarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
