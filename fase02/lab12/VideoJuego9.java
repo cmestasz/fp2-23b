@@ -181,6 +181,38 @@ public class VideoJuego9 {
     }
 
     private static void modificarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
+        int filaI, columnaI;
+        do {
+            System.out.print("Fila: ");
+            String fila = sc.nextLine();
+            filaI = Integer.parseInt(fila) - 1;
+            System.out.print("Columna: ");
+            String columna = sc.nextLine();
+            columnaI = charToInt(columna.charAt(0)) - 1;
+        } while (!coordenadaValida(mapaSoldados, filaI, columnaI)
+                || !seleccionLlena(mapaSoldados, filaI, columnaI));
+        Soldado soldado = mapaSoldados.get(generarLlave(filaI, columnaI));
+        if (listaSoldados.contains(soldado)) {
+            System.out.println("1. Ataque\n2. Defensa\n3. Vida");
+            System.out.print("Opcion: ");
+            int opcion = sc.nextInt();
+            System.out.print("Nuevo valor: ");
+            int valor = sc.nextInt();
+            sc.nextLine();
+            switch (opcion) {
+                case 1:
+                    soldado.setAtaque(valor);
+                    break;
+                case 2:
+                    soldado.setDefensa(valor);
+                    break;
+                case 3:
+                    soldado.setVidaActual(valor);
+                    break;
+            }
+        } else {
+            System.out.println("El soldado no pertenece a tu ejercito!");
+        }
     }
 
     private static void compararSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
