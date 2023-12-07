@@ -37,6 +37,92 @@ public class VideoJuego9 {
     }
 
     private static void juegoPersonalizado() {
+        int semilla = new Random().nextInt(1000000);
+        random = new Random(semilla);
+        System.out.println(semilla);
+        HashMap<String, Soldado> mapaSoldados = new HashMap<String, Soldado>();
+        ArrayList<Soldado> listaSoldados1 = new ArrayList<Soldado>();
+        ArrayList<Soldado> listaSoldados2 = new ArrayList<Soldado>();
+        inicializarSoldados(mapaSoldados, listaSoldados1, 1);
+        inicializarSoldados(mapaSoldados, listaSoldados2, 2);
+        int opcion;
+        do {
+            imprimirTablero(mapaSoldados);
+            System.out.println("\nEjercito 1:");
+            imprimirSoldados(listaSoldados1);
+            System.out.println("\nEjercito 2:");
+            imprimirSoldados(listaSoldados2);
+            System.out.print("\nEjercito a gestionar (1/2): ");
+            int equipo = sc.nextInt();
+            ArrayList<Soldado> seleccionado = equipo == 1 ? listaSoldados1 : listaSoldados2;
+            System.out.println(
+                    "1. Crear soldado\n2. Eliminar soldado\n3. Clonar soldado\n4. Modificar soldado\n5. Comparar soldados\n6. Intercambiar soldados\n7. Ver soldado\n8. Ver ejercito\n9. Sumar niveles\n10. Jugar\n11. Volver");
+            System.out.print("Opcion: ");
+            opcion = sc.nextInt();
+            sc.nextLine();
+            System.out.println();
+            switch (opcion) {
+                case 1:
+                    crearSoldado(mapaSoldados, seleccionado, equipo);
+                    break;
+                case 2:
+                    eliminarSoldado(mapaSoldados, seleccionado, equipo);
+                    break;
+                case 3:
+                    clonarSoldado(mapaSoldados, seleccionado);
+                    break;
+                case 4:
+                    modificarSoldado(mapaSoldados, seleccionado);
+                    break;
+                case 5:
+                    compararSoldados(mapaSoldados, seleccionado);
+                    break;
+                case 6:
+                    intercambiarSoldados(mapaSoldados, seleccionado);
+                    break;
+                case 7:
+                    verSoldado(seleccionado);
+                    break;
+                case 8:
+                    imprimirSoldados(seleccionado);
+                    break;
+                case 9:
+                    sumarNiveles(seleccionado);
+                    break;
+                case 10:
+                    realizarCombates(mapaSoldados, listaSoldados1, listaSoldados2);
+                    break;
+                case 11:
+                    return;
+            }
+            System.out.println();
+        } while (opcion < 10);
+    }
+
+    private static void crearSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado,
+            int equipo) {
+    }
+
+    private static void eliminarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado,
+            int equipo) {
+    }
+
+    private static void clonarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado) {
+    }
+
+    private static void modificarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado) {
+    }
+
+    private static void compararSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado) {
+    }
+
+    private static void intercambiarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado) {
+    }
+
+    private static void verSoldado(ArrayList<Soldado> seleccionado) {
+    }
+
+    private static void sumarNiveles(ArrayList<Soldado> seleccionado) {
     }
 
     private static void juegoRapido() {
