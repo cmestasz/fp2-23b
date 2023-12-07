@@ -216,6 +216,37 @@ public class VideoJuego9 {
     }
 
     private static void compararSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
+        int filaI, columnaI, filaF, columnaF;
+        do {
+            System.out.print("Fila soldado 1: ");
+            String fila = sc.nextLine();
+            filaI = Integer.parseInt(fila) - 1;
+            System.out.print("Columna: ");
+            String columna = sc.nextLine();
+            columnaI = charToInt(columna.charAt(0)) - 1;
+        } while (!coordenadaValida(mapaSoldados, filaI, columnaI)
+                || !seleccionLlena(mapaSoldados, filaI, columnaI));
+        do {
+            System.out.print("Fila soldado 2: ");
+            String fila = sc.nextLine();
+            filaF = Integer.parseInt(fila) - 1;
+            System.out.print("Columna: ");
+            String columna = sc.nextLine();
+            columnaF = charToInt(columna.charAt(0)) - 1;
+        } while (!coordenadaValida(mapaSoldados, filaF, columnaF)
+                || !seleccionLlena(mapaSoldados, filaF, columnaF));
+        Soldado soldado1 = mapaSoldados.get(generarLlave(filaI, columnaI));
+        Soldado soldado2 = mapaSoldados.get(generarLlave(filaF, columnaF));
+        if (soldado1.getNombre().equals(soldado2.getNombre()))
+            System.out.println("Nombres iguales");
+        if (soldado1.getAtaque() == soldado2.getAtaque())
+            System.out.println("Ataques iguales");
+        if (soldado1.getDefensa() == soldado2.getDefensa())
+            System.out.println("Defensas iguales");
+        if (soldado1.getVidaActual() == soldado2.getVidaActual())
+            System.out.println("Vidas iguales");
+        if (soldado1.vive() == soldado2.vive())
+            System.out.println("Estados vitales iguales");
     }
 
     private static void intercambiarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
