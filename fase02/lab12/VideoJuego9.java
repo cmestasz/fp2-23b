@@ -284,6 +284,15 @@ public class VideoJuego9 {
     }
 
     private static void verSoldado(ArrayList<Soldado> listaSoldados) {
+        System.out.print("Nombre: ");
+        String nombre = sc.nextLine();
+        for (Soldado soldado : listaSoldados) {
+            if (soldado.getNombre().equals(nombre)) {
+                System.out.println(soldado);
+                return;
+            }
+        }
+        System.out.println("Soldado no encontrado!");
     }
 
     private static void sumarNiveles(ArrayList<Soldado> listaSoldados) {
