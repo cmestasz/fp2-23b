@@ -99,30 +99,56 @@ public class VideoJuego9 {
         } while (opcion < 10);
     }
 
-    private static void crearSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado,
+    private static void crearSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados,
+            int equipo) {
+        if (listaSoldados.size() < 10) {
+            System.out.print("Nombre: ");
+            String nombre = sc.nextLine();
+            System.out.print("Vida: ");
+            int vida = sc.nextInt();
+            System.out.print("Ataque: ");
+            int ataque = sc.nextInt();
+            System.out.print("Defensa: ");
+            int defensa = sc.nextInt();
+            sc.nextLine();
+            int filaI, columnaI;
+            do {
+                System.out.print("Fila: ");
+                String fila = sc.nextLine();
+                filaI = Integer.parseInt(fila) - 1;
+                System.out.print("Columna: ");
+                String columna = sc.nextLine();
+                columnaI = charToInt(columna.charAt(0)) - 1;
+            } while (!coordenadaValida(mapaSoldados, filaI, columnaI)
+                    || seleccionOcupada(mapaSoldados, filaI, columnaI));
+            Soldado soldado = new Soldado(nombre, equipo, ataque, defensa, vida);
+            mapaSoldados.put(generarLlave(filaI, columnaI), soldado);
+            listaSoldados.add(soldado);
+        } else {
+            System.out.println("Ejercito lleno!");
+        }
+    }
+
+    private static void eliminarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados,
             int equipo) {
     }
 
-    private static void eliminarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado,
-            int equipo) {
+    private static void clonarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
     }
 
-    private static void clonarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado) {
+    private static void modificarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
     }
 
-    private static void modificarSoldado(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado) {
+    private static void compararSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
     }
 
-    private static void compararSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado) {
+    private static void intercambiarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
     }
 
-    private static void intercambiarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> seleccionado) {
+    private static void verSoldado(ArrayList<Soldado> listaSoldados) {
     }
 
-    private static void verSoldado(ArrayList<Soldado> seleccionado) {
-    }
-
-    private static void sumarNiveles(ArrayList<Soldado> seleccionado) {
+    private static void sumarNiveles(ArrayList<Soldado> listaSoldados) {
     }
 
     private static void juegoRapido() {
