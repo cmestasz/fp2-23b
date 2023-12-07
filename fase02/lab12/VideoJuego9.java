@@ -296,6 +296,14 @@ public class VideoJuego9 {
     }
 
     private static void sumarNiveles(ArrayList<Soldado> listaSoldados) {
+        Soldado suma = new Soldado();
+        for (Soldado soldado : listaSoldados) {
+            suma = suma.sumar(soldado);
+        }
+        System.out.printf("Vida total: %d%n", suma.getVidaActual());
+        System.out.printf("Ataque total: %d%n", suma.getAtaque());
+        System.out.printf("Defensa total: %d%n", suma.getDefensa());
+        System.out.printf("Velocidad total: %d%n", suma.getVelocidad());
     }
 
     private static void juegoRapido() {
