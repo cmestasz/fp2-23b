@@ -250,6 +250,37 @@ public class VideoJuego9 {
     }
 
     private static void intercambiarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados) {
+        int filaI, columnaI, filaF, columnaF;
+        do {
+            System.out.print("Fila soldado 1: ");
+            String fila = sc.nextLine();
+            filaI = Integer.parseInt(fila) - 1;
+            System.out.print("Columna soldado 1: ");
+            String columna = sc.nextLine();
+            columnaI = charToInt(columna.charAt(0)) - 1;
+        } while (!coordenadaValida(mapaSoldados, filaI, columnaI)
+                || !seleccionLlena(mapaSoldados, filaI, columnaI));
+        do {
+            System.out.print("Fila soldado 2: ");
+            String fila = sc.nextLine();
+            filaF = Integer.parseInt(fila) - 1;
+            System.out.print("Columna soldado 2: ");
+            String columna = sc.nextLine();
+            columnaF = charToInt(columna.charAt(0)) - 1;
+        } while (!coordenadaValida(mapaSoldados, filaF, columnaF)
+                || !seleccionLlena(mapaSoldados, filaF, columnaF));
+        String llaveI = generarLlave(filaI, columnaI);
+        String llaveF = generarLlave(filaF, columnaF);
+        Soldado soldado1 = mapaSoldados.get(llaveI);
+        Soldado soldado2 = mapaSoldados.get(llaveF);
+        if (listaSoldados.contains(soldado1) && listaSoldados.contains(soldado2)) {
+            mapaSoldados.remove(llaveI);
+            mapaSoldados.remove(llaveF);
+            mapaSoldados.put(llaveI, soldado2);
+            mapaSoldados.put(llaveF, soldado1);
+        } else {
+            System.out.println("Uno o ambos soldados no pertenecen a tu ejercito!");
+        }
     }
 
     private static void verSoldado(ArrayList<Soldado> listaSoldados) {
