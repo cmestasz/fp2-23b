@@ -3,19 +3,33 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Mapa {
-    private HashMap<String, Soldado> soldados;
-    private ArrayList<Soldado> listaSoldados1;
-    private ArrayList<Soldado> listaSoldados2;
-    private String tipo;
+    private HashMap<String, Soldado> soldados = new HashMap<String, Soldado>();
+    private ArrayList<Soldado> listaSoldados1 = new ArrayList<Soldado>();
+    private ArrayList<Soldado> listaSoldados2 = new ArrayList<Soldado>();
+    private String reino1;
+    private String reino2;
+    private String terreno;
     private final String[] CLASES = { "CABALLERO", "ARQUERO", "ESPADACHIN", "LANCERO" };
     private final String[] TIPOS = { "BOSQUE", "CAMPO ABIERTO", "MONTANA", "DESIERTO", "PLAYA" };
     private final String[] REINOS = { "INGLATERRA", "FRANCIA", "CASTILLA-ARAGON", "MOROS", "SACRO IMPERIO" };
     private final Random RANDOM = new Random();
 
     public Mapa() {
-        tipo = TIPOS[RANDOM.nextInt(TIPOS.length)];
         inicializarSoldados(soldados, listaSoldados1, 1);
         inicializarSoldados(soldados, listaSoldados2, 2);
+        terreno = TIPOS[RANDOM.nextInt(TIPOS.length)];
+        reino1 = REINOS[RANDOM.nextInt(REINOS.length)];
+        reino2 = REINOS[RANDOM.nextInt(REINOS.length)];
+        System.out.println("El terreno elegido es: " + terreno);
+        System.out.println("El reino 1 es: " + reino1);
+        System.out.println("El reino 2 es: " + reino2);
+        verificarVentaja(reino1);
+        verificarVentaja(reino2);
+        imprimirTablero(soldados);
+    }
+
+    public static void main(String[] args) {
+        new Mapa();
     }
 
     private void inicializarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados,
@@ -82,7 +96,7 @@ public class Mapa {
     public String generarSeparacion(HashMap<String, Soldado> mapaSoldados) {
         String fila = "\t";
         for (int i = 0; i < 10; i++)
-            fila += "------";
+            fila += "-------";
         fila += "-\n";
         return fila;
     }
@@ -94,14 +108,45 @@ public class Mapa {
             Soldado soldado = mapaSoldados.get(generarLlave(f, i));
             if (soldado != null) {
                 String nombre = soldado.getNombre();
-                fila += nombre.charAt(0) + nombre.substring(nombre.length() - 3) + soldado.getEquipo();
+                fila += nombre.charAt(0) + nombre.substring(nombre.length() - 3);
             } else {
-                fila += "   ";
+                fila += "    ";
             }
             fila += " ";
         }
         fila += "|\n";
         return fila;
+    }
+
+    private void verificarVentaja(String reino) {
+        switch (reino) {
+            case "INGLATERRA":
+                if (terreno.equals("BOSQUE"))
+                    mejorarSoldados(reino);
+                    break;
+            case "FRANCIA":
+                if (terreno.equals("CAMPO ABIERTO"))
+                    mejorarSoldados(reino);
+                    break;
+            case "CASTILLA-ARAGON":
+                if (terreno.equals("MONTANA"))
+                    mejorarSoldados(reino);
+                    break;
+            case "MOROS":
+                if (terreno.equals("DESIERTO"))
+                    mejorarSoldados(reino);
+                    break;
+            case "SACRO IMPERIO":
+                if (terreno.equals("BOSQUE") || terreno.equals("PLAYA") || terreno.equals("CAMPO ABIERTO"))
+                    mejorarSoldados(reino);
+                    break;
+        }
+    }
+
+    private void mejorarSoldados(String reino) {
+        ArrayList<Soldado> soldados = reino.equals(reino1) ? listaSoldados1 : listaSoldados2;
+        for (Soldado soldado : soldados)
+            soldado.aumentarVida();
     }
 
     private String generarLlave(int fila, int columna) {
