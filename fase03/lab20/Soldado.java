@@ -48,4 +48,16 @@ public abstract class Soldado {
     public void aumentarVida() {
         vidaActual++;
     }
+
+    public void atacar(Soldado otro, int instancias) {
+        otro.herir(instancias * (Math.max(0, ataque - otro.getDefensa())));
+    }
+
+    public void herir(int vida) {
+        vidaActual -= vida;
+    }
+
+    public void defender() {
+        defensa++;
+    }
 }
