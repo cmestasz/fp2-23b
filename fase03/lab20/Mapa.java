@@ -17,19 +17,19 @@ public class Mapa {
     public Mapa() {
         inicializarSoldados(soldados, listaSoldados1, 1);
         inicializarSoldados(soldados, listaSoldados2, 2);
+        imprimirTablero(soldados);
         terreno = TIPOS[RANDOM.nextInt(TIPOS.length)];
         reino1 = REINOS[RANDOM.nextInt(REINOS.length)];
         reino2 = REINOS[RANDOM.nextInt(REINOS.length)];
         System.out.println("El terreno elegido es: " + terreno);
         System.out.println("El reino 1 es: " + reino1);
         System.out.println("El reino 2 es: " + reino2);
+        System.out.println();
         verificarVentaja(reino1);
         verificarVentaja(reino2);
-        imprimirTablero(soldados);
-    }
-
-    public static void main(String[] args) {
-        new Mapa();
+        System.out.println();
+        imprimirEstado();
+        System.out.println();
     }
 
     private void inicializarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados,
@@ -75,7 +75,7 @@ public class Mapa {
         }
     }
 
-    public void imprimirTablero(HashMap<String, Soldado> mapaSoldados) {
+    private void imprimirTablero(HashMap<String, Soldado> mapaSoldados) {
         System.out.print(generarEncabezado(mapaSoldados));
         String separacion = generarSeparacion(mapaSoldados);
         for (int i = 0; i < 10; i++) {
@@ -85,7 +85,7 @@ public class Mapa {
         System.out.print(separacion);
     }
 
-    public String generarEncabezado(HashMap<String, Soldado> mapaSoldados) {
+    private String generarEncabezado(HashMap<String, Soldado> mapaSoldados) {
         String encabezado = "\t";
         for (int i = 0; i < 10; i++)
             encabezado += ("   " + intToChar(i + 1) + "  ");
@@ -93,7 +93,7 @@ public class Mapa {
         return encabezado;
     }
 
-    public String generarSeparacion(HashMap<String, Soldado> mapaSoldados) {
+    private String generarSeparacion(HashMap<String, Soldado> mapaSoldados) {
         String fila = "\t";
         for (int i = 0; i < 10; i++)
             fila += "-------";
@@ -101,7 +101,7 @@ public class Mapa {
         return fila;
     }
 
-    public String generarFila(HashMap<String, Soldado> mapaSoldados, int f) {
+    private String generarFila(HashMap<String, Soldado> mapaSoldados, int f) {
         String fila = (f + 1) + "\t";
         for (int i = 0; i < 10; i++) {
             fila += "| ";
@@ -144,9 +144,16 @@ public class Mapa {
     }
 
     private void mejorarSoldados(String reino) {
+        System.out.println(reino + " tiene ventaja en el terreno!");
         ArrayList<Soldado> soldados = reino.equals(reino1) ? listaSoldados1 : listaSoldados2;
         for (Soldado soldado : soldados)
             soldado.aumentarVida();
+    }
+
+    private void imprimirEstado() {
+        System.out.printf("Ejercito 1: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n", reino1, Soldado.getTotalSoldados1(), Espadachin.getTotalEspadachines1(), Arquero.getTotalArqueros1(), Caballero.getTotalCaballeros1(), Lancero.getTotalLanceros1());
+        System.out.println();
+        System.out.printf("Ejercito 2: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n", reino2, Soldado.getTotalSoldados2(), Espadachin.getTotalEspadachines2(), Arquero.getTotalArqueros2(), Caballero.getTotalCaballeros2(), Lancero.getTotalLanceros2());
     }
 
     private String generarLlave(int fila, int columna) {

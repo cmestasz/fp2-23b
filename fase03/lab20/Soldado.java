@@ -1,4 +1,6 @@
 public abstract class Soldado {
+    private static int totalSoldados1;
+    private static int totalSoldados2;
     private String nombre;
     private int equipo;
     private int vidaInicial;
@@ -15,6 +17,10 @@ public abstract class Soldado {
         this.ataque = ataque;
         this.defensa = defensa;
         this.clase = clase;
+        if (equipo == 1)
+            totalSoldados1++;
+        else
+            totalSoldados2++;
     }
 
     public String getNombre() {
@@ -43,6 +49,14 @@ public abstract class Soldado {
 
     public String getClase() {
         return clase;
+    }
+
+    public static int getTotalSoldados1() {
+        return totalSoldados1;
+    }
+
+    public static int getTotalSoldados2() {
+        return totalSoldados2;
     }
 
     public void aumentarVida() {

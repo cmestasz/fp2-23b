@@ -1,9 +1,15 @@
 public class Caballero extends Soldado {
+    private static int totalCaballeros1;
+    private static int totalCaballeros2;
     private String arma = "ESPADA";
     private boolean montado = false;
 
     public Caballero(String nombre, int equipo, int vidaInicial, int ataque, int defensa, String clase) {
         super(nombre, equipo, vidaInicial, ataque, defensa, clase);
+        if (equipo == 1)
+            totalCaballeros1++;
+        else
+            totalCaballeros2++;
     }
 
     public void cambiarArma(String arma) {
@@ -29,4 +35,11 @@ public class Caballero extends Soldado {
             atacar(otro, 2);
     }
     
+    public static int getTotalCaballeros1() {
+        return totalCaballeros1;
+    }
+
+    public static int getTotalCaballeros2() {
+        return totalCaballeros2;
+    }
 }
