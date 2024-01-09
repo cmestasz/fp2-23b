@@ -61,7 +61,58 @@ public class Mapa {
         }
     }
 
+    public void imprimirTablero(HashMap<String, Soldado> mapaSoldados) {
+        System.out.print(generarEncabezado(mapaSoldados));
+        String separacion = generarSeparacion(mapaSoldados);
+        for (int i = 0; i < 10; i++) {
+            System.out.print(separacion);
+            System.out.print(generarFila(mapaSoldados, i));
+        }
+        System.out.print(separacion);
+    }
+
+    public String generarEncabezado(HashMap<String, Soldado> mapaSoldados) {
+        String encabezado = "\t";
+        for (int i = 0; i < 10; i++)
+            encabezado += ("   " + intToChar(i + 1) + "  ");
+        encabezado += " \n";
+        return encabezado;
+    }
+
+    public String generarSeparacion(HashMap<String, Soldado> mapaSoldados) {
+        String fila = "\t";
+        for (int i = 0; i < 10; i++)
+            fila += "------";
+        fila += "-\n";
+        return fila;
+    }
+
+    public String generarFila(HashMap<String, Soldado> mapaSoldados, int f) {
+        String fila = (f + 1) + "\t";
+        for (int i = 0; i < 10; i++) {
+            fila += "| ";
+            Soldado soldado = mapaSoldados.get(generarLlave(f, i));
+            if (soldado != null) {
+                String nombre = soldado.getNombre();
+                fila += nombre.charAt(0) + nombre.substring(nombre.length() - 3) + soldado.getEquipo();
+            } else {
+                fila += "   ";
+            }
+            fila += " ";
+        }
+        fila += "|\n";
+        return fila;
+    }
+
     private String generarLlave(int fila, int columna) {
         return fila + "," + columna;
+    }
+
+    public static char intToChar(int n) {
+        return (char) (n + 'A' - 1);
+    }
+
+    public static int charToInt(char c) {
+        return (int) (c - 'A' + 1);
     }
 }
