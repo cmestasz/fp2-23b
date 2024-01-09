@@ -14,6 +14,10 @@ public class Mapa {
     private final String[] REINOS = { "INGLATERRA", "FRANCIA", "CASTILLA-ARAGON", "MOROS", "SACRO IMPERIO" };
     private final Random RANDOM = new Random();
 
+    public static void main(String[] args) {
+        new Mapa();
+    }
+
     public Mapa() {
         inicializarSoldados(soldados, listaSoldados1, 1);
         inicializarSoldados(soldados, listaSoldados2, 2);
@@ -30,6 +34,7 @@ public class Mapa {
         System.out.println();
         imprimirEstado();
         System.out.println();
+        imprimirGanador();
     }
 
     private void inicializarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados,
@@ -123,23 +128,23 @@ public class Mapa {
             case "INGLATERRA":
                 if (terreno.equals("BOSQUE"))
                     mejorarSoldados(reino);
-                    break;
+                break;
             case "FRANCIA":
                 if (terreno.equals("CAMPO ABIERTO"))
                     mejorarSoldados(reino);
-                    break;
+                break;
             case "CASTILLA-ARAGON":
                 if (terreno.equals("MONTANA"))
                     mejorarSoldados(reino);
-                    break;
+                break;
             case "MOROS":
                 if (terreno.equals("DESIERTO"))
                     mejorarSoldados(reino);
-                    break;
+                break;
             case "SACRO IMPERIO":
                 if (terreno.equals("BOSQUE") || terreno.equals("PLAYA") || terreno.equals("CAMPO ABIERTO"))
                     mejorarSoldados(reino);
-                    break;
+                break;
         }
     }
 
@@ -151,9 +156,37 @@ public class Mapa {
     }
 
     private void imprimirEstado() {
-        System.out.printf("Ejercito 1: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n", reino1, Soldado.getTotalSoldados1(), Espadachin.getTotalEspadachines1(), Arquero.getTotalArqueros1(), Caballero.getTotalCaballeros1(), Lancero.getTotalLanceros1());
+        System.out.printf(
+                "Ejercito 1: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n",
+                reino1, Soldado.getTotalSoldados1(), Espadachin.getTotalEspadachines1(), Arquero.getTotalArqueros1(),
+                Caballero.getTotalCaballeros1(), Lancero.getTotalLanceros1());
         System.out.println();
-        System.out.printf("Ejercito 2: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n", reino2, Soldado.getTotalSoldados2(), Espadachin.getTotalEspadachines2(), Arquero.getTotalArqueros2(), Caballero.getTotalCaballeros2(), Lancero.getTotalLanceros2());
+        System.out.printf(
+                "Ejercito 2: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n",
+                reino2, Soldado.getTotalSoldados2(), Espadachin.getTotalEspadachines2(), Arquero.getTotalArqueros2(),
+                Caballero.getTotalCaballeros2(), Lancero.getTotalLanceros2());
+    }
+
+    private void imprimirGanador() {
+        int vida1 = vidaTotal(listaSoldados1);
+        int vida2 = vidaTotal(listaSoldados2);
+        double chance1 = 1.0 * vida1 / (vida1 + vida2);
+        double chance2 = 1 - chance1;
+        System.out.println(reino1 + ": " + vida1 + "\t\t" + chance1 * 100 + "% de probabilidad de victoria");
+        System.out.println(reino2 + ": " + vida2 + "\t\t" + chance2 * 100 + "% de probabilidad de victoria");
+        double aleatorio = RANDOM.nextDouble(1);
+        if (aleatorio < chance1)
+            System.out.println("Gana " + reino1);
+        else
+            System.out.println("Gana " + reino2);
+        System.out.println("Aleatorio generado: " + aleatorio);
+    }
+
+    private int vidaTotal(ArrayList<Soldado> soldados) {
+        int suma = 0;
+        for (Soldado soldado : soldados)
+            suma += soldado.getVidaActual();
+        return suma;
     }
 
     private String generarLlave(int fila, int columna) {
