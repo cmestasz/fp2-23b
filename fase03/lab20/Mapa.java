@@ -14,10 +14,6 @@ public class Mapa {
     private final String[] REINOS = { "INGLATERRA", "FRANCIA", "CASTILLA-ARAGON", "MOROS", "SACRO IMPERIO" };
     private final Random RANDOM = new Random();
 
-    public static void main(String[] args) {
-        new Mapa();
-    }
-
     public Mapa() {
         inicializarSoldados(soldados, listaSoldados1, 1);
         inicializarSoldados(soldados, listaSoldados2, 2);
