@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class MapaSuperior {
+    private MapaSuperiorGUI gui;
 
     private Videojuego videojuego;
     private HashMap<String, String> batallas = new HashMap<String, String>();
@@ -17,6 +18,8 @@ public class MapaSuperior {
         String reino1 = REINOS[RANDOM.nextInt(REINOS.length)];
         String reino2 = REINOS[RANDOM.nextInt(REINOS.length)];
         String terreno = TIPOS[RANDOM.nextInt(TIPOS.length)];
+        gui = new MapaSuperiorGUI("Videojuego", reino1, reino2, terreno, batallas, this);
+        gui.mostrarVentana();
     }
 
     private void inicializarBatallas(HashMap<String, String> batallas) {
@@ -31,6 +34,10 @@ public class MapaSuperior {
             
             batallas.put(generarLlave(fila, columna), nombre);
         }
+    }
+
+    public void terminarGuerra() {
+        videojuego.continuar();
     }
 
     private String generarLlave(int fila, int columna) {
