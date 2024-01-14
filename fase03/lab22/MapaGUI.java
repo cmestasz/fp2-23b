@@ -19,4 +19,34 @@ public class MapaGUI extends JFrame {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
+
+    public void mostrarVentana(HashMap<String, Soldado> soldados, String desc1, String desc2, String desc3) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                String llave = generarLlave(i, j);
+                if (soldados.containsKey(llave))
+                    soldadosMapa[i][j] = soldados.get(llave);
+                else
+                    soldadosMapa[i][j] = new JLabel("", SwingConstants.CENTER);
+                soldadosMapa[i][j].setOpaque(true);
+                soldadosMapa[i][j].setBackground(((i + j) % 2 == 0) ? Color.lightGray : Color.white);
+                soldadosMapa[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
+                map.add(soldadosMapa[i][j]);
+            }
+        }
+
+        descripcion.add(new JTextArea(desc1));
+        descripcion.add(new JTextArea(desc2));
+        descripcion.add(new JTextArea(desc3));
+
+        map.setAlignmentY(CENTER_ALIGNMENT);
+        add(BorderLayout.CENTER, map);
+        add(BorderLayout.SOUTH, descripcion);
+
+        setVisible(true);
+    }
+
+    private String generarLlave(int fila, int columna) {
+        return fila + "," + columna;
+    }
 }
