@@ -1,6 +1,8 @@
 package fase03.lab22;
 
-public abstract class Soldado {
+import javax.swing.*;
+
+public abstract class Soldado extends JLabel {
     private static int totalSoldados1;
     private static int totalSoldados2;
     private String nombre;
@@ -12,6 +14,7 @@ public abstract class Soldado {
     private String clase;
 
     public Soldado(String nombre, int equipo, int vidaInicial, int ataque, int defensa, String clase) {
+        super(nombre.charAt(0) + nombre.substring(nombre.length() - 3), SwingConstants.CENTER);
         this.nombre = nombre;
         this.equipo = equipo;
         this.vidaInicial = vidaInicial;

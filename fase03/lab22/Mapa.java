@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Mapa {
+    private MapaGUI gui = new MapaGUI("Videojuego");
+
     private HashMap<String, Soldado> soldados = new HashMap<String, Soldado>();
     private ArrayList<Soldado> listaSoldados1 = new ArrayList<Soldado>();
     private ArrayList<Soldado> listaSoldados2 = new ArrayList<Soldado>();
@@ -12,27 +14,27 @@ public class Mapa {
     private String reino2;
     private String terreno;
     private final String[] CLASES = { "CABALLERO", "ARQUERO", "ESPADACHIN", "LANCERO" };
-    private final String[] TIPOS = { "BOSQUE", "CAMPO ABIERTO", "MONTANA", "DESIERTO", "PLAYA" };
-    private final String[] REINOS = { "INGLATERRA", "FRANCIA", "CASTILLA-ARAGON", "MOROS", "SACRO IMPERIO" };
     private final Random RANDOM = new Random();
 
-    public Mapa() {
+    public Mapa(String reino1, String reino2, String terreno) {
+        this.reino1 = reino1;
+        this.reino2 = reino2;
+        this.terreno = terreno;
         inicializarSoldados(soldados, listaSoldados1, 1);
         inicializarSoldados(soldados, listaSoldados2, 2);
-        imprimirTablero(soldados);
-        terreno = TIPOS[RANDOM.nextInt(TIPOS.length)];
-        reino1 = REINOS[RANDOM.nextInt(REINOS.length)];
-        reino2 = REINOS[RANDOM.nextInt(REINOS.length)];
-        System.out.println("El terreno elegido es: " + terreno);
-        System.out.println("El reino 1 es: " + reino1);
-        System.out.println("El reino 2 es: " + reino2);
-        System.out.println();
-        verificarVentaja(reino1);
-        verificarVentaja(reino2);
-        System.out.println();
-        imprimirEstado();
-        System.out.println();
-        imprimirGanador();
+        mostrarVentana();
+    }
+
+    private void mostrarVentana() {
+        String desc1 = "";
+        desc1 += "El terreno elegido es: " + terreno + "\n";
+        desc1 += "El reino 1 es: " + reino1 + "\n";
+        desc1 += "El reino 2 es: " + reino2 + "\n";
+        desc1 += verificarVentaja(reino1);
+        desc1 += verificarVentaja(reino2);
+        String desc2 = obtenerEstado();
+        String desc3 = obtenerGanador();
+        gui.mostrarVentana(soldados, desc1, desc2, desc3);
     }
 
     private void inicializarSoldados(HashMap<String, Soldado> mapaSoldados, ArrayList<Soldado> listaSoldados,
@@ -78,50 +80,7 @@ public class Mapa {
         }
     }
 
-    private void imprimirTablero(HashMap<String, Soldado> mapaSoldados) {
-        System.out.print(generarEncabezado(mapaSoldados));
-        String separacion = generarSeparacion(mapaSoldados);
-        for (int i = 0; i < 10; i++) {
-            System.out.print(separacion);
-            System.out.print(generarFila(mapaSoldados, i));
-        }
-        System.out.print(separacion);
-    }
-
-    private String generarEncabezado(HashMap<String, Soldado> mapaSoldados) {
-        String encabezado = "\t";
-        for (int i = 0; i < 10; i++)
-            encabezado += ("   " + intToChar(i + 1) + "  ");
-        encabezado += " \n";
-        return encabezado;
-    }
-
-    private String generarSeparacion(HashMap<String, Soldado> mapaSoldados) {
-        String fila = "\t";
-        for (int i = 0; i < 10; i++)
-            fila += "-------";
-        fila += "-\n";
-        return fila;
-    }
-
-    private String generarFila(HashMap<String, Soldado> mapaSoldados, int f) {
-        String fila = (f + 1) + "\t";
-        for (int i = 0; i < 10; i++) {
-            fila += "| ";
-            Soldado soldado = mapaSoldados.get(generarLlave(f, i));
-            if (soldado != null) {
-                String nombre = soldado.getNombre();
-                fila += nombre.charAt(0) + nombre.substring(nombre.length() - 3);
-            } else {
-                fila += "    ";
-            }
-            fila += " ";
-        }
-        fila += "|\n";
-        return fila;
-    }
-
-    private void verificarVentaja(String reino) {
+    private String verificarVentaja(String reino) {
         switch (reino) {
             case "INGLATERRA":
                 if (terreno.equals("BOSQUE"))
@@ -141,43 +100,47 @@ public class Mapa {
                 break;
             case "SACRO IMPERIO":
                 if (terreno.equals("BOSQUE") || terreno.equals("PLAYA") || terreno.equals("CAMPO ABIERTO"))
-                    mejorarSoldados(reino);
+                    return mejorarSoldados(reino);
                 break;
         }
+        return "";
     }
 
-    private void mejorarSoldados(String reino) {
-        System.out.println(reino + " tiene ventaja en el terreno!");
+    private String mejorarSoldados(String reino) {
         ArrayList<Soldado> soldados = reino.equals(reino1) ? listaSoldados1 : listaSoldados2;
         for (Soldado soldado : soldados)
             soldado.aumentarVida();
+        return reino + " tiene ventaja en el terreno!\n";
     }
 
-    private void imprimirEstado() {
-        System.out.printf(
-                "Ejercito 1: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n",
+    private String obtenerEstado() {
+        String descripcion = "";
+        descripcion += String.format(
+                "Ejercito 1: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n%n",
                 reino1, Soldado.getTotalSoldados1(), Espadachin.getTotalEspadachines1(), Arquero.getTotalArqueros1(),
                 Caballero.getTotalCaballeros1(), Lancero.getTotalLanceros1());
-        System.out.println();
-        System.out.printf(
+        descripcion += String.format(
                 "Ejercito 2: %s%nCantidad total de soldados: %d%nEspadachines: %d%nArqueros: %d%nCaballeros: %d%nLanceros: %d%n",
                 reino2, Soldado.getTotalSoldados2(), Espadachin.getTotalEspadachines2(), Arquero.getTotalArqueros2(),
                 Caballero.getTotalCaballeros2(), Lancero.getTotalLanceros2());
+        return descripcion;
     }
 
-    private void imprimirGanador() {
+    private String obtenerGanador() {
+        String descripcion = "";
         int vida1 = vidaTotal(listaSoldados1);
         int vida2 = vidaTotal(listaSoldados2);
         double chance1 = 1.0 * vida1 / (vida1 + vida2);
         double chance2 = 1 - chance1;
-        System.out.println(reino1 + ": " + vida1 + "\t\t" + chance1 * 100 + "% de probabilidad de victoria");
-        System.out.println(reino2 + ": " + vida2 + "\t\t" + chance2 * 100 + "% de probabilidad de victoria");
+        descripcion += String.format("%s: %d%n%.5f%% de probabilidad de victoria%n%n", reino1, vida1, chance1);
+        descripcion += String.format("%s: %d%n%.5f%% de probabilidad de victoria%n%n", reino2, vida2, chance2);
         double aleatorio = RANDOM.nextDouble(1);
         if (aleatorio < chance1)
-            System.out.println("Gana " + reino1);
+            descripcion += ("Gana " + reino1 + "\n");
         else
-            System.out.println("Gana " + reino2);
-        System.out.println("Aleatorio generado: " + aleatorio);
+            descripcion += ("Gana " + reino2 + "\n");
+        descripcion += ("Aleatorio generado: " + aleatorio + "\n");
+        return descripcion;
     }
 
     private int vidaTotal(ArrayList<Soldado> soldados) {
