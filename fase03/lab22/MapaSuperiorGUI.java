@@ -33,6 +33,23 @@ public class MapaSuperiorGUI extends JFrame {
     }
 
     public void mostrarVentana() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                String llave = generarLlave(i, j);
+                if (batallas.containsKey(llave)) {
+                    batallasMapa[i][j] = new JButton(batallas.get(llave));
+                    batallasMapa[i][j].addActionListener(new BotonListener(llave));
+                } else {
+                    batallasMapa[i][j] = new JButton("");
+                }
+                batallasMapa[i][j].setOpaque(true);
+                batallasMapa[i][j].setBackground(((i + j) % 2 == 0) ? Color.white : Color.lightGray);
+                batallasMapa[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
+                add(batallasMapa[i][j]);
+            }
+        }
+
+        setVisible(true);
     }
 
     private String generarLlave(int fila, int columna) {
@@ -40,5 +57,22 @@ public class MapaSuperiorGUI extends JFrame {
     }
 
     private class BotonListener implements ActionListener {
+        private String llave;
+
+        public BotonListener(String llave) {
+            this.llave = llave;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            new Mapa(reino1, reino2, terreno);
+            batallas.remove(llave);
+            JButton boton = (JButton) e.getSource();
+            boton.setText("");
+            boton.removeActionListener(this);
+
+            if (batallas.size() == 0) {
+                mapaSuperior.terminarGuerra();
+            }
+        }
     }
 }
