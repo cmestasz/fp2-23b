@@ -1,3 +1,5 @@
+package fase03.lab20;
+
 public class Espadachin extends Soldado {
     private static int totalEspadachines1;
     private static int totalEspadachines2;

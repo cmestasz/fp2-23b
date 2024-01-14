@@ -1,3 +1,5 @@
+package fase03.lab20;
+
 public abstract class Soldado {
     private static int totalSoldados1;
     private static int totalSoldados2;

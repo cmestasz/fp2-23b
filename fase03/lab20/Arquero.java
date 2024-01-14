@@ -1,3 +1,5 @@
+package fase03.lab20;
+
 public class Arquero extends Soldado {
     private static int totalArqueros1;
     private static int totalArqueros2;

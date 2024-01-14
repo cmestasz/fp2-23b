@@ -1,3 +1,5 @@
+package fase03.lab20;
+
 public class Lancero extends Soldado {
     private static int totalLanceros1;
     private static int totalLanceros2;
