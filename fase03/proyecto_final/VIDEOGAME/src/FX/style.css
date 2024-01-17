@@ -1,0 +1,15 @@
+:root {
+    -c1: #F2D0A7;
+    -c2: #BF7D56;
+    -c3: #40241A;
+    -c4: #734230;
+    -c5: #D9644A;
+}
+
+VBox {
+    -fx-background-color: #F2D0A7;
+}
+
+GridPane {
+    -fx-background-color: #BF7D56;
+}
