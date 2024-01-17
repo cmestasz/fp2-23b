@@ -6,3 +6,6 @@
 *.out
 *.gz
 .DS_Store
+JavaFX/
+lib/
+bin/
