@@ -1,11 +1,14 @@
 package FX.MainMenu;
 
 import java.io.*;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class MainMenuServer extends Thread {
-    private File matchFile = new File("match.dat");
-    private long lastModified;
+    private ArrayList<Long> lastModifiedList = new ArrayList<Long>();
+    private ArrayList<File> connectionsList = new ArrayList<File>();
     private int totalConnections;
+    private boolean active = true;
 
     public void run() {
         try {
@@ -17,31 +20,50 @@ public class MainMenuServer extends Thread {
         }
 
         try {
-            lastModified = matchFile.lastModified();
-            DataInputStream in = new DataInputStream(new FileInputStream("server.dat"));
-            in.mark(0);
-            while (true) {
-                in.reset();
-                totalConnections = in.readInt();
+            while (active) {
+                DataInputStream in = new DataInputStream(new FileInputStream("server.dat"));
+
+                int newTotalConnections = in.read();
+                if (totalConnections != newTotalConnections) {
+                    for (int id = totalConnections; id < newTotalConnections; id++) {
+                        File file = new File(id + ".dat");
+                        connectionsList.add(file);
+                        lastModifiedList.add(file.lastModified());
+                    }
+                    totalConnections = newTotalConnections;
+                }
 
                 for (int id = 0; id < totalConnections; id++)
                     respond(id);
 
+                in.close();
                 sleep(1000);
+            }
+
+            for (File connection : connectionsList) {
+                connection.delete();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void respond(int id) {
-        if (matchFile.lastModified() != lastModified) {
+    public void end() {
+        active = false;
+    }
 
-            lastModified = matchFile.lastModified();
+    private void respond(int id) {
+        long lastModified = connectionsList.get(id).lastModified();
+        if (lastModified != lastModifiedList.get(id)) {
+
+            lastModifiedList.set(id, lastModified);
         }
     }
 
     public static void main(String[] args) {
-        new MainMenuServer().start();
+        MainMenuServer server = new MainMenuServer();
+        server.start();
+        JOptionPane.showMessageDialog(null, "El servidor esta ejecutandose correctamente\nPresione ok para detenerlo");
+        server.end();
     }
 }
