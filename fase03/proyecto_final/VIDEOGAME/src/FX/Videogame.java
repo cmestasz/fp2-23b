@@ -10,7 +10,7 @@ public class Videogame extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("Main Menu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainMenu/Main Menu.fxml"));
         primaryStage.setTitle("Videogame");
         primaryStage.setScene(new Scene(root, 300, 500));
         primaryStage.setResizable(false);
