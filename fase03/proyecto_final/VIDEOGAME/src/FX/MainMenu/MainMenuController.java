@@ -1,21 +1,24 @@
 package FX.MainMenu;
 
-import Utils.Resolution;
+import Utils.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
+import javax.swing.JOptionPane;
 
+import javafx.application.*;
 import javafx.collections.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class MainMenuController {
+public class MainMenuController implements Operation {
     private final ObservableList<Resolution> RESOLUTIONS = FXCollections.observableArrayList();
     private final int CODE_LENGTH = 4;
 
     private String name;
     private Resolution resolution;
     private int id;
+    private String path;
+    private File connectionFile;
+    private DataReceiver dataReceiver;
 
     @FXML
     private Button createMatchButton;
@@ -42,46 +45,43 @@ public class MainMenuController {
     }
 
     public void createMatch() {
-        File connection = new File(id + ".dat");
-        while (!connection.exists()) {
-            id++;
-            connection = new File(id + ".dat");
-        }
+        // nombre => codigo => operacion
+        setConnection();
         try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream("match.dat"));
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
 
             String code = "";
             for (int i = 0; i < CODE_LENGTH; i++)
                 code += (char) ('A' + (int) (Math.random() * 26));
 
             createMatchCode.setText(code);
-            out.writeChars(code);
-            out.writeChar(0);
             out.writeChars(name);
             out.writeChar(0);
+            out.writeChars(code);
+            out.writeChar(0);
+            out.writeInt(OPERATION_CREATE);
 
             out.close();
+
+            startDataReceiver();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void joinMatch() {
+        setConnection();
         try {
-            DataInputStream in = new DataInputStream(new FileInputStream("match.dat"));
-            String inputCode = joinMatchCode.getText();
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+            out.writeChars(name);
+            out.writeChar(0);
+            out.writeChars(joinMatchCode.getText());
+            out.writeChar(0);
+            out.writeInt(OPERATION_JOIN);
 
-            char c;
-            String code = "";
-            while ((c = in.readChar()) != 0)
-                code += c;
+            out.close();
 
-            if (inputCode.equals(code)) {
-                String name = "";
-                while ((c = in.readChar()) != 0)
-                    name += c;
-                enemyName.setText(name);
-            }
+            startDataReceiver();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,7 +92,7 @@ public class MainMenuController {
     }
 
     public void startMatch() {
-
+        dataReceiver.startGame();
     }
 
     public void setName() {
@@ -100,19 +100,55 @@ public class MainMenuController {
         playerName.setText(name);
     }
 
+    private void setConnection() {
+        if (connectionFile == null) {
+            path = "connections/" + id + ".dat";
+            connectionFile = new File(path);
+            while (connectionFile.exists()) {
+                id++;
+                path = "connections/" + id + ".dat";
+                connectionFile = new File(path);
+            }
+        }
+    }
+
+    private void startDataReceiver() {
+        if (dataReceiver == null) {
+            dataReceiver = new DataReceiver();
+            dataReceiver.start();
+        }
+    }
+
     private class DataReceiver extends Thread {
-        private File matchFile = new File("match.dat");
+        private File matchFile = new File(path);
         private long lastModified;
+        private boolean gameStarted;
 
         public void run() {
             try {
-                lastModified = matchFile.lastModified();
-                DataInputStream in = new DataInputStream(new FileInputStream(matchFile));
-
-                while (true) {
+                while (!gameStarted) {
                     if (matchFile.lastModified() != lastModified) {
-
+                        DataInputStream in = new DataInputStream(new FileInputStream(matchFile));
+                        int response = in.readInt();
+                        String name = Utils.readString(in);
+                        switch (response) {
+                            case RESPONSE_HOST:
+                                Platform.runLater(() -> {
+                                    enemyName.setText(name);
+                                });
+                                break;
+                            case RESPONSE_GUEST:
+                                if (name.equals("")) {
+                                    JOptionPane.showMessageDialog(null, "La partida no existe.");
+                                } else {
+                                    Platform.runLater(() -> {
+                                        enemyName.setText(name);
+                                    });
+                                }
+                                break;
+                        }
                         lastModified = matchFile.lastModified();
+                        in.close();
                     }
 
                     sleep(1000);
@@ -120,6 +156,10 @@ public class MainMenuController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        public void startGame() {
+            gameStarted = true;
         }
     }
 }

@@ -1,48 +1,43 @@
 package FX.MainMenu;
 
+import Utils.Utils;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import javax.swing.JOptionPane;
 
-public class MainMenuServer extends Thread {
-    private ArrayList<Long> lastModifiedList = new ArrayList<Long>();
-    private ArrayList<File> connectionsList = new ArrayList<File>();
+public class MainMenuServer extends Thread implements Operation {
+    private ArrayList<Connection> connectionsList = new ArrayList<Connection>();
+    private HashMap<Integer, Long> lastModifiedMap = new HashMap<Integer, Long>();
     private int totalConnections;
     private boolean active = true;
 
-    public void run() {
-        try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream("server.dat"));
-            out.writeInt(totalConnections);
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private HashMap<String, int[]> matches = new HashMap<String, int[]>();
 
+    public void run() {
+        File directory = new File("connections");
         try {
             while (active) {
-                DataInputStream in = new DataInputStream(new FileInputStream("server.dat"));
-
-                int newTotalConnections = in.read();
+                int newTotalConnections = directory.listFiles().length;
+                System.out.println(newTotalConnections);
                 if (totalConnections != newTotalConnections) {
-                    for (int id = totalConnections; id < newTotalConnections; id++) {
-                        File file = new File(id + ".dat");
-                        connectionsList.add(file);
-                        lastModifiedList.add(file.lastModified());
-                    }
+                    Connection connection = new Connection(totalConnections);
+                    System.out.println("connecting: " + connection);
+                    connectionsList.add(connection);
+                    lastModifiedMap.put(totalConnections, (long) 0);
                     totalConnections = newTotalConnections;
                 }
 
                 for (int id = 0; id < totalConnections; id++)
                     respond(id);
 
-                in.close();
                 sleep(1000);
             }
 
-            for (File connection : connectionsList) {
-                connection.delete();
+            for (Connection connection : connectionsList) {
+                connection.deleteConnection();
+                connection = null;
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,10 +48,47 @@ public class MainMenuServer extends Thread {
     }
 
     private void respond(int id) {
-        long lastModified = connectionsList.get(id).lastModified();
-        if (lastModified != lastModifiedList.get(id)) {
+        Connection connection = connectionsList.get(id);
+        System.out.println("responding: " + connection);
+        long lastModified = connection.getLastModified();
+        if (lastModifiedMap.get(id) != lastModified) {
+            try {
+                DataInputStream in = connection.getDataInputStream();
+                Utils.readString(in);
+                String code = Utils.readString(in);
+                switch (in.readInt()) {
+                    case OPERATION_CREATE:
+                        matches.put(code, new int[] { connection.getId(), -1 });
+                        lastModifiedMap.put(id, lastModified);
+                        break;
+                    case OPERATION_JOIN:
+                        int[] ids = matches.get(code);
+                        DataOutputStream toGuest = new DataOutputStream(
+                                new FileOutputStream(connection.getConnectionFile()));
+                        toGuest.writeInt(RESPONSE_GUEST);
+                        if (ids != null && ids[1] == -1) {
+                            Connection host = connectionsList.get(ids[0]);
+                            ids[1] = connection.getId();
+                            toGuest.writeChars(host.getName());
 
-            lastModifiedList.set(id, lastModified);
+                            DataOutputStream toHost = new DataOutputStream(
+                                    new FileOutputStream(host.getConnectionFile()));
+                            toHost.writeInt(RESPONSE_HOST);
+                            toHost.writeChars(connection.getName());
+                            toHost.writeChar(0);
+
+                            toHost.close();
+                            lastModifiedMap.put(host.getId(), host.getLastModified());
+                        }
+                        toGuest.writeChar(0);
+                        toGuest.close();
+                        lastModifiedMap.put(id, connection.getLastModified());
+                        break;
+                }
+                in.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
