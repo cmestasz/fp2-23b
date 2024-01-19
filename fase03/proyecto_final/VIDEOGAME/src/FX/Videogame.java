@@ -2,17 +2,18 @@ package FX;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.*;
+import javafx.stage.*;
 
 public class Videogame extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXML.fxml"));
-        primaryStage.setTitle("Videojuego");
-        primaryStage.setScene(new Scene(root, 600, 800));
+
+        Parent root = FXMLLoader.load(getClass().getResource("Main Menu.fxml"));
+        primaryStage.setTitle("Videogame");
+        primaryStage.setScene(new Scene(root, 300, 500));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

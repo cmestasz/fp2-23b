@@ -3,14 +3,19 @@ package FX;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
+import javafx.scene.layout.VBox;
 
 public class Controller {
 
     @FXML
-    private ImageView tile;
+    private ImageView test;
+    @FXML
+    private VBox parent;
 
     public void initialize() {
-        Image img = new Image("img/4.png");
-        tile.setImage(img);
+        Image image = new Image("img/barrack.png");
+        test.setImage(image);
+        
+
     }
 }
