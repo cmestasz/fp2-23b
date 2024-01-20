@@ -107,6 +107,7 @@ public class MainMenuController implements Operation {
     }
 
     public void startMatch() {
+        createGameStage();
         if (checkName() && checkEnemy()) {
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
@@ -162,7 +163,7 @@ public class MainMenuController implements Operation {
     }
 
     private void createGameStage() {
-        dataReceiver.startGame();
+        // dataReceiver.startGame();
         stage.hide();
         new MainGame(this);
     }
@@ -197,7 +198,8 @@ public class MainMenuController implements Operation {
                                 if (name.equals("")) {
                                     JOptionPane.showMessageDialog(null, "La partida no existe.");
                                 } else {
-                                    // Actualiza el nombre del oponente en la interfaz de usuario y desactiva el botón de inicio
+                                    // Actualiza el nombre del oponente en la interfaz de usuario y desactiva el
+                                    // botón de inicio
                                     Platform.runLater(() -> {
                                         eName = name;
                                         enemyName.setText(eName);
@@ -228,20 +230,21 @@ public class MainMenuController implements Operation {
         }
     }
 
-    private class MainGame {
+    public class MainGame {
         public MainGame(MainMenuController mainMenuController) {
             try {
                 // Carga el archivo FXML del juego principal y configura la escena
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../MainGame/Main Game.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../MainGame/MainGame.fxml"));
                 Parent root = loader.load();
                 
                 Stage mainGame = new Stage();
                 mainGame.setTitle("Main Game");
                 mainGame.setScene(new Scene(root, resolution.getWidth(), resolution.getHeight()));
+                mainGame.setResizable(false);
                 mainGame.show();
 
                 MainGameController controller = loader.getController();
-                controller.setController(mainMenuController);
+                controller.setMenuController(mainMenuController);
                 controller.setStage(mainGame);
             } catch (Exception e) {
                 e.printStackTrace();
