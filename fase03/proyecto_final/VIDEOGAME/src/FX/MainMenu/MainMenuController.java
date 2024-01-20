@@ -51,7 +51,7 @@ public class MainMenuController implements Operation {
     }
 
     public void initialize() {
-        RESOLUTIONS.addAll(new Resolution(850, 480), new Resolution(1280, 720), new Resolution(1366, 768));
+        RESOLUTIONS.addAll(new Resolution(850, 480), new Resolution(1280, 720), new Resolution(1366, 768), new Resolution(1920, 1080));
         resolutionInput.setItems(RESOLUTIONS);
         resolutionInput.setValue(RESOLUTIONS.get(0));
         resolution = resolutionInput.getValue();
@@ -245,6 +245,7 @@ public class MainMenuController implements Operation {
 
                 MainGameController controller = loader.getController();
                 controller.setMenuController(mainMenuController);
+                controller.setResolution(resolution);
                 controller.setStage(mainGame);
             } catch (Exception e) {
                 e.printStackTrace();
