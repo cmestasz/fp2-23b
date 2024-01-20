@@ -1,4 +1,4 @@
-package FX.MainMenu;
+package Utils;
 
 public interface Operation {
     int OPERATION_CREATE = 0;

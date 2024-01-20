@@ -1,11 +1,13 @@
-package FX.MainMenu;
+package FX;
 
+import Utils.Connection;
+import Utils.Operation;
 import Utils.Utils;
 import java.io.*;
 import java.util.*;
 import javax.swing.JOptionPane;
 
-public class MainMenuServer extends Thread implements Operation {
+public class MainServer extends Thread implements Operation {
     private ArrayList<Connection> connectionsList = new ArrayList<Connection>();
     private HashMap<Integer, Long> lastModifiedMap = new HashMap<Integer, Long>();
     private int totalConnections;
@@ -105,7 +107,7 @@ public class MainMenuServer extends Thread implements Operation {
     }
 
     public static void main(String[] args) {
-        MainMenuServer server = new MainMenuServer();
+        MainServer server = new MainServer();
         server.start();
         JOptionPane.showMessageDialog(null, "El servidor esta ejecutandose correctamente\nPresione ok para detenerlo");
         server.end();

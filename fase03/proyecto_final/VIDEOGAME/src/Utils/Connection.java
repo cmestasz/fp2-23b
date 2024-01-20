@@ -1,7 +1,6 @@
-package FX.MainMenu;
+package Utils;
 
 import java.io.*;
-import Utils.Utils;
 
 public class Connection  {
     private int id;

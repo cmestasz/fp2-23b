@@ -4,6 +4,7 @@ import Utils.*;
 import java.io.*;
 import javax.swing.JOptionPane;
 
+import FX.MainGame.MainGameController;
 import javafx.application.*;
 import javafx.collections.*;
 import javafx.fxml.FXML;
@@ -24,6 +25,7 @@ public class MainMenuController implements Operation {
     private String path;
     private File connectionFile;
     private DataReceiver dataReceiver;
+    private Stage stage;
 
     @FXML
     private Button createMatchButton;
@@ -43,6 +45,10 @@ public class MainMenuController implements Operation {
     private ComboBox<Resolution> resolutionInput;
     @FXML
     private Button startButton;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public void initialize() {
         RESOLUTIONS.addAll(new Resolution(850, 480), new Resolution(1280, 720), new Resolution(1366, 768));
@@ -114,8 +120,7 @@ public class MainMenuController implements Operation {
                 e.printStackTrace();
             }
 
-            dataReceiver.startGame();
-            new MainGame();
+            createGameStage();
         }
     }
 
@@ -157,6 +162,21 @@ public class MainMenuController implements Operation {
         return enemySet;
     }
 
+    private void createGameStage() {
+        dataReceiver.startGame();
+        stage.hide();
+        new MainGame(this);
+    }
+
+    public void endGame() {
+        dataReceiver = null;
+        connectionFile = null;
+        createMatchCode.setText("");
+        joinMatchCode.setText("");
+        id = 0;
+        stage.show();
+    }
+
     private class DataReceiver extends Thread {
         private File matchFile = new File(path);
         private long lastModified;
@@ -191,8 +211,7 @@ public class MainMenuController implements Operation {
                                 break;
                             case RESPONSE_START:
                                 Platform.runLater(() -> {
-                                    dataReceiver.startGame();
-                                    new MainGame();
+                                    createGameStage();
                                 });
                         }
                         lastModified = matchFile.lastModified();
@@ -212,13 +231,17 @@ public class MainMenuController implements Operation {
     }
 
     private class MainGame {
-        public MainGame() {
+        public MainGame(MainMenuController mainMenuController) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("../MainGame/Main.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../MainGame/Main Game.fxml"));
+                Parent root = loader.load();
                 Stage mainGame = new Stage();
                 mainGame.setTitle("Main Game");
                 mainGame.setScene(new Scene(root, resolution.getWidth(), resolution.getHeight()));
                 mainGame.show();
+                MainGameController controller = loader.getController();
+                controller.setController(mainMenuController);
+                controller.setStage(mainGame);
             } catch (Exception e) {
                 e.printStackTrace();
             }
