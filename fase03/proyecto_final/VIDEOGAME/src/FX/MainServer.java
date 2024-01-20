@@ -1,6 +1,6 @@
 package FX;
 
-import Utils.Connection;
+import Utils.ServerConnection;
 import Utils.Operation;
 import Utils.Utils;
 import java.io.*;
@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 public class MainServer extends Thread implements Operation {
-    private ArrayList<Connection> connectionsList = new ArrayList<Connection>();
+    private ArrayList<ServerConnection> connectionsList = new ArrayList<ServerConnection>();
     private HashMap<Integer, Long> lastModifiedMap = new HashMap<Integer, Long>();
     private int totalConnections;
     private boolean active = true;
@@ -24,7 +24,7 @@ public class MainServer extends Thread implements Operation {
                 
                 if (totalConnections != newTotalConnections) {
                     // Se crea una nueva conexión y se agrega a la lista.
-                    Connection connection = new Connection(totalConnections);
+                    ServerConnection connection = new ServerConnection(totalConnections);
                     System.out.println("connecting: " + connection);
                     connectionsList.add(connection);
                     lastModifiedMap.put(totalConnections, (long) 0);
@@ -37,7 +37,7 @@ public class MainServer extends Thread implements Operation {
                 sleep(1000);
             }
 
-            for (Connection connection : connectionsList) {
+            for (ServerConnection connection : connectionsList) {
                 connection.deleteConnection();
                 connection = null;
             }
@@ -52,7 +52,7 @@ public class MainServer extends Thread implements Operation {
     }
 
     private void respond(int id) {
-        Connection connection = connectionsList.get(id);
+        ServerConnection connection = connectionsList.get(id);
         System.out.println("responding: " + connection);
         long lastModified = connection.getLastModified();
         
@@ -77,7 +77,7 @@ public class MainServer extends Thread implements Operation {
                                 new FileOutputStream(connection.getConnectionFile()));
                         toGuest.writeInt(RESPONSE_GUEST);
                         if (ids != null && ids[1] == -1) {
-                            Connection host = connectionsList.get(ids[0]);
+                            ServerConnection host = connectionsList.get(ids[0]);
                             ids[1] = connection.getId();
                             toGuest.writeChars(host.getName());
 
@@ -98,7 +98,7 @@ public class MainServer extends Thread implements Operation {
                     case OPERATION_START:
                         // Se inicia la conexión del invitado basándose en un código.
                         int idGuest = matches.get(code)[1];
-                        Connection guest = connectionsList.get(idGuest);
+                        ServerConnection guest = connectionsList.get(idGuest);
                         DataOutputStream out = new DataOutputStream(
                                 new FileOutputStream(guest.getConnectionFile()));
                         out.writeInt(RESPONSE_START);

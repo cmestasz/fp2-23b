@@ -19,6 +19,7 @@ public class MainMenuController implements Operation {
     private final int CODE_LENGTH = 4;
 
     private String pName;
+    private String pPassword;
     private String eName;
     private Resolution resolution;
     private int id;
@@ -28,6 +29,16 @@ public class MainMenuController implements Operation {
     private Stage stage;
 
     @FXML
+    private TextField nameInput;
+    @FXML
+    private TextField passwordInput;
+    @FXML
+    private Button registerButton;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private ComboBox<Resolution> resolutionInput;
+    @FXML
     private Button createMatchButton;
     @FXML
     private Button joinMatchButton;
@@ -36,13 +47,9 @@ public class MainMenuController implements Operation {
     @FXML
     private TextField joinMatchCode;
     @FXML
-    private TextField nameInput;
-    @FXML
     private Label playerName;
     @FXML
     private Label enemyName;
-    @FXML
-    private ComboBox<Resolution> resolutionInput;
     @FXML
     private Button startButton;
 
@@ -102,10 +109,6 @@ public class MainMenuController implements Operation {
         }
     }
 
-    public void setResolution() {
-        resolution = resolutionInput.getValue();
-    }
-
     public void startMatch() {
         createGameStage();
         if (checkName() && checkEnemy()) {
@@ -123,10 +126,19 @@ public class MainMenuController implements Operation {
             createGameStage();
         }
     }
-
-    public void setName() {
+    
+    public void setResolution() {
+        resolution = resolutionInput.getValue();
+    }
+    
+    public void login() {
         pName = nameInput.getText();
-        playerName.setText(pName);
+        pPassword = passwordInput.getText();
+        
+    }
+
+    public void register() {
+
     }
 
     private void setConnection() {
@@ -230,7 +242,7 @@ public class MainMenuController implements Operation {
         }
     }
 
-    public class MainGame {
+    private class MainGame {
         public MainGame(MainMenuController mainMenuController) {
             try {
                 // Carga el archivo FXML del juego principal y configura la escena

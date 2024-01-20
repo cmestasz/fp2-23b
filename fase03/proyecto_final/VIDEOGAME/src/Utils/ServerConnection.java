@@ -2,12 +2,12 @@ package Utils;
 
 import java.io.*;
 
-public class Connection  {
+public class ServerConnection  {
     private int id;
     private String name;
     private File connectionFile;
 
-    public Connection(int id) throws Exception {
+    public ServerConnection(int id) throws Exception {
         this.id = id;
         this.connectionFile = new File("connections/" + id + ".dat");
         DataInputStream in = getDataInputStream();

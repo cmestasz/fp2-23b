@@ -18,7 +18,7 @@ public class Videogame extends Application {
         controller.setStage(primaryStage);
 
         primaryStage.setTitle("Main Menu");
-        primaryStage.setScene(new Scene(root, 300, 500));
+        primaryStage.setScene(new Scene(root, 300, 600));
         primaryStage.setResizable(false);
         primaryStage.show();
     }

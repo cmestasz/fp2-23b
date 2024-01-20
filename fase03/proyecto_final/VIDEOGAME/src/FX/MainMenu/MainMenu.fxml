@@ -9,33 +9,48 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FX.MainMenu.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FX.MainMenu.MainMenuController">
    <children>
-      <Label layoutX="95.0" layoutY="4.0" text="VIDEOGAME">
+      <Label layoutX="93.0" layoutY="5.0" text="VIDEOJUEGO">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="createMatchButton" layoutX="14.0" layoutY="79.0" mnemonicParsing="false" onAction="#createMatch" text="Crear partida" />
-      <Button fx:id="joinMatchButton" layoutX="14.0" layoutY="117.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida" />
-      <TextField fx:id="createMatchCode" editable="false" layoutX="137.0" layoutY="79.0" promptText="Código" />
-      <TextField fx:id="joinMatchCode" layoutX="137.0" layoutY="117.0" promptText="Código" />
-      <Label layoutX="114.0" layoutY="151.0" text="RESOLUCIÓN" />
-      <ComboBox fx:id="resolutionInput" layoutX="75.0" layoutY="174.0" onAction="#setResolution" prefWidth="150.0" promptText="Resolución" />
-      <Label layoutX="107.0" layoutY="207.0" text="SALA DE ESPERA" />
-      <ImageView fitHeight="225.0" fitWidth="225.0" layoutX="39.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="createMatchButton" layoutX="14.0" layoutY="256.0" mnemonicParsing="false" onAction="#createMatch" text="Crear partida" />
+      <Button fx:id="joinMatchButton" layoutX="14.0" layoutY="294.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida" />
+      <TextField fx:id="createMatchCode" editable="false" layoutX="137.0" layoutY="256.0" promptText="Código" />
+      <TextField fx:id="joinMatchCode" layoutX="137.0" layoutY="294.0" promptText="Código" />
+      <ComboBox fx:id="resolutionInput" layoutX="75.0" layoutY="193.0" onAction="#setResolution" prefWidth="150.0" promptText="Resolución" />
+      <Label layoutX="100.0" layoutY="229.0" text="SALA DE ESPERA">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <ImageView fitHeight="225.0" fitWidth="225.0" layoutX="39.0" layoutY="329.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../img/waiting.png" />
          </image>
       </ImageView>
-      <Button fx:id="startButton" layoutX="128.0" layoutY="466.0" mnemonicParsing="false" onAction="#startMatch" text="Iniciar" />
-      <TextField fx:id="nameInput" layoutX="46.0" layoutY="40.0" onAction="#setName" prefHeight="25.0" prefWidth="212.0" promptText="Nombre" />
-      <Label fx:id="playerName" alignment="CENTER" layoutX="54.0" layoutY="242.0" text="Nombre" />
-      <Label layoutX="133.0" layoutY="319.0" text="VS">
+      <Button fx:id="startButton" layoutX="128.0" layoutY="566.0" mnemonicParsing="false" onAction="#startMatch" text="Iniciar" />
+      <TextField fx:id="nameInput" layoutX="47.0" layoutY="64.0" prefHeight="25.0" prefWidth="212.0" promptText="Nombre" />
+      <Label fx:id="playerName" alignment="CENTER" layoutX="54.0" layoutY="342.0" text="Nombre" />
+      <Label layoutX="133.0" layoutY="419.0" text="VS">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Label fx:id="enemyName" alignment="CENTER" layoutX="203.0" layoutY="421.0" text="Nombre" />
+      <Label fx:id="enemyName" alignment="CENTER" layoutX="203.0" layoutY="521.0" text="Nombre" />
+      <Label layoutX="88.0" layoutY="166.0" text="CONFIGURACIONES">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="122.0" layoutY="37.0" text="USUARIO">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="passwordInput" layoutX="47.0" layoutY="98.0" prefHeight="25.0" prefWidth="212.0" promptText="Contraseña" />
+      <Button fx:id="registerButton" layoutX="40.0" layoutY="133.0" mnemonicParsing="false" onAction="#register" text="Crear cuenta" />
+      <Button fx:id="loginButton" layoutX="155.0" layoutY="133.0" mnemonicParsing="false" onAction="#login" text="Ingresar a cuenta" />
    </children>
 </AnchorPane>
