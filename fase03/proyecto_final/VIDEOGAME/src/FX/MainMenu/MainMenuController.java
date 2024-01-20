@@ -62,7 +62,6 @@ public class MainMenuController implements Operation {
             setConnection();
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
-
                 String code = "";
                 for (int i = 0; i < CODE_LENGTH; i++)
                     code += (char) ('A' + (int) (Math.random() * 26));
@@ -158,7 +157,7 @@ public class MainMenuController implements Operation {
     private boolean checkEnemy() {
         boolean enemySet = eName != null;
         if (!enemySet)
-            JOptionPane.showMessageDialog(null, "Crea o unete a una partida!");
+            JOptionPane.showMessageDialog(null, "Crea o únete a una partida!");
         return enemySet;
     }
 
@@ -168,15 +167,7 @@ public class MainMenuController implements Operation {
         new MainGame(this);
     }
 
-    public void endGame() {
-        dataReceiver = null;
-        connectionFile = null;
-        createMatchCode.setText("");
-        joinMatchCode.setText("");
-        id = 0;
-        stage.show();
-    }
-
+    // Clase interna para el receptor de datos en un hilo separado
     private class DataReceiver extends Thread {
         private File matchFile = new File(path);
         private long lastModified;
@@ -185,23 +176,28 @@ public class MainMenuController implements Operation {
         public void run() {
             try {
                 while (!gameStarted) {
+                    // Comprueba si el archivo de la partida ha sido modificado
                     if (matchFile.lastModified() != lastModified) {
                         DataInputStream in = new DataInputStream(new FileInputStream(matchFile));
                         int response = in.readInt();
                         String name;
                         switch (response) {
+                            // Respuesta del anfitrión
                             case RESPONSE_HOST:
                                 name = Utils.readString(in);
+                                // Actualiza el nombre del oponente en la interfaz de usuario
                                 Platform.runLater(() -> {
                                     eName = name;
                                     enemyName.setText(eName);
                                 });
                                 break;
+                            // Respuesta del invitado
                             case RESPONSE_GUEST:
                                 name = Utils.readString(in);
                                 if (name.equals("")) {
                                     JOptionPane.showMessageDialog(null, "La partida no existe.");
                                 } else {
+                                    // Actualiza el nombre del oponente en la interfaz de usuario y desactiva el botón de inicio
                                     Platform.runLater(() -> {
                                         eName = name;
                                         enemyName.setText(eName);
@@ -209,7 +205,9 @@ public class MainMenuController implements Operation {
                                     });
                                 }
                                 break;
+                            // Respuesta de inicio de la partida
                             case RESPONSE_START:
+                                // Inicia el juego principal
                                 Platform.runLater(() -> {
                                     createGameStage();
                                 });
@@ -233,12 +231,15 @@ public class MainMenuController implements Operation {
     private class MainGame {
         public MainGame(MainMenuController mainMenuController) {
             try {
+                // Carga el archivo FXML del juego principal y configura la escena
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../MainGame/Main Game.fxml"));
                 Parent root = loader.load();
+                
                 Stage mainGame = new Stage();
                 mainGame.setTitle("Main Game");
                 mainGame.setScene(new Scene(root, resolution.getWidth(), resolution.getHeight()));
                 mainGame.show();
+
                 MainGameController controller = loader.getController();
                 controller.setController(mainMenuController);
                 controller.setStage(mainGame);

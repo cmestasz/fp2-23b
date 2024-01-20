@@ -10,6 +10,7 @@ public class Videogame extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // Carga el archivo FXML del menú principal y configura la escena
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu/Main Menu.fxml"));
         Parent root = loader.load();
         MainMenuController controller = loader.getController();

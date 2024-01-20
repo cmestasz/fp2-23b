@@ -21,7 +21,9 @@ public class MainServer extends Thread implements Operation {
             while (active) {
                 int newTotalConnections = directory.listFiles().length;
                 System.out.println(newTotalConnections);
+                
                 if (totalConnections != newTotalConnections) {
+                    // Se crea una nueva conexión y se agrega a la lista.
                     Connection connection = new Connection(totalConnections);
                     System.out.println("connecting: " + connection);
                     connectionsList.add(connection);
@@ -53,6 +55,8 @@ public class MainServer extends Thread implements Operation {
         Connection connection = connectionsList.get(id);
         System.out.println("responding: " + connection);
         long lastModified = connection.getLastModified();
+        
+        // Se verifica si la conexión ha sido modificada desde la última respuesta.
         if (lastModifiedMap.get(id) != lastModified) {
             try {
                 DataInputStream in = connection.getDataInputStream();
@@ -61,11 +65,13 @@ public class MainServer extends Thread implements Operation {
 
                 switch (operation) {
                     case OPERATION_CREATE:
+                        // Se almacena la información de la conexión que ha creado un nuevo código.
                         matches.put(code, new int[] { connection.getId(), -1 });
                         lastModifiedMap.put(id, lastModified);
                         break;
 
                     case OPERATION_JOIN:
+                        // Se intenta unir dos conexiones basándose en un código.
                         int[] ids = matches.get(code);
                         DataOutputStream toGuest = new DataOutputStream(
                                 new FileOutputStream(connection.getConnectionFile()));
@@ -90,6 +96,7 @@ public class MainServer extends Thread implements Operation {
                         break;
 
                     case OPERATION_START:
+                        // Se inicia la conexión del invitado basándose en un código.
                         int idGuest = matches.get(code)[1];
                         Connection guest = connectionsList.get(idGuest);
                         DataOutputStream out = new DataOutputStream(
