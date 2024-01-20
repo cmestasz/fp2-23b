@@ -54,13 +54,15 @@ public class MainMenuServer extends Thread implements Operation {
         if (lastModifiedMap.get(id) != lastModified) {
             try {
                 DataInputStream in = connection.getDataInputStream();
-                Utils.readString(in);
+                int operation = in.readInt();
                 String code = Utils.readString(in);
-                switch (in.readInt()) {
+
+                switch (operation) {
                     case OPERATION_CREATE:
                         matches.put(code, new int[] { connection.getId(), -1 });
                         lastModifiedMap.put(id, lastModified);
                         break;
+
                     case OPERATION_JOIN:
                         int[] ids = matches.get(code);
                         DataOutputStream toGuest = new DataOutputStream(
@@ -83,6 +85,16 @@ public class MainMenuServer extends Thread implements Operation {
                         toGuest.writeChar(0);
                         toGuest.close();
                         lastModifiedMap.put(id, connection.getLastModified());
+                        break;
+
+                    case OPERATION_START:
+                        int idGuest = matches.get(code)[1];
+                        Connection guest = connectionsList.get(idGuest);
+                        DataOutputStream out = new DataOutputStream(
+                                new FileOutputStream(guest.getConnectionFile()));
+                        out.writeInt(RESPONSE_START);
+                        out.close();
+                        lastModifiedMap.put(idGuest, guest.getLastModified());
                         break;
                 }
                 in.close();

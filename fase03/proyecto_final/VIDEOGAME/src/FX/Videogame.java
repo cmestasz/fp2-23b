@@ -11,7 +11,7 @@ public class Videogame extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         Parent root = FXMLLoader.load(getClass().getResource("MainMenu/Main Menu.fxml"));
-        primaryStage.setTitle("Videogame");
+        primaryStage.setTitle("Main Menu");
         primaryStage.setScene(new Scene(root, 300, 500));
         primaryStage.setResizable(false);
         primaryStage.show();

@@ -20,7 +20,7 @@
       <Button fx:id="joinMatchButton" layoutX="14.0" layoutY="117.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida" />
       <TextField fx:id="createMatchCode" editable="false" layoutX="137.0" layoutY="79.0" promptText="Código" />
       <TextField fx:id="joinMatchCode" layoutX="137.0" layoutY="117.0" promptText="Código" />
-      <Label layoutX="102.0" layoutY="155.0" text="CONFIGURACIÓN" />
+      <Label layoutX="114.0" layoutY="151.0" text="RESOLUCIÓN" />
       <ComboBox fx:id="resolutionInput" layoutX="75.0" layoutY="174.0" onAction="#setResolution" prefWidth="150.0" promptText="Resolución" />
       <Label layoutX="107.0" layoutY="207.0" text="SALA DE ESPERA" />
       <ImageView fitHeight="225.0" fitWidth="225.0" layoutX="39.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
@@ -30,12 +30,12 @@
       </ImageView>
       <Button fx:id="startButton" layoutX="128.0" layoutY="466.0" mnemonicParsing="false" onAction="#startMatch" text="Iniciar" />
       <TextField fx:id="nameInput" layoutX="46.0" layoutY="40.0" onAction="#setName" prefHeight="25.0" prefWidth="212.0" promptText="Nombre" />
-      <Label fx:id="playerName" layoutX="54.0" layoutY="242.0" text="Nombre" />
+      <Label fx:id="playerName" alignment="CENTER" layoutX="54.0" layoutY="242.0" text="Nombre" />
       <Label layoutX="133.0" layoutY="319.0" text="VS">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Label fx:id="enemyName" layoutX="203.0" layoutY="421.0" text="Nombre" />
+      <Label fx:id="enemyName" alignment="CENTER" layoutX="203.0" layoutY="421.0" text="Nombre" />
    </children>
 </AnchorPane>

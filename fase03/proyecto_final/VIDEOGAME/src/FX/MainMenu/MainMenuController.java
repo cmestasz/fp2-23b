@@ -7,13 +7,18 @@ import javax.swing.JOptionPane;
 import javafx.application.*;
 import javafx.collections.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 public class MainMenuController implements Operation {
     private final ObservableList<Resolution> RESOLUTIONS = FXCollections.observableArrayList();
     private final int CODE_LENGTH = 4;
 
-    private String name;
+    private String pName;
+    private String eName;
     private Resolution resolution;
     private int id;
     private String path;
@@ -40,64 +45,83 @@ public class MainMenuController implements Operation {
     private Button startButton;
 
     public void initialize() {
-        RESOLUTIONS.addAll(new Resolution(640, 480), new Resolution(1280, 720), new Resolution(1920, 1080));
+        RESOLUTIONS.addAll(new Resolution(850, 480), new Resolution(1280, 720), new Resolution(1366, 768));
         resolutionInput.setItems(RESOLUTIONS);
+        resolutionInput.setValue(RESOLUTIONS.get(0));
+        resolution = resolutionInput.getValue();
     }
 
     public void createMatch() {
-        // nombre => codigo => operacion
-        setConnection();
-        try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+        if (checkName()) {
+            setConnection();
+            try {
+                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
 
-            String code = "";
-            for (int i = 0; i < CODE_LENGTH; i++)
-                code += (char) ('A' + (int) (Math.random() * 26));
+                String code = "";
+                for (int i = 0; i < CODE_LENGTH; i++)
+                    code += (char) ('A' + (int) (Math.random() * 26));
 
-            createMatchCode.setText(code);
-            out.writeChars(name);
-            out.writeChar(0);
-            out.writeChars(code);
-            out.writeChar(0);
-            out.writeInt(OPERATION_CREATE);
+                createMatchCode.setText(code);
+                out.writeInt(OPERATION_CREATE);
+                out.writeChars(code);
+                out.writeChar(0);
+                out.writeChars(pName);
+                out.writeChar(0);
 
-            out.close();
+                out.close();
 
-            startDataReceiver();
-        } catch (Exception e) {
-            e.printStackTrace();
+                startDataReceiver();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void joinMatch() {
-        setConnection();
-        try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
-            out.writeChars(name);
-            out.writeChar(0);
-            out.writeChars(joinMatchCode.getText());
-            out.writeChar(0);
-            out.writeInt(OPERATION_JOIN);
+        if (checkName()) {
+            setConnection();
+            try {
+                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+                out.writeInt(OPERATION_JOIN);
+                out.writeChars(joinMatchCode.getText());
+                out.writeChar(0);
+                out.writeChars(pName);
+                out.writeChar(0);
 
-            out.close();
+                out.close();
 
-            startDataReceiver();
-        } catch (Exception e) {
-            e.printStackTrace();
+                startDataReceiver();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void setResolution() {
-
+        resolution = resolutionInput.getValue();
     }
 
     public void startMatch() {
-        dataReceiver.startGame();
+        if (checkName() && checkEnemy()) {
+            try {
+                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+                out.writeInt(OPERATION_START);
+                out.writeChars(createMatchCode.getText());
+                out.writeChar(0);
+
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            dataReceiver.startGame();
+            new MainGame();
+        }
     }
 
     public void setName() {
-        name = nameInput.getText();
-        playerName.setText(name);
+        pName = nameInput.getText();
+        playerName.setText(pName);
     }
 
     private void setConnection() {
@@ -119,6 +143,20 @@ public class MainMenuController implements Operation {
         }
     }
 
+    private boolean checkName() {
+        boolean nameSet = pName != null;
+        if (!nameSet)
+            JOptionPane.showMessageDialog(null, "Ingrese un nombre!");
+        return nameSet;
+    }
+
+    private boolean checkEnemy() {
+        boolean enemySet = eName != null;
+        if (!enemySet)
+            JOptionPane.showMessageDialog(null, "Crea o unete a una partida!");
+        return enemySet;
+    }
+
     private class DataReceiver extends Thread {
         private File matchFile = new File(path);
         private long lastModified;
@@ -130,22 +168,32 @@ public class MainMenuController implements Operation {
                     if (matchFile.lastModified() != lastModified) {
                         DataInputStream in = new DataInputStream(new FileInputStream(matchFile));
                         int response = in.readInt();
-                        String name = Utils.readString(in);
+                        String name;
                         switch (response) {
                             case RESPONSE_HOST:
+                                name = Utils.readString(in);
                                 Platform.runLater(() -> {
-                                    enemyName.setText(name);
+                                    eName = name;
+                                    enemyName.setText(eName);
                                 });
                                 break;
                             case RESPONSE_GUEST:
+                                name = Utils.readString(in);
                                 if (name.equals("")) {
                                     JOptionPane.showMessageDialog(null, "La partida no existe.");
                                 } else {
                                     Platform.runLater(() -> {
-                                        enemyName.setText(name);
+                                        eName = name;
+                                        enemyName.setText(eName);
+                                        startButton.setDisable(true);
                                     });
                                 }
                                 break;
+                            case RESPONSE_START:
+                                Platform.runLater(() -> {
+                                    dataReceiver.startGame();
+                                    new MainGame();
+                                });
                         }
                         lastModified = matchFile.lastModified();
                         in.close();
@@ -160,6 +208,20 @@ public class MainMenuController implements Operation {
 
         public void startGame() {
             gameStarted = true;
+        }
+    }
+
+    private class MainGame {
+        public MainGame() {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("../MainGame/Main.fxml"));
+                Stage mainGame = new Stage();
+                mainGame.setTitle("Main Game");
+                mainGame.setScene(new Scene(root, resolution.getWidth(), resolution.getHeight()));
+                mainGame.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

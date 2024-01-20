@@ -12,6 +12,8 @@ public class Connection  {
         this.id = id;
         this.connectionFile = new File("connections/" + id + ".dat");
         DataInputStream in = getDataInputStream();
+        in.readInt();
+        Utils.readString(in);
         this.name = Utils.readString(in);
         in.close();
     }
