@@ -1,5 +1,6 @@
 package FX;
 
+import java.io.*;
 import FX.MainMenu.MainMenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,7 @@ import javafx.stage.*;
 public class Videogame extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         // Carga el archivo FXML del menú principal y configura la escena
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu/MainMenu.fxml"));
         Parent root = loader.load();
@@ -18,7 +19,7 @@ public class Videogame extends Application {
         controller.setStage(primaryStage);
 
         primaryStage.setTitle("Main Menu");
-        primaryStage.setScene(new Scene(root, 300, 600));
+        primaryStage.setScene(new Scene(root, 325, 600));
         primaryStage.setResizable(false);
         primaryStage.show();
     }

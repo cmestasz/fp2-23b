@@ -19,29 +19,22 @@ public class MainMenuController implements Operation {
     private final int CODE_LENGTH = 4;
 
     private String pName;
-    private String pPassword;
     private String eName;
     private Resolution resolution;
-    private int id;
+    private int idConnection;
+    private int idPlayer;
     private String path;
     private File connectionFile;
     private DataReceiver dataReceiver;
     private Stage stage;
+    private DBConnector dbConnector;
 
     @FXML
     private TextField nameInput;
     @FXML
     private TextField passwordInput;
     @FXML
-    private Button registerButton;
-    @FXML
-    private Button loginButton;
-    @FXML
     private ComboBox<Resolution> resolutionInput;
-    @FXML
-    private Button createMatchButton;
-    @FXML
-    private Button joinMatchButton;
     @FXML
     private TextField createMatchCode;
     @FXML
@@ -58,10 +51,12 @@ public class MainMenuController implements Operation {
     }
 
     public void initialize() {
-        RESOLUTIONS.addAll(new Resolution(850, 480), new Resolution(1280, 720), new Resolution(1366, 768), new Resolution(1920, 1080));
+        RESOLUTIONS.addAll(new Resolution(850, 480), new Resolution(1280, 720), new Resolution(1366, 768),
+                new Resolution(1920, 1080));
         resolutionInput.setItems(RESOLUTIONS);
         resolutionInput.setValue(RESOLUTIONS.get(0));
         resolution = resolutionInput.getValue();
+        dbConnector = new DBConnector();
     }
 
     public void createMatch() {
@@ -126,28 +121,44 @@ public class MainMenuController implements Operation {
             createGameStage();
         }
     }
-    
+
     public void setResolution() {
         resolution = resolutionInput.getValue();
     }
-    
+
     public void login() {
-        pName = nameInput.getText();
-        pPassword = passwordInput.getText();
-        
+        String name = nameInput.getText();
+        idPlayer = dbConnector.loginPlayer(name, passwordInput.getText());
+        if (idPlayer == -1) {
+            JOptionPane.showMessageDialog(null, "Usuario no encontrado.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Acceso correcto.");
+            pName = name;
+            playerName.setText(pName);
+            nameInput.setText("");
+            passwordInput.setText("");
+        }
     }
 
     public void register() {
+        pName = nameInput.getText();
+        dbConnector.registerPlayer(pName, passwordInput.getText());
+        JOptionPane.showMessageDialog(null, "Usuario creado correctamente.");
+        login();
+    }
 
+    public void getStatistics() {
+        int[] status = dbConnector.getWinsLoses(idPlayer);
+        JOptionPane.showMessageDialog(null, "W: " + status[0] + " | L: " + status[1]);
     }
 
     private void setConnection() {
         if (connectionFile == null) {
-            path = "connections/" + id + ".dat";
+            path = "connections/" + idConnection + ".dat";
             connectionFile = new File(path);
             while (connectionFile.exists()) {
-                id++;
-                path = "connections/" + id + ".dat";
+                idConnection++;
+                path = "connections/" + idConnection + ".dat";
                 connectionFile = new File(path);
             }
         }
@@ -248,7 +259,7 @@ public class MainMenuController implements Operation {
                 // Carga el archivo FXML del juego principal y configura la escena
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../MainGame/MainGame.fxml"));
                 Parent root = loader.load();
-                
+
                 Stage mainGame = new Stage();
                 mainGame.setTitle("Main Game");
                 mainGame.setScene(new Scene(root, resolution.getWidth(), resolution.getHeight()));

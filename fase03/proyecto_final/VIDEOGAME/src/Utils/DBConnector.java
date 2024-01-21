@@ -39,8 +39,6 @@ public class DBConnector {
             // .executeQuery();
 
             System.out.println("Conexion exitosa");
-            connection.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,38 +92,55 @@ public class DBConnector {
                 .execute();
     }
 
-    public int loginPlayer(String name, String password) throws SQLException {
-        String query = String.format("SELECT id FROM players WHERE name = '%s' AND password = '%s'", name, password);
-        ResultSet results = connection.prepareStatement(query).executeQuery();
-        if (results.next())
-            return results.getInt(0);
-        else
-            return -1;
+    public int loginPlayer(String name, String password) {
+        try {
+            String query = String.format("SELECT id FROM players WHERE name = '%s' AND password = '%s'", name,
+                    password);
+            ResultSet results = connection.prepareStatement(query).executeQuery();
+            if (results.next())
+                return results.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
-    public int[] getWinsLoses(int id) throws SQLException {
-        int[] totals = new int[2];
-        String query = String.format("SELECT COUNT(*) from matches WHERE winner_id = '$d'", id);
-        ResultSet results = connection.prepareStatement(query).executeQuery();
-        if (results.next())
-            totals[0] = results.getInt(0);
+    public int[] getWinsLoses(int id) {
+        try {
+            int[] totals = new int[2];
+            String query = String.format("SELECT COUNT(*) from matches WHERE winner_id = '$d'", id);
+            ResultSet results = connection.prepareStatement(query).executeQuery();
+            if (results.next())
+                totals[0] = results.getInt(1);
 
-        query = String.format("SELECT COUNT(*) from matches WHERE loser_id = '%d'", id);
-        results = connection.prepareStatement(query).executeQuery();
-        if (results.next())
-            totals[1] = results.getInt(0);
+            query = String.format("SELECT COUNT(*) from matches WHERE loser_id = '%d'", id);
+            results = connection.prepareStatement(query).executeQuery();
+            if (results.next())
+                totals[1] = results.getInt(1);
 
-        return totals;
+            return totals;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public void createPlayer(String name, String password) throws SQLException {
-        String query = String.format("INSERT INTO players (name, password) VALUES ('%s', '%s')", name, password);
-        connection.prepareStatement(query).execute();
+    public void registerPlayer(String name, String password) {
+        try {
+            String query = String.format("INSERT INTO players (name, password) VALUES ('%s', '%s')", name, password);
+            connection.prepareStatement(query).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void createMatch(int winner_id, int loser_id) throws SQLException {
-        String query = String.format("INSERT INTO matches (winner_id, loser_id) VALUES ('%d', '%d')", winner_id,
-                loser_id);
-        connection.prepareStatement(query).execute();
+    public void createMatch(int winner_id, int loser_id) {
+        try {
+            String query = String.format("INSERT INTO matches (winner_id, loser_id) VALUES ('%d', '%d')", winner_id,
+                    loser_id);
+            connection.prepareStatement(query).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package FX;
 
 import Utils.ServerConnection;
+import Utils.DBConnector;
 import Utils.Operation;
 import Utils.Utils;
 import java.io.*;
@@ -16,6 +17,7 @@ public class MainServer extends Thread implements Operation {
     private HashMap<String, int[]> matches = new HashMap<String, int[]>();
 
     public void run() {
+        new DBConnector();
         File directory = new File("connections");
         try {
             while (active) {
