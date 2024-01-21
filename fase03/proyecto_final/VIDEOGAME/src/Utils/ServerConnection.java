@@ -7,7 +7,7 @@ public class ServerConnection  {
     private String name;
     private File connectionFile;
 
-    public ServerConnection(int id) throws Exception {
+    public ServerConnection(int id) throws IOException {
         this.id = id;
         this.connectionFile = new File("connections/" + id + ".dat");
         DataInputStream in = getDataInputStream();
@@ -33,7 +33,7 @@ public class ServerConnection  {
         return connectionFile.lastModified();
     }
 
-    public DataInputStream getDataInputStream() throws Exception {
+    public DataInputStream getDataInputStream() throws IOException {
         return new DataInputStream(new FileInputStream(connectionFile));
     }
 
