@@ -16,7 +16,7 @@ public class MainGameController {
     private Stage stage;
     private Resolution resolution;
     private MainMenuController menuController;
-    private Board board;
+    private BoardGUI board;
 
     @FXML
     private GridPane uiBoard;
@@ -40,7 +40,7 @@ public class MainGameController {
     }
 
     public void initialize() {
-        board = new Board();
+        board = new BoardGUI();
         
     }
 

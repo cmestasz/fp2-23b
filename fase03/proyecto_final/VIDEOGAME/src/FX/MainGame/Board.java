@@ -1,31 +1,22 @@
 package FX.MainGame;
 
+import java.util.HashMap;
 import java.util.Random;
-
-import javafx.scene.paint.Color;
+import FX.MainGame.Classes.*;
 
 public class Board {
-    private final String[] TYPES = { "BOSQUE", "CAMPO ABIERTO", "MONTAÑA", "DESIERTO", "PLAYA" };
-    private final Color[] BACKGROUNDS = {
-            new Color(0.13, 0.55, 0.13, 1),
-            new Color(0.31, 1, 0, 1),
-            new Color(0.69, 0.46, 0.29, 1),
-            new Color(0.93, 0.7, 0.19, 1),
-            new Color(0.91, 0.85, 0.58, 1)
-    };
+    private HashMap<String, Soldier> soldiersMap = new HashMap<String, Soldier>();
+    private String kingdom1;
+    private String kingdom2;
+    private String terrain;
+    private final String[] CLASSES = { "CABALLERO", "ARQUERO", "ESPADACHIN", "LANCERO" };
     private final Random RANDOM = new Random();
 
-    private String terrain;
-    private Color background;
-
-    public Board() {
-        int idxTerrain = RANDOM.nextInt(TYPES.length);
-        terrain = TYPES[idxTerrain];
-        background = BACKGROUNDS[idxTerrain];
-        System.out.println(terrain);
+    public Board(String kingdom1, String kingdom2, String terrain) {
+        this.kingdom1 = kingdom1;
+        this.kingdom2 = kingdom2;
+        this.terrain = terrain;
     }
 
-    public Color getBackground() {
-        return background;
-    }
+
 }
