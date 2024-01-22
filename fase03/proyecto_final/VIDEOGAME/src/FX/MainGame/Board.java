@@ -24,31 +24,42 @@ public class Board implements Serializable {
     private SerializableColor background;
     private HashMap<String, Soldier> army1 = new HashMap<String, Soldier>();
     private HashMap<String, Soldier> army2 = new HashMap<String, Soldier>();
-    private String kingdom1;
-    private String kingdom2;
+    private String kingdomPlayer;
+    private String kingdomEnemy;
 
     public Board(String kingdom1, String kingdom2) {
         int idxTerrain = RANDOM.nextInt(TERRAINS.length);
         terrain = TERRAINS[idxTerrain];
         background = BACKGROUNDS[idxTerrain];
 
-        this.kingdom1 = kingdom1;
-        this.kingdom2 = kingdom2;
+        this.kingdomPlayer = kingdom1;
+        this.kingdomEnemy = kingdom2;
 
         initSoldiers(army1, 1);
         initSoldiers(army2, 2);
+    }
+
+    // Inverts the board for the guest
+    public void invertBoard() {
+        HashMap<String, Soldier> armyt = army1;
+        army1 = army2;
+        army2 = armyt;
+
+        String kingdomt = kingdomPlayer;
+        kingdomPlayer = kingdomEnemy;
+        kingdomEnemy = kingdomt;
     }
 
     public String getTerrain() {
         return terrain;
     }
 
-    public String getKingdom1() {
-        return kingdom1;
+    public String getKingdomPlayer() {
+        return kingdomPlayer;
     }
 
-    public String getKingdom2() {
-        return kingdom2;
+    public String getKingdomEnemy() {
+        return kingdomEnemy;
     }
 
     public SerializableColor getBackground() {

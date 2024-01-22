@@ -16,7 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class MainMenuController implements Operation {
+public class MainMenuController implements MainMenuOperation {
     private final ObservableList<Resolution> RESOLUTIONS = FXCollections.observableArrayList();
     private final ObservableList<String> KINGDOMS = FXCollections.observableArrayList();
     private final int CODE_LENGTH = 6;
@@ -35,6 +35,7 @@ public class MainMenuController implements Operation {
     private Stage stage;
     private DBConnector dbConnector;
     private Board board;
+    private String matchCode;
 
     @FXML
     private TextField nameInput;
@@ -78,6 +79,7 @@ public class MainMenuController implements Operation {
         kingdomInput.setItems(KINGDOMS);
 
         dbConnector = new DBConnector();
+        setConnection();
     }
 
     public void setKingdom() {
@@ -99,16 +101,15 @@ public class MainMenuController implements Operation {
 
     public void createMatch() {
         if (checkName() && checkKingdom()) {
-            setConnection();
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
-                String code = "";
+                matchCode = "";
                 for (int i = 0; i < CODE_LENGTH; i++)
-                    code += (char) ('A' + (int) (Math.random() * 26));
+                    matchCode += (char) ('A' + (int) (Math.random() * 26));
 
-                createMatchCode.setText(code);
+                createMatchCode.setText(matchCode);
                 out.writeInt(OPERATION_CREATE);
-                out.writeChars(code);
+                out.writeChars(matchCode);
                 out.writeChar(0);
                 out.writeChars(pName);
                 out.writeChar(0);
@@ -116,8 +117,6 @@ public class MainMenuController implements Operation {
                 out.writeChar(0);
 
                 out.close();
-
-                startDataReceiver();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -126,11 +125,12 @@ public class MainMenuController implements Operation {
 
     public void joinMatch() {
         if (checkName() && checkKingdom()) {
-            setConnection();
             try {
+                matchCode = joinMatchCode.getText();
+
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
                 out.writeInt(OPERATION_JOIN);
-                out.writeChars(joinMatchCode.getText());
+                out.writeChars(matchCode);
                 out.writeChar(0);
                 out.writeChars(pName);
                 out.writeChar(0);
@@ -138,8 +138,6 @@ public class MainMenuController implements Operation {
                 out.writeChar(0);
 
                 out.close();
-
-                startDataReceiver();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -153,13 +151,13 @@ public class MainMenuController implements Operation {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
                 board = new Board(pKingdom, eKingdom);
                 out.writeInt(OPERATION_START);
-                out.writeChars(createMatchCode.getText());
+                out.writeChars(matchCode);
                 out.writeChar(0);
                 ObjectOutputStream outObj = new ObjectOutputStream(
                         new FileOutputStream("connections/" + idConnection + ".obj"));
                 outObj.writeObject(board);
-                System.out.println("written board");
 
+                out.close();
                 outObj.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -205,12 +203,12 @@ public class MainMenuController implements Operation {
                 connectionFile = new File(path);
             }
         }
-    }
-
-    private void startDataReceiver() {
-        if (dataReceiver == null) {
+        try {
+            connectionFile.createNewFile();
             dataReceiver = new DataReceiver();
             dataReceiver.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -244,7 +242,7 @@ public class MainMenuController implements Operation {
     // Clase interna para el receptor de datos en un hilo separado
     private class DataReceiver extends Thread {
         private File matchFile = new File(path);
-        private long lastModified;
+        private long lastModified = matchFile.lastModified();
         private boolean gameStarted;
 
         public void run() {
@@ -282,7 +280,6 @@ public class MainMenuController implements Operation {
                                 break;
                             // Respuesta de inicio de la partida
                             case RESPONSE_START:
-                                System.out.println("found the file back");
                                 File objFile = new File("connections/" + idConnection + ".obj");
                                 ObjectInputStream inObj = new ObjectInputStream(new FileInputStream(objFile));
                                 board = (Board) inObj.readObject();
@@ -330,7 +327,7 @@ public class MainMenuController implements Operation {
                 mainGame.show();
 
                 MainGameController controller = loader.getController();
-                controller.init(mainMenuController, resolution, mainGame, board);
+                controller.init(mainMenuController, resolution, mainGame, board, idConnection, matchCode, pName, eName);
             } catch (Exception e) {
                 e.printStackTrace();
             }

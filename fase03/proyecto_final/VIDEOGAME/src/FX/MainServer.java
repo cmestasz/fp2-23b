@@ -1,26 +1,23 @@
 package FX;
 
-import Utils.ServerConnection;
-import Utils.DBConnector;
-import Utils.Operation;
-import Utils.Utils;
+import Utils.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.JOptionPane;
 
 import FX.MainGame.Board;
 
-public class MainServer extends Thread implements Operation {
+public class MainServer extends Thread implements MainMenuOperation, MainGameOperation {
     private ArrayList<ServerConnection> connectionsList = new ArrayList<ServerConnection>();
     private HashMap<Integer, Long> lastModifiedMap = new HashMap<Integer, Long>(); // really bad name, use it to store
-                                                                                   // when ANY file is modified or received
+                                                                                   // when ANY file is modified or
+                                                                                   // received
     private int totalConnections;
     private boolean active = true;
 
     private HashMap<String, int[]> matches = new HashMap<String, int[]>();
 
     public void run() {
-        new DBConnector();
         File directory = new File("connections");
         try {
             while (active) {
@@ -36,7 +33,7 @@ public class MainServer extends Thread implements Operation {
                         ServerConnection connection = new ServerConnection(totalConnections);
                         System.out.println("connecting: " + connection);
                         connectionsList.add(connection);
-                        lastModifiedMap.put(totalConnections, (long) 0);
+                        lastModifiedMap.put(totalConnections, connection.getLastModified());
                     }
                     totalConnections = newTotalConnections;
 
@@ -70,10 +67,17 @@ public class MainServer extends Thread implements Operation {
         // Se verifica si la conexión ha sido modificada desde la última respuesta.
         if (lastModifiedMap.get(id) != lastModified) {
             try {
+                if (!connection.isInitialized())
+                    connection.initialize();
+
                 DataInputStream in = connection.getDataInputStream();
                 int operation = in.readInt();
                 String code = Utils.readString(in);
 
+                int[] ids;
+                DataOutputStream toHost;
+                DataOutputStream toGuest;
+                DataOutputStream toOther;
                 switch (operation) {
                     case OPERATION_CREATE:
                         // Se almacena la información de la conexión que ha creado un nuevo código.
@@ -83,9 +87,8 @@ public class MainServer extends Thread implements Operation {
 
                     case OPERATION_JOIN:
                         // Se intenta unir dos conexiones con el código.
-                        int[] ids = matches.get(code);
-                        DataOutputStream toGuest = new DataOutputStream(
-                                new FileOutputStream(connection.getConnectionDataFile()));
+                        ids = matches.get(code);
+                        toGuest = connection.getDataOutputStream();
                         toGuest.writeInt(RESPONSE_GUEST);
                         if (ids != null && ids[1] == -1) {
                             ServerConnection host = connectionsList.get(ids[0]);
@@ -95,8 +98,7 @@ public class MainServer extends Thread implements Operation {
                             toGuest.writeChars(host.getKingdom());
                             toGuest.writeChar(0);
 
-                            DataOutputStream toHost = new DataOutputStream(
-                                    new FileOutputStream(host.getConnectionDataFile()));
+                            toHost = host.getDataOutputStream();
                             toHost.writeInt(RESPONSE_HOST);
                             toHost.writeChars(connection.getName());
                             toHost.writeChar(0);
@@ -112,30 +114,44 @@ public class MainServer extends Thread implements Operation {
                         break;
 
                     case OPERATION_START:
-                        System.out.println("found file");
                         // Se inicia la conexión del invitado con el código.
                         ObjectInputStream inObj = connection.getObjectInputStream();
                         Board board = (Board) inObj.readObject();
+                        board.invertBoard();
                         inObj.close();
                         connection.deleteObjConnection();
-                        System.out.println(board);
 
                         int idGuest = matches.get(code)[1];
                         ServerConnection guest = connectionsList.get(idGuest);
 
-                        DataOutputStream out = new DataOutputStream(
-                                new FileOutputStream(guest.getConnectionDataFile()));
-                        ObjectOutputStream outObj = new ObjectOutputStream(
-                                new FileOutputStream(guest.getConnectionObjFile()));
-                        out.writeInt(RESPONSE_START);
-                        outObj.writeObject(board);
-                        System.out.println("sent board back");
-                        out.close();
-                        outObj.close();
+                        toGuest = guest.getDataOutputStream();
+                        ObjectOutputStream toGuestObj = guest.getObjectOutputStream();
+                        toGuest.writeInt(RESPONSE_START);
+                        toGuestObj.writeObject(board);
+                        toGuest.close();
+                        toGuestObj.close();
 
                         lastModifiedMap.put(idGuest, guest.getLastModified());
                         lastModifiedMap.put(id, connection.getLastModified());
                         break;
+
+                    case OPERATION_CHAT:
+                        String message = Utils.readString(in);
+                        message.replaceAll("\n", "");
+                        ids = matches.get(code);
+                        int idOther = id == ids[0] ? ids[1] : ids[0];
+                        ServerConnection other = connectionsList.get(idOther);
+
+                        toOther = other.getDataOutputStream();
+                        toOther.writeInt(RESPONSE_CHAT);
+                        toOther.writeChars(message);
+                        toOther.writeChar(0);
+                        toOther.close();
+
+                        lastModifiedMap.put(id, connection.getLastModified());
+                        lastModifiedMap.put(idOther, other.getLastModified());
+                        break;
+
                 }
                 in.close();
             } catch (Exception e) {
@@ -145,6 +161,7 @@ public class MainServer extends Thread implements Operation {
     }
 
     public static void main(String[] args) {
+        new DBConnector();
         MainServer server = new MainServer();
         server.start();
         JOptionPane.showMessageDialog(null, "El servidor esta ejecutandose correctamente\nPresione ok para detenerlo");

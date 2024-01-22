@@ -8,17 +8,22 @@ public class ServerConnection {
     private String kingdom;
     private File connectionDataFile;
     private File connectionObjFile;
+    private boolean initialized;
 
-    public ServerConnection(int id) throws IOException {
+    public ServerConnection(int id) {
         this.id = id;
         this.connectionDataFile = new File("connections/" + id + ".dat");
         this.connectionObjFile = new File("connections/" + id + ".obj");
+    }
+
+    public void initialize() throws IOException {
         DataInputStream in = getDataInputStream();
         in.readInt();
         Utils.readString(in);
         this.name = Utils.readString(in);
         this.kingdom = Utils.readString(in);
         in.close();
+        initialized = true;
     }
 
     public int getId() {
@@ -31,6 +36,10 @@ public class ServerConnection {
 
     public String getKingdom() {
         return kingdom;
+    }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 
     public File getConnectionDataFile() {
@@ -51,6 +60,14 @@ public class ServerConnection {
 
     public ObjectInputStream getObjectInputStream() throws IOException {
         return new ObjectInputStream(new FileInputStream(connectionObjFile));
+    }
+
+    public DataOutputStream getDataOutputStream() throws IOException {
+        return new DataOutputStream(new FileOutputStream(connectionDataFile));
+    }
+
+    public ObjectOutputStream getObjectOutputStream() throws IOException {
+        return new ObjectOutputStream(new FileOutputStream(connectionObjFile));
     }
 
     public void deleteDataConnection() {

@@ -49,19 +49,19 @@
                      <children>
                         <HBox>
                            <children>
-                              <TextArea blendMode="MULTIPLY" text="Tu" />
-                              <TextArea blendMode="MULTIPLY" text="Enemigo" />
+                              <TextArea fx:id="playerData" blendMode="MULTIPLY" text="Tu" />
+                              <TextArea fx:id="enemyData" blendMode="MULTIPLY" text="Enemigo" />
                            </children>
                         </HBox>
                         <VBox>
                            <children>
-                              <TextArea blendMode="MULTIPLY" text="chat" />
-                              <TextField blendMode="MULTIPLY" promptText="Envia un mensaje!" />
+                              <TextArea fx:id="chatOutput" blendMode="MULTIPLY" />
+                              <TextField fx:id="chatInput" blendMode="MULTIPLY" onAction="#sendMessage" promptText="Envia un mensaje!" />
                            </children>
                         </VBox>
                         <StackPane>
                            <children>
-                              <Button alignment="CENTER" mnemonicParsing="false" text="Rendirse" />
+                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#surrender" text="Rendirse" />
                            </children>
                         </StackPane>
                      </children>
