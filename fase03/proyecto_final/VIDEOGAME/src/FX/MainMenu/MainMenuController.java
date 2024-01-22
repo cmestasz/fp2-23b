@@ -12,15 +12,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class MainMenuController implements Operation {
     private final ObservableList<Resolution> RESOLUTIONS = FXCollections.observableArrayList();
-    private final int CODE_LENGTH = 4;
+    private final ObservableList<String> KINGDOMS = FXCollections.observableArrayList();
+    private final int CODE_LENGTH = 6;
 
     private String pName;
     private String eName;
+    private String pKingdom;
+    private String eKingdom;
     private Resolution resolution;
+    private double volume;
     private int idConnection;
     private int idPlayer;
     private String path;
@@ -34,7 +39,13 @@ public class MainMenuController implements Operation {
     @FXML
     private TextField passwordInput;
     @FXML
+    private Pane settingsPane;
+    @FXML
     private ComboBox<Resolution> resolutionInput;
+    @FXML
+    private Slider volumeInput;
+    @FXML
+    private ComboBox<String> kingdomInput;
     @FXML
     private TextField createMatchCode;
     @FXML
@@ -43,6 +54,10 @@ public class MainMenuController implements Operation {
     private Label playerName;
     @FXML
     private Label enemyName;
+    @FXML
+    private Label playerKingdom;
+    @FXML
+    private Label enemyKingdom;
     @FXML
     private Button startButton;
 
@@ -56,11 +71,32 @@ public class MainMenuController implements Operation {
         resolutionInput.setItems(RESOLUTIONS);
         resolutionInput.setValue(RESOLUTIONS.get(0));
         resolution = resolutionInput.getValue();
+
+        KINGDOMS.addAll("INGLATERRA", "FRANCIA", "CASTILLA-ARAGÓN", "MOROS", "SACRO IMPERIO");
+        kingdomInput.setItems(KINGDOMS);
+
         dbConnector = new DBConnector();
     }
 
+    public void setKingdom() {
+        pKingdom = kingdomInput.getValue();
+        playerKingdom.setText(pKingdom);
+    }
+
+    public void toggleSettings() {
+        settingsPane.setVisible(!settingsPane.isVisible());
+    }
+
+    public void setResolution() {
+        resolution = resolutionInput.getValue();
+    }
+
+    public void setVolume() {
+        volume = volumeInput.getValue();
+    }
+
     public void createMatch() {
-        if (checkName()) {
+        if (checkName() && checkKingdom()) {
             setConnection();
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
@@ -74,6 +110,8 @@ public class MainMenuController implements Operation {
                 out.writeChar(0);
                 out.writeChars(pName);
                 out.writeChar(0);
+                out.writeChars(pKingdom);
+                out.writeChar(0);
 
                 out.close();
 
@@ -85,7 +123,7 @@ public class MainMenuController implements Operation {
     }
 
     public void joinMatch() {
-        if (checkName()) {
+        if (checkName() && checkKingdom()) {
             setConnection();
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
@@ -93,6 +131,8 @@ public class MainMenuController implements Operation {
                 out.writeChars(joinMatchCode.getText());
                 out.writeChar(0);
                 out.writeChars(pName);
+                out.writeChar(0);
+                out.writeChars(pKingdom);
                 out.writeChar(0);
 
                 out.close();
@@ -105,8 +145,8 @@ public class MainMenuController implements Operation {
     }
 
     public void startMatch() {
-        createGameStage();
-        if (checkName() && checkEnemy()) {
+        // createGameStage();
+        if (checkName() && checkEnemy() && checkKingdom()) {
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
                 out.writeInt(OPERATION_START);
@@ -120,10 +160,6 @@ public class MainMenuController implements Operation {
 
             createGameStage();
         }
-    }
-
-    public void setResolution() {
-        resolution = resolutionInput.getValue();
     }
 
     public void login() {
@@ -174,7 +210,7 @@ public class MainMenuController implements Operation {
     private boolean checkName() {
         boolean nameSet = pName != null;
         if (!nameSet)
-            JOptionPane.showMessageDialog(null, "Ingrese un nombre!");
+            JOptionPane.showMessageDialog(null, "Crea o accede a tu cuenta!");
         return nameSet;
     }
 
@@ -185,8 +221,15 @@ public class MainMenuController implements Operation {
         return enemySet;
     }
 
+    private boolean checkKingdom() {
+        boolean kingdomSet = pKingdom != null;
+        if (!kingdomSet)
+            JOptionPane.showMessageDialog(null, "Escoge un reino!");
+        return kingdomSet;
+    }
+
     private void createGameStage() {
-        // dataReceiver.startGame();
+        dataReceiver.startGame();
         stage.hide();
         new MainGame(this);
     }
@@ -204,28 +247,28 @@ public class MainMenuController implements Operation {
                     if (matchFile.lastModified() != lastModified) {
                         DataInputStream in = new DataInputStream(new FileInputStream(matchFile));
                         int response = in.readInt();
-                        String name;
+                        String name, kingdom;
                         switch (response) {
                             // Respuesta del anfitrión
                             case RESPONSE_HOST:
                                 name = Utils.readString(in);
+                                kingdom = Utils.readString(in);
                                 // Actualiza el nombre del oponente en la interfaz de usuario
                                 Platform.runLater(() -> {
-                                    eName = name;
-                                    enemyName.setText(eName);
+                                    setEnemy(name, kingdom);
                                 });
                                 break;
                             // Respuesta del invitado
                             case RESPONSE_GUEST:
                                 name = Utils.readString(in);
+                                kingdom = Utils.readString(in);
                                 if (name.equals("")) {
                                     JOptionPane.showMessageDialog(null, "La partida no existe.");
                                 } else {
                                     // Actualiza el nombre del oponente en la interfaz de usuario y desactiva el
                                     // botón de inicio
                                     Platform.runLater(() -> {
-                                        eName = name;
-                                        enemyName.setText(eName);
+                                        setEnemy(name, kingdom);
                                         startButton.setDisable(true);
                                     });
                                 }
@@ -250,6 +293,13 @@ public class MainMenuController implements Operation {
 
         public void startGame() {
             gameStarted = true;
+        }
+
+        private void setEnemy(String name, String kingdom) {
+            eName = name;
+            eKingdom = kingdom;
+            enemyName.setText(eName);
+            enemyKingdom.setText(eKingdom);
         }
     }
 

@@ -73,7 +73,7 @@ public class MainServer extends Thread implements Operation {
                         break;
 
                     case OPERATION_JOIN:
-                        // Se intenta unir dos conexiones basándose en un código.
+                        // Se intenta unir dos conexiones con el código.
                         int[] ids = matches.get(code);
                         DataOutputStream toGuest = new DataOutputStream(
                                 new FileOutputStream(connection.getConnectionFile()));
@@ -82,11 +82,16 @@ public class MainServer extends Thread implements Operation {
                             ServerConnection host = connectionsList.get(ids[0]);
                             ids[1] = connection.getId();
                             toGuest.writeChars(host.getName());
+                            toGuest.writeChar(0);
+                            toGuest.writeChars(host.getKingdom());
+                            toGuest.writeChar(0);
 
                             DataOutputStream toHost = new DataOutputStream(
                                     new FileOutputStream(host.getConnectionFile()));
                             toHost.writeInt(RESPONSE_HOST);
                             toHost.writeChars(connection.getName());
+                            toHost.writeChar(0);
+                            toHost.writeChars(connection.getKingdom());
                             toHost.writeChar(0);
 
                             toHost.close();
@@ -98,7 +103,7 @@ public class MainServer extends Thread implements Operation {
                         break;
 
                     case OPERATION_START:
-                        // Se inicia la conexión del invitado basándose en un código.
+                        // Se inicia la conexión del invitado con el código.
                         int idGuest = matches.get(code)[1];
                         ServerConnection guest = connectionsList.get(idGuest);
                         DataOutputStream out = new DataOutputStream(

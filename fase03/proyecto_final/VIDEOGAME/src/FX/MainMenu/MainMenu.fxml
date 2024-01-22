@@ -4,10 +4,12 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FX.MainMenu.MainMenuController">
@@ -17,34 +19,28 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Button layoutX="27.0" layoutY="258.0" mnemonicParsing="false" onAction="#createMatch" text="Crear partida" />
-      <Button layoutX="27.0" layoutY="296.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida" />
-      <TextField fx:id="createMatchCode" editable="false" layoutX="150.0" layoutY="258.0" promptText="Código" />
-      <TextField fx:id="joinMatchCode" layoutX="150.0" layoutY="296.0" promptText="Código" />
-      <ComboBox fx:id="resolutionInput" layoutX="88.0" layoutY="195.0" onAction="#setResolution" prefWidth="150.0" promptText="Resolución" />
-      <Label layoutX="113.0" layoutY="231.0" text="SALA DE ESPERA">
+      <Button layoutX="27.0" layoutY="248.0" mnemonicParsing="false" onAction="#createMatch" text="Crear partida" />
+      <Button layoutX="27.0" layoutY="286.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida" />
+      <TextField fx:id="createMatchCode" editable="false" layoutX="150.0" layoutY="248.0" promptText="Código" />
+      <TextField fx:id="joinMatchCode" layoutX="150.0" layoutY="286.0" promptText="Código" />
+      <Label layoutX="113.0" layoutY="223.0" text="SALA DE ESPERA">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <ImageView fitHeight="225.0" fitWidth="225.0" layoutX="52.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="225.0" fitWidth="225.0" layoutX="52.0" layoutY="326.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../img/waiting.png" />
          </image>
       </ImageView>
       <Button fx:id="startButton" layoutX="141.0" layoutY="568.0" mnemonicParsing="false" onAction="#startMatch" text="Iniciar" />
       <TextField fx:id="nameInput" layoutX="60.0" layoutY="66.0" prefHeight="25.0" prefWidth="212.0" promptText="Nombre" />
-      <Label fx:id="playerName" alignment="CENTER" layoutX="67.0" layoutY="344.0" text="Nombre" />
-      <Label layoutX="146.0" layoutY="421.0" text="VS">
+      <Label fx:id="playerName" alignment="CENTER" layoutX="67.0" layoutY="339.0" text="Nombre" />
+      <Label layoutX="146.0" layoutY="416.0" text="VS">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
       <Label fx:id="enemyName" alignment="CENTER" layoutX="216.0" layoutY="523.0" text="Nombre" />
-      <Label layoutX="101.0" layoutY="168.0" text="CONFIGURACIONES">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
       <Label layoutX="135.0" layoutY="39.0" text="USUARIO">
          <font>
             <Font size="14.0" />
@@ -54,5 +50,35 @@
       <Button layoutX="10.0" layoutY="135.0" mnemonicParsing="false" onAction="#register" text="Crear cuenta" />
       <Button layoutX="102.0" layoutY="135.0" mnemonicParsing="false" onAction="#login" text="Ingresar a cuenta" />
       <Button layoutX="218.0" layoutY="135.0" mnemonicParsing="false" onAction="#getStatistics" text="Ver estadísticas" />
+      <Label fx:id="playerKingdom" alignment="CENTER" layoutX="67.0" layoutY="361.0" text="Reino" />
+      <Label fx:id="enemyKingdom" alignment="CENTER" layoutX="229.0" layoutY="501.0" text="Reino" />
+      <ComboBox fx:id="kingdomInput" layoutX="90.0" layoutY="189.0" onAction="#setKingdom" prefWidth="150.0" promptText="Reino" />
+      <Label layoutX="143.0" layoutY="165.0" text="REINO">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Pane fx:id="settingsPane" prefHeight="156.0" prefWidth="325.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="100.0" layoutY="15.0" text="CONFIGURACIONES">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="133.0" layoutY="46.0" text="Resolución" />
+            <ComboBox fx:id="resolutionInput" layoutX="88.0" layoutY="63.0" onAction="#setResolution" prefWidth="150.0" promptText="Resolución" />
+            <Slider fx:id="volumeInput" layoutX="92.0" layoutY="120.0" onDragDone="#setVolume" />
+            <Label layoutX="139.0" layoutY="103.0" text="Volumen" />
+         </children>
+      </Pane>
+      <Pane layoutX="295.0" layoutY="7.0" onMouseClicked="#toggleSettings" prefHeight="25.0" prefWidth="25.0">
+         <children>
+            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/settings.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
