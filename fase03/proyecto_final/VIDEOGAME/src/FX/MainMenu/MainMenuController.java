@@ -2,8 +2,6 @@ package FX.MainMenu;
 
 import Utils.*;
 import java.io.*;
-import javax.swing.JOptionPane;
-
 import FX.MainGame.Board;
 import FX.MainGame.MainGameController;
 import javafx.application.*;
@@ -63,6 +61,10 @@ public class MainMenuController implements MainMenuOperation {
     private Label enemyKingdom;
     @FXML
     private Button startButton;
+    @FXML
+    private TitledPane messagePane;
+    @FXML
+    private TextArea messageOutput;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -171,9 +173,9 @@ public class MainMenuController implements MainMenuOperation {
         String name = nameInput.getText();
         idPlayer = dbConnector.loginPlayer(name, passwordInput.getText());
         if (idPlayer == -1) {
-            JOptionPane.showMessageDialog(null, "Usuario no encontrado.");
+            showMessage("Usuario no encontrado.");
         } else {
-            JOptionPane.showMessageDialog(null, "Acceso correcto.");
+            showMessage("Acceso correcto.");
             pName = name;
             playerName.setText(pName);
             nameInput.setText("");
@@ -184,13 +186,17 @@ public class MainMenuController implements MainMenuOperation {
     public void register() {
         pName = nameInput.getText();
         dbConnector.registerPlayer(pName, passwordInput.getText());
-        JOptionPane.showMessageDialog(null, "Usuario creado correctamente.");
+        showMessage("Usuario creado correctamente.");
         login();
     }
 
     public void getStatistics() {
         int[] status = dbConnector.getWinsLoses(idPlayer);
-        JOptionPane.showMessageDialog(null, "W: " + status[0] + " | L: " + status[1]);
+        showMessage(String.format("W: %d | L: %d", status[0], status[1]));
+    }
+
+    public void closeMessage() {
+        messagePane.setVisible(false);
     }
 
     private void setConnection() {
@@ -215,21 +221,21 @@ public class MainMenuController implements MainMenuOperation {
     private boolean checkName() {
         boolean nameSet = pName != null;
         if (!nameSet)
-            JOptionPane.showMessageDialog(null, "Crea o accede a tu cuenta!");
+            showMessage("Crea o accede a tu cuenta!");
         return nameSet;
     }
 
     private boolean checkEnemy() {
         boolean enemySet = eName != null;
         if (!enemySet)
-            JOptionPane.showMessageDialog(null, "Crea o únete a una partida!");
+            showMessage("Crea o únete a una partida!");
         return enemySet;
     }
 
     private boolean checkKingdom() {
         boolean kingdomSet = pKingdom != null;
         if (!kingdomSet)
-            JOptionPane.showMessageDialog(null, "Escoge un reino!");
+            showMessage("Escoge un reino!");
         return kingdomSet;
     }
 
@@ -237,6 +243,11 @@ public class MainMenuController implements MainMenuOperation {
         dataReceiver.startGame();
         stage.hide();
         new MainGame(this);
+    }
+
+    private void showMessage(String message) {
+        messagePane.setVisible(true);
+        messageOutput.setText(message);
     }
 
     // Clase interna para el receptor de datos en un hilo separado
@@ -268,7 +279,7 @@ public class MainMenuController implements MainMenuOperation {
                                 name = Utils.readString(in);
                                 kingdom = Utils.readString(in);
                                 if (name.equals("")) {
-                                    JOptionPane.showMessageDialog(null, "La partida no existe.");
+                                    showMessage("La partida no existe.");
                                 } else {
                                     // Actualiza el nombre del oponente en la interfaz de usuario y desactiva el
                                     // botón de inicio

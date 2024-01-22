@@ -150,11 +150,11 @@ public class MainGameController implements MainGameOperation {
     private class DataReceiver extends Thread {
         private File matchFile = new File(path);
         private long lastModified = matchFile.lastModified();
-        private boolean gameStarted;
+        private boolean gameEnded;
 
         public void run() {
             try {
-                while (!gameStarted) {
+                while (!gameEnded) {
                     // Comprueba si el archivo de la partida ha sido modificado
                     if (matchFile.lastModified() != lastModified) {
                         DataInputStream in = new DataInputStream(new FileInputStream(matchFile));
@@ -215,10 +215,6 @@ public class MainGameController implements MainGameOperation {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        public void startGame() {
-            gameStarted = true;
         }
     }
 }
