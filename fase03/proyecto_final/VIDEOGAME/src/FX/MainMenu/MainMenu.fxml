@@ -82,7 +82,7 @@
             </ImageView>
          </children>
       </Pane>
-      <TitledPane fx:id="messagePane" animated="false" layoutX="25.0" layoutY="231.0" prefHeight="139.0" prefWidth="279.0" text="Mensaje" visible="false">
+      <TitledPane fx:id="messagePane" animated="false" collapsible="false" layoutX="25.0" layoutY="231.0" prefHeight="139.0" prefWidth="279.0" text="Mensaje" visible="false">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

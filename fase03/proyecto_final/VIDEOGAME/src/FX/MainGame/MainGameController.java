@@ -10,19 +10,29 @@ import Utils.MainGameOperation;
 import Utils.Resolution;
 import Utils.Utils;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainGameController implements MainGameOperation {
+    private final Color playerColor = new Color(0.27, 0.51, 1, 1);
+    private final Color enemyColor = new Color(1, 0.27, 0.27, 1);
+    private final Color backgroundColor = new Color(0.1, 0.1, 0.1, 1);
     private final int SIZE = 10;
 
     private Stage stage;
     private Resolution resolution;
+    private int width;
+    private int height;
     private MainMenuController menuController;
     private Board board;
     private String kingdomPlayer;
@@ -46,7 +56,9 @@ public class MainGameController implements MainGameOperation {
     @FXML
     private TextArea enemyData;
     @FXML
-    private TextArea chatOutput;
+    private ScrollPane chatOutputPane;
+    @FXML
+    private VBox chatOutput;
     @FXML
     private TextField chatInput;
 
@@ -54,6 +66,8 @@ public class MainGameController implements MainGameOperation {
             int idConnection, String matchCode, String pName, String eName) {
         this.menuController = menuController;
         this.resolution = resolution;
+        this.width = resolution.getWidth();
+        this.height = resolution.getHeight();
         this.stage = stage;
         this.board = board;
         this.idConnection = idConnection;
@@ -65,12 +79,35 @@ public class MainGameController implements MainGameOperation {
         initButtons();
         initBackground();
         initDataFields();
+        initChat();
 
         setConnection();
     }
 
     public void initialize() {
 
+    }
+
+    public void surrender() {
+
+    }
+
+    public void sendMessage() {
+        try {
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+            String message = String.format("%s: %s%n", pName, chatInput.getText());
+            printMessage(message, playerColor);
+            out.writeInt(OPERATION_CHAT);
+            out.writeChars(matchCode);
+            out.writeChar(0);
+            out.writeChars(message);
+            out.writeChar(0);
+            out.close();
+
+            chatInput.setText("");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initButtons() {
@@ -91,8 +128,6 @@ public class MainGameController implements MainGameOperation {
     }
 
     private void initBackground() {
-        int width = resolution.getWidth();
-        int height = resolution.getHeight();
         boardBackground.setWidth(width);
         boardBackground.setHeight(height);
         boardBackground.setFill(board.getBackground().getColor());
@@ -107,32 +142,23 @@ public class MainGameController implements MainGameOperation {
         enemyData.setText(kingdomEnemy);
     }
 
+    private void initChat() {
+        chatOutput.setPrefHeight(height * 0.4);
+    }
+
     private void handleClick(MouseEvent event) {
         Pane pane = (Pane) event.getSource();
         System.out.println(pane.getChildren().get(0));
     }
 
-    public void surrender() {
+    private void printMessage(String message, Color color) {
+        Text messageText = new Text(message);
+        messageText.setFill(color);
+        messageText.setWrappingWidth(width - height);
 
-    }
-
-    public void sendMessage() {
-        try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
-
-            String message = chatInput.getText();
-            chatOutput.appendText(String.format("%s: %s%n", pName, message));
-            out.writeInt(OPERATION_CHAT);
-            out.writeChars(matchCode);
-            out.writeChar(0);
-            out.writeChars(message);
-            out.writeChar(0);
-            out.close();
-
-            chatInput.setText("");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ObservableList<Node> children = chatOutput.getChildren();
+        children.add(children.size() - 1, messageText);
+        chatOutputPane.setVvalue(0.99);
     }
 
     private void setConnection() {
@@ -164,7 +190,7 @@ public class MainGameController implements MainGameOperation {
                             case RESPONSE_CHAT:
                                 String message = Utils.readString(in);
                                 Platform.runLater(() -> {
-                                    chatOutput.appendText(String.format("%s: %s%n", eName, message));
+                                    printMessage(message, enemyColor);
                                 });
                                 break;
                             /*
