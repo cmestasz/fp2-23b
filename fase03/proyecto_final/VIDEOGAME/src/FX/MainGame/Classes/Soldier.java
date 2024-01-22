@@ -1,8 +1,10 @@
 package FX.MainGame.Classes;
 
+import java.io.Serializable;
+
 import javax.swing.*;
 
-public abstract class Soldier {
+public abstract class Soldier implements Serializable {
     private String name;
     private int team;
     private int initialHealth;

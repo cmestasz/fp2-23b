@@ -4,6 +4,7 @@ import Utils.*;
 import java.io.*;
 import javax.swing.JOptionPane;
 
+import FX.MainGame.Board;
 import FX.MainGame.MainGameController;
 import javafx.application.*;
 import javafx.collections.*;
@@ -33,6 +34,7 @@ public class MainMenuController implements Operation {
     private DataReceiver dataReceiver;
     private Stage stage;
     private DBConnector dbConnector;
+    private Board board;
 
     @FXML
     private TextField nameInput;
@@ -149,11 +151,16 @@ public class MainMenuController implements Operation {
         if (checkName() && checkEnemy() && checkKingdom()) {
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+                board = new Board(pKingdom, eKingdom);
                 out.writeInt(OPERATION_START);
                 out.writeChars(createMatchCode.getText());
                 out.writeChar(0);
+                ObjectOutputStream outObj = new ObjectOutputStream(
+                        new FileOutputStream("connections/" + idConnection + ".obj"));
+                outObj.writeObject(board);
+                System.out.println("written board");
 
-                out.close();
+                outObj.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -275,6 +282,12 @@ public class MainMenuController implements Operation {
                                 break;
                             // Respuesta de inicio de la partida
                             case RESPONSE_START:
+                                System.out.println("found the file back");
+                                File objFile = new File("connections/" + idConnection + ".obj");
+                                ObjectInputStream inObj = new ObjectInputStream(new FileInputStream(objFile));
+                                board = (Board) inObj.readObject();
+                                inObj.close();
+                                objFile.delete();
                                 // Inicia el juego principal
                                 Platform.runLater(() -> {
                                     createGameStage();
@@ -317,9 +330,7 @@ public class MainMenuController implements Operation {
                 mainGame.show();
 
                 MainGameController controller = loader.getController();
-                controller.setMenuController(mainMenuController);
-                controller.setResolution(resolution);
-                controller.setStage(mainGame);
+                controller.init(mainMenuController, resolution, mainGame, board);
             } catch (Exception e) {
                 e.printStackTrace();
             }

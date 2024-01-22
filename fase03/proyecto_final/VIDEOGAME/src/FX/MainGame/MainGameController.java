@@ -16,7 +16,9 @@ public class MainGameController {
     private Stage stage;
     private Resolution resolution;
     private MainMenuController menuController;
-    private BoardGUI board;
+    private Board board;
+    private String kingdom1;
+    private String kingdom2;
 
     @FXML
     private GridPane uiBoard;
@@ -25,22 +27,16 @@ public class MainGameController {
     @FXML
     private Rectangle dataBackground;
 
-    public void setMenuController(MainMenuController controller) {
-        this.menuController = controller;
-    }
-
-    public void setResolution(Resolution resolution) {
+    public void init(MainMenuController menuController, Resolution resolution, Stage stage, Board board) {
+        this.menuController = menuController;
         this.resolution = resolution;
+        this.stage = stage;
+        this.board = board;
         initButtons();
         initBackground();
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
     public void initialize() {
-        board = new BoardGUI();
         
     }
 
@@ -66,7 +62,7 @@ public class MainGameController {
         int height = resolution.getHeight();
         boardBackground.setWidth(width);
         boardBackground.setHeight(height);
-        boardBackground.setFill(board.getBackground());
+        boardBackground.setFill(board.getBackground().getColor());
 
         dataBackground.setWidth(width - height);
         dataBackground.setHeight(height);

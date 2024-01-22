@@ -2,15 +2,17 @@ package Utils;
 
 import java.io.*;
 
-public class ServerConnection  {
+public class ServerConnection {
     private int id;
     private String name;
     private String kingdom;
-    private File connectionFile;
+    private File connectionDataFile;
+    private File connectionObjFile;
 
     public ServerConnection(int id) throws IOException {
         this.id = id;
-        this.connectionFile = new File("connections/" + id + ".dat");
+        this.connectionDataFile = new File("connections/" + id + ".dat");
+        this.connectionObjFile = new File("connections/" + id + ".obj");
         DataInputStream in = getDataInputStream();
         in.readInt();
         Utils.readString(in);
@@ -31,20 +33,32 @@ public class ServerConnection  {
         return kingdom;
     }
 
-    public File getConnectionFile() {
-        return connectionFile;
+    public File getConnectionDataFile() {
+        return connectionDataFile;
+    }
+
+    public File getConnectionObjFile() {
+        return connectionObjFile;
     }
 
     public long getLastModified() {
-        return connectionFile.lastModified();
+        return connectionDataFile.lastModified();
     }
 
     public DataInputStream getDataInputStream() throws IOException {
-        return new DataInputStream(new FileInputStream(connectionFile));
+        return new DataInputStream(new FileInputStream(connectionDataFile));
     }
 
-    public void deleteConnection() {
-        connectionFile.delete();
+    public ObjectInputStream getObjectInputStream() throws IOException {
+        return new ObjectInputStream(new FileInputStream(connectionObjFile));
+    }
+
+    public void deleteDataConnection() {
+        connectionDataFile.delete();
+    }
+
+    public void deleteObjConnection() {
+        connectionObjFile.delete();
     }
 
     public String toString() {

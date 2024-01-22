@@ -1,10 +1,15 @@
 package FX.MainGame.Classes;
 
-public class Spearman extends Soldier {
+import java.io.Serializable;
+
+public class Spearman extends Soldier implements Serializable {
+    private static final int HEALTH = 8;
+    private static final int ATTACK = 5;
+    private static final int DEFENSE = 10;
     private int spearLength;
 
-    public Spearman(String name, int team, int initialHealth, int attack, int defense, String type) {
-        super(name, team, initialHealth, attack, defense, type);
+    public Spearman(String name, int team, String type) {
+        super(name, team, HEALTH, ATTACK, DEFENSE, type);
     }
 
     public void schiltrom() {

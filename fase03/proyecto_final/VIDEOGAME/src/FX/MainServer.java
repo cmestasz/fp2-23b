@@ -8,9 +8,12 @@ import java.io.*;
 import java.util.*;
 import javax.swing.JOptionPane;
 
+import FX.MainGame.Board;
+
 public class MainServer extends Thread implements Operation {
     private ArrayList<ServerConnection> connectionsList = new ArrayList<ServerConnection>();
-    private HashMap<Integer, Long> lastModifiedMap = new HashMap<Integer, Long>();
+    private HashMap<Integer, Long> lastModifiedMap = new HashMap<Integer, Long>(); // really bad name, use it to store
+                                                                                   // when ANY file is modified or received
     private int totalConnections;
     private boolean active = true;
 
@@ -21,16 +24,22 @@ public class MainServer extends Thread implements Operation {
         File directory = new File("connections");
         try {
             while (active) {
-                int newTotalConnections = directory.listFiles().length;
+                int newTotalConnections = 0;
+                for (File file : directory.listFiles())
+                    if (file.getName().endsWith(".dat"))
+                        newTotalConnections++;
                 System.out.println(newTotalConnections);
-                
+
                 if (totalConnections != newTotalConnections) {
-                    // Se crea una nueva conexión y se agrega a la lista.
-                    ServerConnection connection = new ServerConnection(totalConnections);
-                    System.out.println("connecting: " + connection);
-                    connectionsList.add(connection);
-                    lastModifiedMap.put(totalConnections, (long) 0);
+                    for (int id = totalConnections; id < newTotalConnections; id++) {
+                        // Se crea una nueva conexión y se agrega a la lista.
+                        ServerConnection connection = new ServerConnection(totalConnections);
+                        System.out.println("connecting: " + connection);
+                        connectionsList.add(connection);
+                        lastModifiedMap.put(totalConnections, (long) 0);
+                    }
                     totalConnections = newTotalConnections;
+
                 }
 
                 for (int id = 0; id < totalConnections; id++)
@@ -40,7 +49,7 @@ public class MainServer extends Thread implements Operation {
             }
 
             for (ServerConnection connection : connectionsList) {
-                connection.deleteConnection();
+                connection.deleteDataConnection();
                 connection = null;
             }
 
@@ -57,7 +66,7 @@ public class MainServer extends Thread implements Operation {
         ServerConnection connection = connectionsList.get(id);
         System.out.println("responding: " + connection);
         long lastModified = connection.getLastModified();
-        
+
         // Se verifica si la conexión ha sido modificada desde la última respuesta.
         if (lastModifiedMap.get(id) != lastModified) {
             try {
@@ -76,7 +85,7 @@ public class MainServer extends Thread implements Operation {
                         // Se intenta unir dos conexiones con el código.
                         int[] ids = matches.get(code);
                         DataOutputStream toGuest = new DataOutputStream(
-                                new FileOutputStream(connection.getConnectionFile()));
+                                new FileOutputStream(connection.getConnectionDataFile()));
                         toGuest.writeInt(RESPONSE_GUEST);
                         if (ids != null && ids[1] == -1) {
                             ServerConnection host = connectionsList.get(ids[0]);
@@ -87,7 +96,7 @@ public class MainServer extends Thread implements Operation {
                             toGuest.writeChar(0);
 
                             DataOutputStream toHost = new DataOutputStream(
-                                    new FileOutputStream(host.getConnectionFile()));
+                                    new FileOutputStream(host.getConnectionDataFile()));
                             toHost.writeInt(RESPONSE_HOST);
                             toHost.writeChars(connection.getName());
                             toHost.writeChar(0);
@@ -103,14 +112,29 @@ public class MainServer extends Thread implements Operation {
                         break;
 
                     case OPERATION_START:
+                        System.out.println("found file");
                         // Se inicia la conexión del invitado con el código.
+                        ObjectInputStream inObj = connection.getObjectInputStream();
+                        Board board = (Board) inObj.readObject();
+                        inObj.close();
+                        connection.deleteObjConnection();
+                        System.out.println(board);
+
                         int idGuest = matches.get(code)[1];
                         ServerConnection guest = connectionsList.get(idGuest);
+
                         DataOutputStream out = new DataOutputStream(
-                                new FileOutputStream(guest.getConnectionFile()));
+                                new FileOutputStream(guest.getConnectionDataFile()));
+                        ObjectOutputStream outObj = new ObjectOutputStream(
+                                new FileOutputStream(guest.getConnectionObjFile()));
                         out.writeInt(RESPONSE_START);
+                        outObj.writeObject(board);
+                        System.out.println("sent board back");
                         out.close();
+                        outObj.close();
+
                         lastModifiedMap.put(idGuest, guest.getLastModified());
+                        lastModifiedMap.put(id, connection.getLastModified());
                         break;
                 }
                 in.close();

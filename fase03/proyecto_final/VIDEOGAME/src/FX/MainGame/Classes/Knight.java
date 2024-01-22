@@ -1,11 +1,16 @@
 package FX.MainGame.Classes;
 
-public class Knight extends Soldier {
+import java.io.Serializable;
+
+public class Knight extends Soldier implements Serializable {
+    private static final int HEALTH = 12;
+    private static final int ATTACK = 13;
+    private static final int DEFENSE = 7;
     private String weapon = "ESPADA";
     private boolean mounted = false;
 
-    public Knight(String name, int team, int initialHealth, int attack, int defense, String type) {
-        super(name, team, initialHealth, attack, defense, type);
+    public Knight(String name, int team, String type) {
+        super(name, team, HEALTH, ATTACK, DEFENSE, type);
     }
 
     public void changeWeapon(String arma) {

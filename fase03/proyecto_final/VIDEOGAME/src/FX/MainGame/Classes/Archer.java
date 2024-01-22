@@ -1,10 +1,15 @@
 package FX.MainGame.Classes;
 
-public class Archer extends Soldier {
+import java.io.Serializable;
+
+public class Archer extends Soldier implements Serializable {
+    private static final int HEALTH = 5;
+    private static final int ATTACK = 7;
+    private static final int DEFENSE = 3;
     private int arrows = 10;
 
-    public Archer(String name, int team, int initialHealth, int attack, int defense, String type) {
-        super(name, team, initialHealth, attack, defense, type);
+    public Archer(String name, int team, String type) {
+        super(name, team, HEALTH, ATTACK, DEFENSE, type);
     }
 
     public void shoot(Soldier other) {
