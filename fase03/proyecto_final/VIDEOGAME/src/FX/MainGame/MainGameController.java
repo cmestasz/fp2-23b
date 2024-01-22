@@ -1,14 +1,20 @@
 package FX.MainGame;
 
 import java.io.*;
+import java.util.HashMap;
+
 import javax.swing.JOptionPane;
 
 import com.mysql.cj.util.Util;
 
+import FX.MainGame.Classes.Soldier;
 import FX.MainMenu.MainMenuController;
+import Utils.BetterColor;
 import Utils.MainGameOperation;
 import Utils.Resolution;
+import Utils.Tile;
 import Utils.Utils;
+import Utils.VideogameConstants;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.collections.ObservableList;
@@ -23,12 +29,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class MainGameController implements MainGameOperation {
-    private final Color playerColor = new Color(0.27, 0.51, 1, 1);
-    private final Color enemyColor = new Color(1, 0.27, 0.27, 1);
-    private final Color backgroundColor = new Color(0.1, 0.1, 0.1, 1);
-    private final int SIZE = 10;
-
+public class MainGameController implements MainGameOperation, VideogameConstants {
     private Stage stage;
     private Resolution resolution;
     private int width;
@@ -44,6 +45,7 @@ public class MainGameController implements MainGameOperation {
     private String matchCode;
     private String pName;
     private String eName;
+    private Tile[][] tiles = new Tile[SIZE][SIZE];
 
     @FXML
     private GridPane uiBoard;
@@ -96,7 +98,7 @@ public class MainGameController implements MainGameOperation {
         try {
             DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
             String message = String.format("%s: %s%n", pName, chatInput.getText());
-            printMessage(message, playerColor);
+            printMessage(message, PLAYER_COLOR);
             out.writeInt(OPERATION_CHAT);
             out.writeChars(matchCode);
             out.writeChar(0);
@@ -111,18 +113,27 @@ public class MainGameController implements MainGameOperation {
     }
 
     private void initButtons() {
-        Image image = new Image("img/tile.png");
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                ImageView imageView = new ImageView(image);
+                String key = generateKey(i, j);
                 double size = 1.0 * resolution.getHeight() / 10;
-                imageView.setFitWidth(size);
-                imageView.setFitHeight(size);
+                HashMap<String, Soldier> army1 = board.getArmy1();
+                HashMap<String, Soldier> army2 = board.getArmy2();
+                Tile tile;
 
-                Pane pane = new Pane(imageView);
-                pane.setOnMouseClicked(this::handleClick);
-
-                uiBoard.add(pane, i, j);
+                if (army1.containsKey(key)) {
+                    tile = new Tile(army1.get(key).getTypeFile(), size, i, j);
+                    tile.setStyle(String.format("-fx-background-color: %s;", PLAYER_COLOR_TRANS.getRGBA()));
+                } else if (army2.containsKey(key)) {
+                    tile = new Tile(army2.get(key).getTypeFile(), size, i, j);
+                    tile.setStyle(String.format("-fx-background-color: %s;", ENEMY_COLOR_TRANS.getRGBA()));
+                } else {
+                    tile = new Tile("tile", size, i, j);
+                }
+                tiles[i][j] = tile;
+                
+                tile.setOnMouseClicked(this::handleClick);
+                uiBoard.add(tile, i, j);
             }
         }
     }
@@ -147,13 +158,13 @@ public class MainGameController implements MainGameOperation {
     }
 
     private void handleClick(MouseEvent event) {
-        Pane pane = (Pane) event.getSource();
-        System.out.println(pane.getChildren().get(0));
+        Tile tile = (Tile) event.getSource();
+        System.out.println(tile);
     }
 
-    private void printMessage(String message, Color color) {
+    private void printMessage(String message, BetterColor color) {
         Text messageText = new Text(message);
-        messageText.setFill(color);
+        messageText.setFill(color.getColor());
         messageText.setWrappingWidth(width - height);
 
         ObservableList<Node> children = chatOutput.getChildren();
@@ -173,6 +184,10 @@ public class MainGameController implements MainGameOperation {
         }
     }
 
+    private String generateKey(int i, int j) {
+        return i + "," + j;
+    }
+
     private class DataReceiver extends Thread {
         private File matchFile = new File(path);
         private long lastModified = matchFile.lastModified();
@@ -190,7 +205,7 @@ public class MainGameController implements MainGameOperation {
                             case RESPONSE_CHAT:
                                 String message = Utils.readString(in);
                                 Platform.runLater(() -> {
-                                    printMessage(message, enemyColor);
+                                    printMessage(message, ENEMY_COLOR);
                                 });
                                 break;
                             /*

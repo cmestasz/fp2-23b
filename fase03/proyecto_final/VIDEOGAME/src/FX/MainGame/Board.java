@@ -1,27 +1,15 @@
 package FX.MainGame;
 
 import FX.MainGame.Classes.*;
-import Utils.SerializableColor;
+import Utils.*;
 import java.io.Serializable;
 import java.util.*;
-import javafx.scene.paint.Color;
 
-public class Board implements Serializable {
-    private final String[] TERRAINS = { "BOSQUE", "CAMPO ABIERTO", "MONTAÑA", "DESIERTO", "PLAYA" };
-    private final String[] TYPES = { "CABALLERO", "ARQUERO", "ESPADACHIN", "LANCERO" };
-    private final SerializableColor[] BACKGROUNDS = {
-        new SerializableColor(0.13, 0.55, 0.13, 1),
-        new SerializableColor(0.31, 1, 0, 1),
-        new SerializableColor(0.69, 0.46, 0.29, 1),
-        new SerializableColor(0.93, 0.7, 0.19, 1),
-        new SerializableColor(0.91, 0.85, 0.58, 1)
-    };
+public class Board implements Serializable, VideogameConstants {
     private final Random RANDOM = new Random();
-    private final int TOTAL = 10;
-    private final int SIZE = 10;
     
     private String terrain;
-    private SerializableColor background;
+    private BetterColor background;
     private HashMap<String, Soldier> army1 = new HashMap<String, Soldier>();
     private HashMap<String, Soldier> army2 = new HashMap<String, Soldier>();
     private String kingdomPlayer;
@@ -50,6 +38,14 @@ public class Board implements Serializable {
         kingdomEnemy = kingdomt;
     }
 
+    public HashMap<String, Soldier> getArmy1() {
+        return army1;
+    }
+
+    public HashMap<String, Soldier> getArmy2() {
+        return army2;
+    }
+
     public String getTerrain() {
         return terrain;
     }
@@ -62,13 +58,15 @@ public class Board implements Serializable {
         return kingdomEnemy;
     }
 
-    public SerializableColor getBackground() {
+    public BetterColor getBackground() {
         return background;
     }
 
     private void initSoldiers(HashMap<String, Soldier> map, int team) {
-        for (int i = 0; i < TOTAL; i++) {
-            String type = TYPES[RANDOM.nextInt(TYPES.length)];
+        for (int i = 0; i < TOTAL_SOLDIERS; i++) {
+            int idx = RANDOM.nextInt(TYPES.length);
+            String type = TYPES[idx];
+            String fileType = TYPE_FILES[idx];
             int row, col;
             String key;
             do {
@@ -80,16 +78,16 @@ public class Board implements Serializable {
             Soldier soldier = null;
             switch (type) {
                 case "CABALLERO":
-                    soldier = new Knight(name, team, type);
+                    soldier = new Knight(name, team, type, fileType);
                     break;
                 case "ARQUERO":
-                    soldier = new Archer(name, team, type);
+                    soldier = new Archer(name, team, type, fileType);
                     break;
                 case "ESPADACHIN":
-                    soldier = new Swordsman(name, team, type);
+                    soldier = new Swordsman(name, team, type, fileType);
                     break;
                 case "LANCERO":
-                    soldier = new Spearman(name, team, type);
+                    soldier = new Spearman(name, team, type, fileType);
                     break;
             }
             map.put(key, soldier);

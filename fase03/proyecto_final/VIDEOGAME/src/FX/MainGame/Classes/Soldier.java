@@ -12,8 +12,9 @@ public abstract class Soldier implements Serializable {
     private int attack;
     private int defense;
     private String type;
+    private String typeFile;
 
-    public Soldier(String name, int team, int initialHealth, int attack, int defense, String type) {
+    public Soldier(String name, int team, int initialHealth, int attack, int defense, String type, String typeFile) {
         this.name = name;
         this.team = team;
         this.initialHealth = initialHealth;
@@ -21,6 +22,7 @@ public abstract class Soldier implements Serializable {
         this.attack = attack;
         this.defense = defense;
         this.type = type;
+        this.typeFile = typeFile;
     }
 
     public String getName() {
@@ -49,6 +51,10 @@ public abstract class Soldier implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public String getTypeFile() {
+        return typeFile;
     }
 
     public void heal() {
