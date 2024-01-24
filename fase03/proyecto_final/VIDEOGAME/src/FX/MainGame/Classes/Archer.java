@@ -1,7 +1,5 @@
 package FX.MainGame.Classes;
 
-import java.io.Serializable;
-
 public class Archer extends Soldier {
     private static final int HEALTH = 5;
     private static final int ATTACK = 7;
@@ -13,9 +11,11 @@ public class Archer extends Soldier {
     }
 
     public void shoot(Soldier other) {
-        if (arrows > 0) {
-            attack(other, 1);
-            arrows--;
-        }
+        attack(other);
+        arrows--;
+    }
+
+    public int getArrows() {
+        return arrows;
     }
 }

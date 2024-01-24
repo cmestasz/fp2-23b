@@ -160,6 +160,11 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private void handleClick(MouseEvent event) {
         Tile tile = (Tile) event.getSource();
         System.out.println(tile);
+        // currently selected this ^ and show actions menu 5% of width
+        // link soldiers with tile i j
+        // implement the actions here probably
+        // then implement board updates in board, these can be sent to the server as a number (update type), and other args qwq
+        // remember to also show something visual when a special action is done
     }
 
     private void printMessage(String message, BetterColor color) {

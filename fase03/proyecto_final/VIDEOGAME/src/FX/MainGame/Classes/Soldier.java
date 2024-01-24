@@ -2,8 +2,6 @@ package FX.MainGame.Classes;
 
 import java.io.Serializable;
 
-import javax.swing.*;
-
 public abstract class Soldier implements Serializable {
     private String name;
     private int team;
@@ -61,15 +59,21 @@ public abstract class Soldier implements Serializable {
         currentHealth++;
     }
 
-    public void attack(Soldier other, int instances) {
-        other.hurt(instances * (Math.max(0, attack - other.getDefense())));
+    public int attack(Soldier other) {
+        int damage = Math.max(1, attack - other.getDefense() + (int) Math.random() * 2);
+        other.hurt(damage);
+        return damage;
     }
 
-    public void hurt(int vida) {
-        currentHealth -= vida;
+    public void hurt(int damage) {
+        currentHealth -= damage;
     }
 
-    public void defend() {
-        defense++;
+    public void modifyAttack(int change) {
+        attack += change;
+    }
+
+    public void modifyDefense(int change) {
+        defense += change;
     }
 }

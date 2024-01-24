@@ -1,5 +1,3 @@
-package FX;
-
 import java.io.*;
 import FX.MainMenu.MainMenuController;
 import javafx.application.Application;

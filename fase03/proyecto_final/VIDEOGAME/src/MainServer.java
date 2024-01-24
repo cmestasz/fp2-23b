@@ -1,5 +1,3 @@
-package FX;
-
 import Utils.*;
 import java.io.*;
 import java.util.*;
