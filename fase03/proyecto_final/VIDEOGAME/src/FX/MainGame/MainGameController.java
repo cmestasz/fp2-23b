@@ -115,6 +115,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
     public void sendMessage() {
         String message = String.format("%s: %s%n", pName, chatInput.getText());
+        printMessage(message, PLAYER_COLOR);
         try {
             DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
             out.writeInt(OPERATION_CHAT);
@@ -142,8 +143,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         messagePane.setVisible(false);
         if (gameEnded) {
             dataReceiver.endGame();
-            menuController.restartMenu();
             menuStage.show();
+            menuController.restartMenu();
             gameStage.close();
         }
     }

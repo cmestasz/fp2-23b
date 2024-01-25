@@ -194,6 +194,8 @@ public class MainMenuController implements MainMenuOperation {
         enemyName.setText("");
         enemyKingdom.setText("");
         startButton.setDisable(false);
+        dataReceiver = new DataReceiver();
+        dataReceiver.start();
     }
 
     private void setConnection() {
