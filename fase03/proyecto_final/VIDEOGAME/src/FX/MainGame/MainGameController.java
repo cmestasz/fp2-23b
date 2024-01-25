@@ -77,7 +77,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     @FXML
     private VBox attackActionPane;
 
-    public void init(MainMenuController menuController, Resolution resolution, Stage menuStage, Stage gameStage, Board board,
+    public void init(MainMenuController menuController, Resolution resolution, Stage menuStage, Stage gameStage,
+            Board board,
             int idConnection, String matchCode, String pName, String eName, int idPlayer, int idEnemy) {
         this.menuController = menuController;
         this.resolution = resolution;
@@ -241,7 +242,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                 switch (selectedAction) {
                     case "MOVER":
                         distance = selectedSoldier.getTypeFile().equals("knight") ? 2 : 1;
-                        if (selectedTile.isConnected(otherTile, distance) && !army1.containsKey(otherKey) && !army2.containsKey(otherKey)) {
+                        if (selectedTile.isConnected(otherTile, distance) && !army1.containsKey(otherKey)
+                                && !army2.containsKey(otherKey)) {
                             moveSoldier(true, sI, sJ, oI, oJ);
                             removeActionsMenu();
 
@@ -259,7 +261,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                         showMessage("Movimiento no valido.");
                         break;
                     case "ATACAR":
-                    distance = selectedSoldier.getTypeFile().equals("archer") ? 2 : 1;
+                        distance = selectedSoldier.getTypeFile().equals("archer") ? 2 : 1;
                         if (selectedTile.isConnected(otherTile, distance) && army2.containsKey(otherKey)) {
                             attackSoldier(true, sI, sJ, oI, oJ);
                             removeActionsMenu();
@@ -352,16 +354,21 @@ public class MainGameController implements MainGameOperation, VideogameConstants
             if (isPlayer) {
                 playerData.appendText(message);
                 army2.remove(otherKey);
-
+                // fix these, they dont get sent
                 if (army2.size() == 0) {
-                    dbConnector.createMatch(idPlayer, idEnemy);
+                    if (idEnemy != 0)
+                        dbConnector.createMatch(idPlayer, idEnemy);
                     endGame(pName, kingdomPlayer);
                 }
             } else {
                 enemyData.appendText(message);
                 army1.remove(otherKey);
-                if (army1.size() == 0)
+                // fix these, they dont get sent
+                if (army1.size() == 0) {
+                    if (idEnemy != 0)
+                        dbConnector.createMatch(idEnemy, idPlayer);
                     endGame(eName, kingdomEnemy);
+                }
             }
         }
 

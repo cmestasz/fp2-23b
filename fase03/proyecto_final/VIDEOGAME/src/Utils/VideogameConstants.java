@@ -21,5 +21,5 @@ public interface VideogameConstants {
     BetterColor BACKGROUND_COLOR = new BetterColor(0.1, 0.1, 0.1, 1);
     BetterColor SELECTED_COLOR = new BetterColor(0.8, 0.8, 0.8, 0.05);
     int TOTAL_SOLDIERS = 1;
-    int SIZE = 10;
+    int SIZE = 5;
 }

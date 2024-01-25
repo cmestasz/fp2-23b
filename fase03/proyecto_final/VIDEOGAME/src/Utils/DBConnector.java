@@ -138,6 +138,7 @@ public class DBConnector {
         try {
             String query = String.format("INSERT INTO matches (winner_id, loser_id) VALUES ('%d', '%d')", winner_id,
                     loser_id);
+            System.out.println(query);
             connection.prepareStatement(query).execute();
         } catch (Exception e) {
             e.printStackTrace();
