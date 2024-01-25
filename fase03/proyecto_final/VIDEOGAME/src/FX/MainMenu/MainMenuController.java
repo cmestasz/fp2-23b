@@ -27,6 +27,7 @@ public class MainMenuController implements MainMenuOperation {
     private double volume;
     private int idConnection;
     private int idPlayer;
+    private int idEnemy;
     private String path;
     private File connectionFile;
     private DataReceiver dataReceiver;
@@ -108,23 +109,40 @@ public class MainMenuController implements MainMenuOperation {
                 matchCode += (char) ('A' + (int) (Math.random() * 26));
 
             createMatchCode.setText(matchCode);
-            Utils.writeStrings(connectionFile, OPERATION_CREATE, new String[] { matchCode, pName, pKingdom });
-
+            try {
+                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+                out.writeInt(OPERATION_CREATE);
+                Utils.writeStrings(out, new String[] { matchCode, pName, pKingdom });
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void joinMatch() {
         if (checkName() && checkKingdom()) {
             matchCode = joinMatchCode.getText();
-            Utils.writeStrings(connectionFile, OPERATION_JOIN, new String[] { matchCode, pName, pKingdom });
+            try {
+                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+                out.writeInt(OPERATION_JOIN);
+                Utils.writeStrings(out, new String[] { matchCode, pName, pKingdom });
+                out.writeInt(idPlayer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void startMatch() {
         // createGameStage();
         if (checkName() && checkEnemy() && checkKingdom()) {
-            Utils.writeStrings(connectionFile, OPERATION_START, new String[] { matchCode });
             try {
+                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+                out.writeInt(OPERATION_START);
+                Utils.writeString(out, matchCode);
+                out.close();
+
                 ObjectOutputStream outObj = new ObjectOutputStream(
                         new FileOutputStream("connections/" + idConnection + ".obj"));
                 outObj.writeObject(board);
@@ -165,6 +183,14 @@ public class MainMenuController implements MainMenuOperation {
 
     public void closeMessage() {
         messagePane.setVisible(false);
+    }
+
+    public void restartMenu() {
+        createMatchCode.setText("");
+        joinMatchCode.setText("");
+        enemyName.setText("");
+        enemyKingdom.setText("");
+        startButton.setDisable(false);
     }
 
     private void setConnection() {
@@ -237,9 +263,11 @@ public class MainMenuController implements MainMenuOperation {
                             case RESPONSE_HOST:
                                 name = Utils.readString(in);
                                 kingdom = Utils.readString(in);
+                                int idOther = in.readInt();
                                 // Actualiza el nombre del oponente en la interfaz de usuario
                                 Platform.runLater(() -> {
                                     setEnemy(name, kingdom);
+                                    idEnemy = idOther;
                                 });
                                 break;
                             // Respuesta del invitado
@@ -306,7 +334,8 @@ public class MainMenuController implements MainMenuOperation {
                 mainGame.show();
 
                 MainGameController controller = loader.getController();
-                controller.init(mainMenuController, resolution, mainGame, board, idConnection, matchCode, pName, eName);
+                controller.init(mainMenuController, resolution, mainGame, board, idConnection, matchCode, pName, eName,
+                        idPlayer, idEnemy);
             } catch (Exception e) {
                 e.printStackTrace();
             }

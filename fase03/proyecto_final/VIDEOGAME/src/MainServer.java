@@ -87,6 +87,9 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
 
                     case OPERATION_JOIN:
                         // Se intenta unir dos conexiones con el código.
+                        Utils.readString(in);
+                        Utils.readString(in);
+                        int otherId = in.readInt();
                         ids = matches.get(code);
                         toGuest = connection.getDataOutputStream();
                         toGuest.writeInt(RESPONSE_GUEST);
@@ -100,6 +103,7 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
                             toHost.writeInt(RESPONSE_HOST);
                             Utils.writeString(toHost, connection.getName());
                             Utils.writeString(toHost, connection.getKingdom());
+                            toHost.writeInt(otherId);
 
                             toHost.close();
                             lastModifiedMap.put(host.getId(), host.getLastModified());
@@ -165,6 +169,7 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
 
                         lastModifiedMap.put(id, connection.getLastModified());
                         lastModifiedMap.put(idOther, other.getLastModified());
+                        break;
 
                 }
                 in.close();

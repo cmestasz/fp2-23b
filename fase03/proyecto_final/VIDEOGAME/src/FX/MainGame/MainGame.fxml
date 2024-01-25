@@ -59,8 +59,8 @@
                      <children>
                         <HBox>
                            <children>
-                              <TextArea fx:id="playerData" blendMode="MULTIPLY" text="Tu" />
-                              <TextArea fx:id="enemyData" blendMode="MULTIPLY" text="Enemigo" />
+                              <TextArea fx:id="playerData" blendMode="MULTIPLY" />
+                              <TextArea fx:id="enemyData" blendMode="MULTIPLY" />
                            </children>
                         </HBox>
                         <VBox>
@@ -87,7 +87,7 @@
             </StackPane>
          </children>
       </HBox>
-      <Pane StackPane.alignment="BOTTOM_CENTER">
+      <Pane visible="false" StackPane.alignment="BOTTOM_CENTER">
          <children>
             <TilePane fx:id="actionsPane" alignment="BOTTOM_CENTER" hgap="30.0" layoutX="401.0" layoutY="224.0" prefHeight="53.0" prefWidth="155.0" style="-fx-background-color: white;">
                <children>

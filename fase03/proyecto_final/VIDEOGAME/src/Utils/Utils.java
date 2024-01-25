@@ -11,17 +11,10 @@ public class Utils {
         return str;
     }
 
-    public static void writeStrings(File file, int operation, String[] strings) {
-        try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(file));
-            out.writeInt(operation);
-            for (String str : strings) {
-                out.writeChars(str);
-                out.writeChar(0);
-            }
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void writeStrings(DataOutputStream out, String[] strings) throws IOException {
+        for (String str : strings) {
+            out.writeChars(str);
+            out.writeChar(0);
         }
     }
 

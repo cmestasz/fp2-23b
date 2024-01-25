@@ -5,6 +5,7 @@ import java.util.HashMap;
 import FX.MainGame.Classes.Soldier;
 import FX.MainMenu.MainMenuController;
 import Utils.BetterColor;
+import Utils.DBConnector;
 import Utils.MainGameOperation;
 import Utils.Resolution;
 import Utils.Tile;
@@ -33,6 +34,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private File connectionFile;
     private String path;
     private int idConnection;
+    private int idPlayer;
+    private int idEnemy;
     private DataReceiver dataReceiver;
     private String matchCode;
     private String pName;
@@ -42,6 +45,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private Tile selectedTile;
     private HashMap<String, Soldier> army1;
     private HashMap<String, Soldier> army2;
+    private DBConnector dbConnector;
 
     @FXML
     private GridPane uiBoard;
@@ -67,7 +71,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private TextArea messageOutput;
 
     public void init(MainMenuController menuController, Resolution resolution, Stage stage, Board board,
-            int idConnection, String matchCode, String pName, String eName) {
+            int idConnection, String matchCode, String pName, String eName, int idPlayer, int idEnemy) {
         this.menuController = menuController;
         this.resolution = resolution;
         this.width = resolution.getWidth();
@@ -82,7 +86,9 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         this.matchCode = matchCode;
         this.pName = pName;
         this.eName = eName;
-        
+        this.idPlayer = idPlayer;
+        this.idEnemy = idEnemy;
+
         initButtons();
         initBackground();
         initDataFields();
@@ -90,6 +96,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         actionsPane.setPrefWidth(width * 0.10);
         actionsPane.setPrefHeight(width * 0.05);
 
+        dbConnector = new DBConnector();
         setConnection();
     }
 
@@ -99,7 +106,14 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
     public void sendMessage() {
         String message = String.format("%s: %s%n", pName, chatInput.getText());
-        Utils.writeStrings(connectionFile, OPERATION_CHAT, new String[] { matchCode, message });
+        try {
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+            out.writeInt(OPERATION_CHAT);
+            Utils.writeStrings(out, new String[] { matchCode, message });
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         chatInput.setText("");
     }
 
@@ -113,6 +127,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
     public void closeMessage() {
         dataReceiver.endGame();
+        menuController.restartMenu();
         stage.close();
     }
 
@@ -299,11 +314,14 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                 playerData.appendText(message);
                 army2.remove(otherKey);
 
-                if (army2.size() == 0)
+                if (army2.size() == 0) {
+                    dbConnector.createMatch(idPlayer, idEnemy);
                     endGame(pName, kingdomPlayer);
+                }
             } else {
                 enemyData.appendText(message);
                 army1.remove(otherKey);
+                if (army1.size() == 0)
                     endGame(eName, kingdomEnemy);
             }
         }
@@ -365,44 +383,22 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                                     printMessage(message, ENEMY_COLOR);
                                 });
                                 break;
-                            /*
-                             * // Respuesta del anfitrión
-                             * case RESPONSE_HOST:
-                             * name = Utils.readString(in);
-                             * kingdom = Utils.readString(in);
-                             * // Actualiza el nombre del oponente en la interfaz de usuario
-                             * Platform.runLater(() -> {
-                             * setEnemy(name, kingdom);
-                             * });
-                             * break;
-                             * // Respuesta del invitado
-                             * case RESPONSE_GUEST:
-                             * name = Utils.readString(in);
-                             * kingdom = Utils.readString(in);
-                             * if (name.equals("")) {
-                             * JOptionPane.showMessageDialog(null, "La partida no existe.");
-                             * } else {
-                             * // Actualiza el nombre del oponente en la interfaz de usuario y desactiva el
-                             * // botón de inicio
-                             * Platform.runLater(() -> {
-                             * setEnemy(name, kingdom);
-                             * startButton.setDisable(true);
-                             * });
-                             * }
-                             * break;
-                             * // Respuesta de inicio de la partida
-                             * case RESPONSE_START:
-                             * File objFile = new File("connections/" + idConnection + ".obj");
-                             * ObjectInputStream inObj = new ObjectInputStream(new
-                             * FileInputStream(objFile));
-                             * board = (Board) inObj.readObject();
-                             * inObj.close();
-                             * objFile.delete();
-                             * // Inicia el juego principal
-                             * Platform.runLater(() -> {
-                             * createGameStage();
-                             * });
-                             */
+
+                            // Movimientos y ataques
+                            case RESPONSE_MOVE:
+                            case RESPONSE_ATTACK:
+                                int sI = in.readInt();
+                                int sJ = in.readInt();
+                                int oI = in.readInt();
+                                int oJ = in.readInt();
+
+                                Platform.runLater(() -> {
+                                    if (response == RESPONSE_MOVE)
+                                        moveSoldier(false, sI, sJ, oI, oJ);
+                                    else
+                                        attackSoldier(false, sI, sJ, oI, oJ);
+                                });
+                                break;
                         }
                         lastModified = matchFile.lastModified();
                         in.close();
