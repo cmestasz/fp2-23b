@@ -2,11 +2,6 @@ package FX.MainGame;
 
 import java.io.*;
 import java.util.HashMap;
-
-import javax.swing.JOptionPane;
-
-import com.mysql.cj.util.Util;
-
 import FX.MainGame.Classes.Soldier;
 import FX.MainMenu.MainMenuController;
 import Utils.BetterColor;
@@ -16,15 +11,12 @@ import Utils.Tile;
 import Utils.Utils;
 import Utils.VideogameConstants;
 import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -46,6 +38,10 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private String pName;
     private String eName;
     private Tile[][] tiles = new Tile[SIZE][SIZE];
+    private String selectedAction = "MOVER";
+    private Tile selectedTile;
+    private HashMap<String, Soldier> army1;
+    private HashMap<String, Soldier> army2;
 
     @FXML
     private GridPane uiBoard;
@@ -63,6 +59,12 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private VBox chatOutput;
     @FXML
     private TextField chatInput;
+    @FXML
+    private TilePane actionsPane;
+    @FXML
+    private TitledPane messagePane;
+    @FXML
+    private TextArea messageOutput;
 
     public void init(MainMenuController menuController, Resolution resolution, Stage stage, Board board,
             int idConnection, String matchCode, String pName, String eName) {
@@ -72,16 +74,21 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         this.height = resolution.getHeight();
         this.stage = stage;
         this.board = board;
+        army1 = board.getArmy1();
+        army2 = board.getArmy2();
         this.idConnection = idConnection;
         this.kingdomPlayer = board.getKingdomPlayer();
         this.kingdomEnemy = board.getKingdomEnemy();
         this.matchCode = matchCode;
         this.pName = pName;
         this.eName = eName;
+        
         initButtons();
         initBackground();
         initDataFields();
         initChat();
+        actionsPane.setPrefWidth(width * 0.10);
+        actionsPane.setPrefHeight(width * 0.05);
 
         setConnection();
     }
@@ -90,26 +97,23 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
     }
 
-    public void surrender() {
-
+    public void sendMessage() {
+        String message = String.format("%s: %s%n", pName, chatInput.getText());
+        Utils.writeStrings(connectionFile, OPERATION_CHAT, new String[] { matchCode, message });
+        chatInput.setText("");
     }
 
-    public void sendMessage() {
-        try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
-            String message = String.format("%s: %s%n", pName, chatInput.getText());
-            printMessage(message, PLAYER_COLOR);
-            out.writeInt(OPERATION_CHAT);
-            out.writeChars(matchCode);
-            out.writeChar(0);
-            out.writeChars(message);
-            out.writeChar(0);
-            out.close();
+    public void setActionMove() {
+        selectedAction = "MOVER";
+    }
 
-            chatInput.setText("");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setActionAttack() {
+        selectedAction = "ATACAR";
+    }
+
+    public void closeMessage() {
+        dataReceiver.endGame();
+        stage.close();
     }
 
     private void initButtons() {
@@ -123,18 +127,26 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
                 if (army1.containsKey(key)) {
                     tile = new Tile(army1.get(key).getTypeFile(), size, i, j);
-                    tile.setStyle(String.format("-fx-background-color: %s;", PLAYER_COLOR_TRANS.getRGBA()));
+                    setStyleColor(tile, PLAYER_COLOR_TRANS);
                 } else if (army2.containsKey(key)) {
                     tile = new Tile(army2.get(key).getTypeFile(), size, i, j);
-                    tile.setStyle(String.format("-fx-background-color: %s;", ENEMY_COLOR_TRANS.getRGBA()));
+                    setStyleColor(tile, ENEMY_COLOR_TRANS);
                 } else {
                     tile = new Tile("tile", size, i, j);
                 }
                 tiles[i][j] = tile;
-                
+
                 tile.setOnMouseClicked(this::handleClick);
                 uiBoard.add(tile, i, j);
             }
+        }
+    }
+
+    private void setStyleColor(Tile tile, BetterColor color) {
+        if (color == null) {
+            tile.setStyle("-fx-background-color: none;");
+        } else {
+            tile.setStyle(String.format("-fx-background-color: %s;", color.getRGBA()));
         }
     }
 
@@ -149,8 +161,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     }
 
     private void initDataFields() {
-        playerData.setText(kingdomPlayer);
-        enemyData.setText(kingdomEnemy);
+        playerData.setText(String.format("%s: %s%n", pName, kingdomPlayer));
+        enemyData.setText(String.format("%s: %s%n", eName, kingdomEnemy));
     }
 
     private void initChat() {
@@ -160,11 +172,146 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private void handleClick(MouseEvent event) {
         Tile tile = (Tile) event.getSource();
         System.out.println(tile);
-        // currently selected this ^ and show actions menu 5% of width
-        // link soldiers with tile i j
-        // implement the actions here probably
-        // then implement board updates in board, these can be sent to the server as a number (update type), and other args qwq
-        // remember to also show something visual when a special action is done
+
+        if (!tryDoAction(tile)) {
+            if (board.getArmy1().containsKey(tile.getKey())) {
+                selectedTile = tile;
+                showActionsMenu();
+            } else {
+                selectedTile = null;
+                removeActionsMenu();
+            }
+        }
+    }
+
+    private void showActionsMenu() {
+        actionsPane.setVisible(true);
+    }
+
+    private void removeActionsMenu() {
+        actionsPane.setVisible(true);
+    }
+
+    private boolean tryDoAction(Tile otherTile) {
+        if (selectedTile != null) {
+            String otherKey = otherTile.getKey();
+            try {
+                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+                int sI = selectedTile.getI();
+                int sJ = selectedTile.getJ();
+                int oI = otherTile.getI();
+                int oJ = otherTile.getJ();
+                switch (selectedAction) {
+                    case "MOVER":
+                        if (!army1.containsKey(otherKey) && !army2.containsKey(otherKey)) {
+                            moveSoldier(true, sI, sJ, oI, oJ);
+
+                            out.writeInt(OPERATION_MOVE);
+                            Utils.writeString(out, matchCode);
+                            Utils.writeIdxs(out, sI, sJ, oI, oJ);
+                            out.close();
+                            return true;
+                        }
+                        break;
+                    case "ATACAR":
+                        if (selectedTile.isConnected(otherTile)) {
+                            attackSoldier(true, sI, sJ, oI, oJ);
+
+                            out.writeInt(OPERATION_ATTACK);
+                            Utils.writeString(out, matchCode);
+                            Utils.writeIdxs(out, sI, sJ, oI, oJ);
+                            out.close();
+                            return true;
+                        }
+                        break;
+                }
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    // dont doubt these, they work both ways so they can be used when the other
+    // person receives the actions
+    // always "selected" interacts on "other"
+    private void moveSoldier(boolean isPlayer, int iSelected, int jSelected, int iOther, int jOther) {
+        Tile selectedTile = tiles[iSelected][jSelected];
+        Tile otherTile = tiles[iOther][jOther];
+        String selectedKey = selectedTile.getKey();
+        String otherKey = otherTile.getKey();
+
+        HashMap<String, Soldier> army = null;
+        BetterColor color = null;
+        if (isPlayer) {
+            army = army1;
+            color = PLAYER_COLOR_TRANS;
+        } else {
+            army = army2;
+            color = ENEMY_COLOR_TRANS;
+        }
+
+        Soldier soldier = army.remove(selectedKey);
+        army.put(otherKey, soldier);
+        selectedTile.setImage("tile");
+        setStyleColor(selectedTile, null);
+        otherTile.setImage(soldier.getTypeFile());
+        setStyleColor(otherTile, color);
+
+        String message = soldier + " se mueve." + "\n";
+        if (isPlayer)
+            playerData.appendText(message);
+        else
+            enemyData.appendText(message);
+    }
+
+    private void attackSoldier(boolean isPlayer, int iSelected, int jSelected, int iOther, int jOther) {
+        Tile selectedTile = tiles[iSelected][jSelected];
+        Tile otherTile = tiles[iOther][jOther];
+        String selectedKey = selectedTile.getKey();
+        String otherKey = otherTile.getKey();
+
+        Soldier soldierAttacks = null;
+        Soldier soldierReceives = null;
+        if (isPlayer) {
+            soldierAttacks = army1.get(selectedKey);
+            soldierReceives = army2.get(otherKey);
+        } else {
+            soldierAttacks = army2.get(selectedKey);
+            soldierReceives = army1.get(otherKey);
+        }
+
+        int damage = soldierAttacks.attack(soldierReceives);
+        String message = String.format("%s ataca a %s con %d de daño%n", soldierAttacks, soldierReceives, damage);
+        if (isPlayer)
+            playerData.appendText(message);
+        else
+            enemyData.appendText(message);
+
+        if (soldierReceives.getCurrentHealth() <= 0) {
+            soldierAttacks.heal();
+            otherTile.setImage("tile");
+            setStyleColor(otherTile, null);
+
+            message = soldierReceives + " ha muerto!\n";
+            if (isPlayer) {
+                playerData.appendText(message);
+                army2.remove(otherKey);
+
+                if (army2.size() == 0)
+                    endGame(pName, kingdomPlayer);
+            } else {
+                enemyData.appendText(message);
+                army1.remove(otherKey);
+                    endGame(eName, kingdomEnemy);
+            }
+        }
+
+    }
+
+    private void endGame(String name, String kingdom) {
+        showMessage(String.format("%s ha ganado con el reino %s!", name, kingdom));
     }
 
     private void printMessage(String message, BetterColor color) {
@@ -191,6 +338,11 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
     private String generateKey(int i, int j) {
         return i + "," + j;
+    }
+
+    private void showMessage(String message) {
+        messagePane.setVisible(true);
+        messageOutput.setText(message);
     }
 
     private class DataReceiver extends Thread {
@@ -261,6 +413,10 @@ public class MainGameController implements MainGameOperation, VideogameConstants
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        public void endGame() {
+            gameEnded = true;
         }
     }
 }

@@ -10,21 +10,18 @@ public class Knight extends Soldier {
         super(name, team, HEALTH, ATTACK, DEFENSE, type, typeFile);
     }
 
+    // Lamentablemente no llegare a implementar esto
     public void mount() {
         mounted = true;
         modifyAttack(1);
         modifyDefense(-1);
     }
 
+    // Lamentablemente no llegare a implementar esto
     public void dismount() {
         mounted = false;
         modifyAttack(-1);
         modifyDefense(1);
-    }
-
-    // extra range
-    public void charge(Soldier other) {
-        attack(other);
     }
 
     public boolean isMounted() {

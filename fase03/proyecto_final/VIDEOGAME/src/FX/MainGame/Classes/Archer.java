@@ -10,6 +10,7 @@ public class Archer extends Soldier {
         super(name, team, HEALTH, ATTACK, DEFENSE, type, typeFile);
     }
 
+    // Lamentablemente no llegare a implementar esto
     public void shoot(Soldier other) {
         attack(other);
         arrows--;

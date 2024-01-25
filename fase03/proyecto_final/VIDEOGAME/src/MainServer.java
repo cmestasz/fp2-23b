@@ -73,6 +73,8 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
                 String code = Utils.readString(in);
 
                 int[] ids;
+                int idOther;
+                ServerConnection other;
                 DataOutputStream toHost;
                 DataOutputStream toGuest;
                 DataOutputStream toOther;
@@ -91,17 +93,13 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
                         if (ids != null && ids[1] == -1) {
                             ServerConnection host = connectionsList.get(ids[0]);
                             ids[1] = connection.getId();
-                            toGuest.writeChars(host.getName());
-                            toGuest.writeChar(0);
-                            toGuest.writeChars(host.getKingdom());
-                            toGuest.writeChar(0);
+                            Utils.writeString(toGuest, host.getName());
+                            Utils.writeString(toGuest, host.getKingdom());
 
                             toHost = host.getDataOutputStream();
                             toHost.writeInt(RESPONSE_HOST);
-                            toHost.writeChars(connection.getName());
-                            toHost.writeChar(0);
-                            toHost.writeChars(connection.getKingdom());
-                            toHost.writeChar(0);
+                            Utils.writeString(toHost, connection.getName());
+                            Utils.writeString(toHost, connection.getKingdom());
 
                             toHost.close();
                             lastModifiedMap.put(host.getId(), host.getLastModified());
@@ -137,18 +135,36 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
                         String message = Utils.readString(in);
                         message.replaceAll("\n", "");
                         ids = matches.get(code);
-                        int idOther = id == ids[0] ? ids[1] : ids[0];
-                        ServerConnection other = connectionsList.get(idOther);
+                        idOther = id == ids[0] ? ids[1] : ids[0];
+                        other = connectionsList.get(idOther);
 
                         toOther = other.getDataOutputStream();
                         toOther.writeInt(RESPONSE_CHAT);
-                        toOther.writeChars(message);
-                        toOther.writeChar(0);
+                        Utils.writeString(toOther, message);
                         toOther.close();
 
                         lastModifiedMap.put(id, connection.getLastModified());
                         lastModifiedMap.put(idOther, other.getLastModified());
                         break;
+
+                    case OPERATION_MOVE:
+                    case OPERATION_ATTACK:
+                        int sI = in.readInt();
+                        int sJ = in.readInt();
+                        int oI = in.readInt();
+                        int oJ = in.readInt();
+
+                        ids = matches.get(code);
+                        idOther = id == ids[0] ? ids[1] : ids[0];
+                        other = connectionsList.get(idOther);
+
+                        toOther = other.getDataOutputStream();
+                        toOther.writeInt(operation == OPERATION_MOVE ? RESPONSE_MOVE : RESPONSE_ATTACK);
+                        Utils.writeIdxs(toOther, sI, sJ, oI, oJ);
+                        toOther.close();
+
+                        lastModifiedMap.put(id, connection.getLastModified());
+                        lastModifiedMap.put(idOther, other.getLastModified());
 
                 }
                 in.close();

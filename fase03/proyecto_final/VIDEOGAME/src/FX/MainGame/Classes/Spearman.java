@@ -9,7 +9,7 @@ public class Spearman extends Soldier {
         super(name, team, HEALTH, ATTACK, DEFENSE, type, typeFile);
     }
 
-    // metapod moment
+    // Lamentablemente no llegare a implementar esto
     public void schiltrom() {
         modifyDefense(1);
     }

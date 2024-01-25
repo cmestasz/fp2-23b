@@ -4,6 +4,8 @@ public interface VideogameConstants {
     String[] TERRAINS = { "BOSQUE", "CAMPO ABIERTO", "MONTAÑA", "DESIERTO", "PLAYA" };
     String[] TYPES = { "CABALLERO", "ARQUERO", "ESPADACHIN", "LANCERO" };
     String[] TYPE_FILES = { "knight", "archer", "swordsman", "spearman", "tile" };
+    String[] ACTIONS = { "DESMONTAR", "MONTAR", "MOVER", "ATACAR", "SCHILTROM", "DISPARAR", "DANZA DE ESPADAS" };
+    String[] ACTION_FILES = { "dismount", "mount", "move", "attack" ,"schiltrom", "shoot", "sworddance" };
     BetterColor[] BACKGROUNDS = {
             new BetterColor(0.13, 0.55, 0.13, 1),
             new BetterColor(0.31, 1, 0, 1),

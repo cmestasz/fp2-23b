@@ -76,4 +76,8 @@ public abstract class Soldier implements Serializable {
     public void modifyDefense(int change) {
         defense += change;
     }
+
+    public String toString() {
+        return String.format("%s (%s)", name, type);
+    }
 }

@@ -9,7 +9,7 @@ public class Swordsman extends Soldier {
         super(name, team, HEALTH, ATTACK, DEFENSE, type, typeFile);
     }
 
-    // woo pokemon meta moment
+    // Lamentablemente no llegare a implementar esto
     public void swordDance() {
         modifyAttack(1);
     }

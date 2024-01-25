@@ -103,63 +103,31 @@ public class MainMenuController implements MainMenuOperation {
 
     public void createMatch() {
         if (checkName() && checkKingdom()) {
-            try {
-                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
-                matchCode = "";
-                for (int i = 0; i < CODE_LENGTH; i++)
-                    matchCode += (char) ('A' + (int) (Math.random() * 26));
+            matchCode = "";
+            for (int i = 0; i < CODE_LENGTH; i++)
+                matchCode += (char) ('A' + (int) (Math.random() * 26));
 
-                createMatchCode.setText(matchCode);
-                out.writeInt(OPERATION_CREATE);
-                out.writeChars(matchCode);
-                out.writeChar(0);
-                out.writeChars(pName);
-                out.writeChar(0);
-                out.writeChars(pKingdom);
-                out.writeChar(0);
+            createMatchCode.setText(matchCode);
+            Utils.writeStrings(connectionFile, OPERATION_CREATE, new String[] { matchCode, pName, pKingdom });
 
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public void joinMatch() {
         if (checkName() && checkKingdom()) {
-            try {
-                matchCode = joinMatchCode.getText();
-
-                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
-                out.writeInt(OPERATION_JOIN);
-                out.writeChars(matchCode);
-                out.writeChar(0);
-                out.writeChars(pName);
-                out.writeChar(0);
-                out.writeChars(pKingdom);
-                out.writeChar(0);
-
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            matchCode = joinMatchCode.getText();
+            Utils.writeStrings(connectionFile, OPERATION_JOIN, new String[] { matchCode, pName, pKingdom });
         }
     }
 
     public void startMatch() {
         // createGameStage();
         if (checkName() && checkEnemy() && checkKingdom()) {
+            Utils.writeStrings(connectionFile, OPERATION_START, new String[] { matchCode });
             try {
-                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
-                board = new Board(pKingdom, eKingdom);
-                out.writeInt(OPERATION_START);
-                out.writeChars(matchCode);
-                out.writeChar(0);
                 ObjectOutputStream outObj = new ObjectOutputStream(
                         new FileOutputStream("connections/" + idConnection + ".obj"));
                 outObj.writeObject(board);
-
-                out.close();
                 outObj.close();
             } catch (Exception e) {
                 e.printStackTrace();

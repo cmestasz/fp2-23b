@@ -38,6 +38,10 @@ public class Tile extends Pane implements VideogameConstants {
         return type;
     }
 
+    public boolean isConnected(Tile other) {
+        return Math.abs(other.getI() - i) <= 1 && Math.abs(other.getJ() - j) <= 1;
+    }
+
     private ImageView generateImageView(double size, String type) {
         Image image = new Image(String.format("img/tile_%s.png", type));
         ImageView imageView = new ImageView(image);
@@ -45,6 +49,10 @@ public class Tile extends Pane implements VideogameConstants {
         imageView.setFitHeight(size);
         images.put(type, imageView);
         return imageView;
+    }
+
+    public String getKey() {
+        return i + "," + j;
     }
     
     public String toString() {
