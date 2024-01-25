@@ -60,7 +60,7 @@ public abstract class Soldier implements Serializable {
     }
 
     public int attack(Soldier other) {
-        int damage = Math.max(1, attack - other.getDefense() + (int) Math.random() * 2);
+        int damage = Math.max(1, attack - other.getDefense() / 3);
         other.hurt(damage);
         return damage;
     }
@@ -78,6 +78,6 @@ public abstract class Soldier implements Serializable {
     }
 
     public String toString() {
-        return String.format("%s (%s)", name, type);
+        return name;
     }
 }

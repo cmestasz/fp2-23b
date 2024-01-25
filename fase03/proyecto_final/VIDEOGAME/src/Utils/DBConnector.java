@@ -108,7 +108,7 @@ public class DBConnector {
     public int[] getWinsLoses(int id) {
         try {
             int[] totals = new int[2];
-            String query = String.format("SELECT COUNT(*) from matches WHERE winner_id = '$d'", id);
+            String query = String.format("SELECT COUNT(*) from matches WHERE winner_id = '%d'", id);
             ResultSet results = connection.prepareStatement(query).executeQuery();
             if (results.next())
                 totals[0] = results.getInt(1);

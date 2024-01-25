@@ -40,7 +40,7 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
                 for (int id = 0; id < totalConnections; id++)
                     respond(id);
 
-                sleep(1000);
+                sleep(500);
             }
 
             for (ServerConnection connection : connectionsList) {

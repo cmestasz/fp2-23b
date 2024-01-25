@@ -46,6 +46,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private HashMap<String, Soldier> army1;
     private HashMap<String, Soldier> army2;
     private DBConnector dbConnector;
+    private boolean gameEnded;
+    private boolean playerTurn = true;
 
     @FXML
     private GridPane uiBoard;
@@ -66,9 +68,13 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     @FXML
     private TilePane actionsPane;
     @FXML
-    private TitledPane messagePane;
+    private Pane messagePane;
     @FXML
     private TextArea messageOutput;
+    @FXML
+    private VBox moveActionPane;
+    @FXML
+    private VBox attackActionPane;
 
     public void init(MainMenuController menuController, Resolution resolution, Stage stage, Board board,
             int idConnection, String matchCode, String pName, String eName, int idPlayer, int idEnemy) {
@@ -93,8 +99,9 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         initBackground();
         initDataFields();
         initChat();
-        actionsPane.setPrefWidth(width * 0.10);
+        actionsPane.setPrefWidth(width * 0.15);
         actionsPane.setPrefHeight(width * 0.05);
+        setStyleColor(moveActionPane, SELECTED_COLOR);
 
         dbConnector = new DBConnector();
         setConnection();
@@ -118,36 +125,46 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     }
 
     public void setActionMove() {
+        setStyleColor(moveActionPane, SELECTED_COLOR);
+        setStyleColor(attackActionPane, null);
         selectedAction = "MOVER";
     }
 
     public void setActionAttack() {
+        setStyleColor(attackActionPane, SELECTED_COLOR);
+        setStyleColor(moveActionPane, null);
         selectedAction = "ATACAR";
     }
 
     public void closeMessage() {
-        dataReceiver.endGame();
-        menuController.restartMenu();
-        stage.close();
+        messagePane.setVisible(false);
+        if (gameEnded) {
+            dataReceiver.endGame();
+            menuController.restartMenu();
+            stage.close();
+        }
     }
 
     private void initButtons() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 String key = generateKey(i, j);
-                double size = 1.0 * resolution.getHeight() / 10;
+                double size = 1.0 * resolution.getHeight() / SIZE;
                 HashMap<String, Soldier> army1 = board.getArmy1();
                 HashMap<String, Soldier> army2 = board.getArmy2();
                 Tile tile;
+                Soldier soldier;
 
                 if (army1.containsKey(key)) {
-                    tile = new Tile(army1.get(key).getTypeFile(), size, i, j);
+                    soldier = army1.get(key);
+                    tile = new Tile(soldier.getCurrentHealth(), soldier.getTypeFile(), size, i, j);
                     setStyleColor(tile, PLAYER_COLOR_TRANS);
                 } else if (army2.containsKey(key)) {
-                    tile = new Tile(army2.get(key).getTypeFile(), size, i, j);
+                    soldier = army2.get(key);
+                    tile = new Tile(soldier.getCurrentHealth(), soldier.getTypeFile(), size, i, j);
                     setStyleColor(tile, ENEMY_COLOR_TRANS);
                 } else {
-                    tile = new Tile("tile", size, i, j);
+                    tile = new Tile(0, "tile", size, i, j);
                 }
                 tiles[i][j] = tile;
 
@@ -157,11 +174,11 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         }
     }
 
-    private void setStyleColor(Tile tile, BetterColor color) {
+    private void setStyleColor(Region pane, BetterColor color) {
         if (color == null) {
-            tile.setStyle("-fx-background-color: none;");
+            pane.setStyle("-fx-background-color: none;");
         } else {
-            tile.setStyle(String.format("-fx-background-color: %s;", color.getRGBA()));
+            pane.setStyle(String.format("-fx-background-color: %s;", color.getRGBA()));
         }
     }
 
@@ -186,7 +203,6 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
     private void handleClick(MouseEvent event) {
         Tile tile = (Tile) event.getSource();
-        System.out.println(tile);
 
         if (!tryDoAction(tile)) {
             if (board.getArmy1().containsKey(tile.getKey())) {
@@ -204,43 +220,56 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     }
 
     private void removeActionsMenu() {
-        actionsPane.setVisible(true);
+        actionsPane.setVisible(false);
     }
 
     private boolean tryDoAction(Tile otherTile) {
-        if (selectedTile != null) {
+        if (selectedTile != null && playerTurn) {
             String otherKey = otherTile.getKey();
             try {
-                DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
+                DataOutputStream out;
                 int sI = selectedTile.getI();
                 int sJ = selectedTile.getJ();
                 int oI = otherTile.getI();
                 int oJ = otherTile.getJ();
                 switch (selectedAction) {
                     case "MOVER":
-                        if (!army1.containsKey(otherKey) && !army2.containsKey(otherKey)) {
+                        if (selectedTile.isConnected(otherTile) && !army1.containsKey(otherKey) && !army2.containsKey(otherKey)) {
                             moveSoldier(true, sI, sJ, oI, oJ);
+                            removeActionsMenu();
 
+                            out = new DataOutputStream(new FileOutputStream(connectionFile));
                             out.writeInt(OPERATION_MOVE);
                             Utils.writeString(out, matchCode);
                             Utils.writeIdxs(out, sI, sJ, oI, oJ);
                             out.close();
+
+                            playerTurn = false;
+                            selectedTile = null;
+                            out.close();
                             return true;
                         }
+                        showMessage("Movimiento no valido.");
                         break;
                     case "ATACAR":
-                        if (selectedTile.isConnected(otherTile)) {
+                        if (selectedTile.isConnected(otherTile) && army2.containsKey(otherKey)) {
                             attackSoldier(true, sI, sJ, oI, oJ);
+                            removeActionsMenu();
 
+                            out = new DataOutputStream(new FileOutputStream(connectionFile));
                             out.writeInt(OPERATION_ATTACK);
                             Utils.writeString(out, matchCode);
                             Utils.writeIdxs(out, sI, sJ, oI, oJ);
                             out.close();
+
+                            playerTurn = false;
+                            selectedTile = null;
+                            out.close();
                             return true;
                         }
+                        showMessage("Ataque no valido.");
                         break;
                 }
-                out.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -269,9 +298,9 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
         Soldier soldier = army.remove(selectedKey);
         army.put(otherKey, soldier);
-        selectedTile.setImage("tile");
+        selectedTile.setImageAndhealth("tile", 0);
         setStyleColor(selectedTile, null);
-        otherTile.setImage(soldier.getTypeFile());
+        otherTile.setImageAndhealth(soldier.getTypeFile(), soldier.getCurrentHealth());
         setStyleColor(otherTile, color);
 
         String message = soldier + " se mueve." + "\n";
@@ -298,6 +327,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         }
 
         int damage = soldierAttacks.attack(soldierReceives);
+        otherTile.setImageAndhealth(soldierReceives.getTypeFile(), soldierReceives.getCurrentHealth());
         String message = String.format("%s ataca a %s con %d de daño%n", soldierAttacks, soldierReceives, damage);
         if (isPlayer)
             playerData.appendText(message);
@@ -306,7 +336,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
         if (soldierReceives.getCurrentHealth() <= 0) {
             soldierAttacks.heal();
-            otherTile.setImage("tile");
+            otherTile.setImageAndhealth("tile", 0);
             setStyleColor(otherTile, null);
 
             message = soldierReceives + " ha muerto!\n";
@@ -330,6 +360,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
     private void endGame(String name, String kingdom) {
         showMessage(String.format("%s ha ganado con el reino %s!", name, kingdom));
+        gameEnded = true;
     }
 
     private void printMessage(String message, BetterColor color) {
@@ -393,6 +424,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                                 int oJ = in.readInt();
 
                                 Platform.runLater(() -> {
+                                    showActionsMenu();
+                                    playerTurn = true;
                                     if (response == RESPONSE_MOVE)
                                         moveSoldier(false, sI, sJ, oI, oJ);
                                     else
@@ -404,7 +437,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                         in.close();
                     }
 
-                    sleep(1000);
+                    sleep(500);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

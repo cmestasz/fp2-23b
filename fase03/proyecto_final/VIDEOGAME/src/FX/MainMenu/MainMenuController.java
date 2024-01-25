@@ -121,8 +121,8 @@ public class MainMenuController implements MainMenuOperation {
     }
 
     public void joinMatch() {
-        if (checkName() && checkKingdom()) {
-            matchCode = joinMatchCode.getText();
+        matchCode = joinMatchCode.getText();
+        if (checkName() && checkKingdom() && matchCode.length() == CODE_LENGTH) {
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
                 out.writeInt(OPERATION_JOIN);
@@ -143,6 +143,7 @@ public class MainMenuController implements MainMenuOperation {
                 Utils.writeString(out, matchCode);
                 out.close();
 
+                board = new Board(pKingdom, eKingdom);
                 ObjectOutputStream outObj = new ObjectOutputStream(
                         new FileOutputStream("connections/" + idConnection + ".obj"));
                 outObj.writeObject(board);
@@ -177,8 +178,10 @@ public class MainMenuController implements MainMenuOperation {
     }
 
     public void getStatistics() {
-        int[] status = dbConnector.getWinsLoses(idPlayer);
-        showMessage(String.format("W: %d | L: %d", status[0], status[1]));
+        if (checkName()) {
+            int[] status = dbConnector.getWinsLoses(idPlayer);
+            showMessage(String.format("W: %d | L: %d", status[0], status[1]));
+        }
     }
 
     public void closeMessage() {

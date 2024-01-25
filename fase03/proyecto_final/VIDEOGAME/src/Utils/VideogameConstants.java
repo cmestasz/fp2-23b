@@ -19,6 +19,7 @@ public interface VideogameConstants {
     BetterColor PLAYER_COLOR_TRANS = new BetterColor(0.27, 0.51, 1, 0.1);
     BetterColor ENEMY_COLOR_TRANS = new BetterColor(1, 0.27, 0.27, 0.1);
     BetterColor BACKGROUND_COLOR = new BetterColor(0.1, 0.1, 0.1, 1);
-    int TOTAL_SOLDIERS = 10;
-    int SIZE = 10;
+    BetterColor SELECTED_COLOR = new BetterColor(0.8, 0.8, 0.8, 0.05);
+    int TOTAL_SOLDIERS = 3;
+    int SIZE = 20;
 }
