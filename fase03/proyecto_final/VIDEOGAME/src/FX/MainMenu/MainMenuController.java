@@ -337,7 +337,7 @@ public class MainMenuController implements MainMenuOperation {
                 mainGame.show();
 
                 MainGameController controller = loader.getController();
-                controller.init(mainMenuController, resolution, mainGame, board, idConnection, matchCode, pName, eName,
+                controller.init(mainMenuController, resolution, stage, mainGame, board, idConnection, matchCode, pName, eName,
                         idPlayer, idEnemy);
             } catch (Exception e) {
                 e.printStackTrace();

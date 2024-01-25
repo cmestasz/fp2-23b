@@ -51,8 +51,8 @@ public class Tile extends Pane implements VideogameConstants {
         return type;
     }
 
-    public boolean isConnected(Tile other) {
-        return Math.abs(other.getI() - i) <= 1 && Math.abs(other.getJ() - j) <= 1;
+    public boolean isConnected(Tile other, int distance) {
+        return Math.abs(other.getI() - i) <= distance && Math.abs(other.getJ() - j) <= distance;
     }
 
     private ImageView generateImageView(double size, String type) {

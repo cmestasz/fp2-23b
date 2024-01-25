@@ -12,8 +12,13 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
                                                                                    // received
     private int totalConnections;
     private boolean active = true;
+    private int tickRate;
 
     private HashMap<String, int[]> matches = new HashMap<String, int[]>();
+
+    public MainServer(int tickRate) {
+        this.tickRate = tickRate;
+    }
 
     public void run() {
         File directory = new File("connections");
@@ -40,7 +45,7 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
                 for (int id = 0; id < totalConnections; id++)
                     respond(id);
 
-                sleep(500);
+                sleep(tickRate);
             }
 
             for (ServerConnection connection : connectionsList) {
@@ -181,7 +186,8 @@ public class MainServer extends Thread implements MainMenuOperation, MainGameOpe
 
     public static void main(String[] args) {
         new DBConnector();
-        MainServer server = new MainServer();
+        int tickRate = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el tiempo entre ticks (en milisegundos):"));
+        MainServer server = new MainServer(tickRate);
         server.start();
         JOptionPane.showMessageDialog(null, "El servidor esta ejecutandose correctamente\nPresione ok para detenerlo");
         server.end();

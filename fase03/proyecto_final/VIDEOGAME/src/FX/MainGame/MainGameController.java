@@ -23,7 +23,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainGameController implements MainGameOperation, VideogameConstants {
-    private Stage stage;
+    private Stage gameStage;
+    private Stage menuStage;
     private Resolution resolution;
     private int width;
     private int height;
@@ -76,13 +77,14 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     @FXML
     private VBox attackActionPane;
 
-    public void init(MainMenuController menuController, Resolution resolution, Stage stage, Board board,
+    public void init(MainMenuController menuController, Resolution resolution, Stage menuStage, Stage gameStage, Board board,
             int idConnection, String matchCode, String pName, String eName, int idPlayer, int idEnemy) {
         this.menuController = menuController;
         this.resolution = resolution;
         this.width = resolution.getWidth();
         this.height = resolution.getHeight();
-        this.stage = stage;
+        this.menuStage = menuStage;
+        this.gameStage = gameStage;
         this.board = board;
         army1 = board.getArmy1();
         army2 = board.getArmy2();
@@ -141,7 +143,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         if (gameEnded) {
             dataReceiver.endGame();
             menuController.restartMenu();
-            stage.close();
+            menuStage.show();
+            gameStage.close();
         }
     }
 
@@ -232,9 +235,12 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                 int sJ = selectedTile.getJ();
                 int oI = otherTile.getI();
                 int oJ = otherTile.getJ();
+                Soldier selectedSoldier = army1.get(generateKey(sI, sJ));
+                int distance;
                 switch (selectedAction) {
                     case "MOVER":
-                        if (selectedTile.isConnected(otherTile) && !army1.containsKey(otherKey) && !army2.containsKey(otherKey)) {
+                        distance = selectedSoldier.getTypeFile().equals("knight") ? 2 : 1;
+                        if (selectedTile.isConnected(otherTile, distance) && !army1.containsKey(otherKey) && !army2.containsKey(otherKey)) {
                             moveSoldier(true, sI, sJ, oI, oJ);
                             removeActionsMenu();
 
@@ -252,7 +258,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                         showMessage("Movimiento no valido.");
                         break;
                     case "ATACAR":
-                        if (selectedTile.isConnected(otherTile) && army2.containsKey(otherKey)) {
+                    distance = selectedSoldier.getTypeFile().equals("archer") ? 2 : 1;
+                        if (selectedTile.isConnected(otherTile, distance) && army2.containsKey(otherKey)) {
                             attackSoldier(true, sI, sJ, oI, oJ);
                             removeActionsMenu();
 
@@ -336,6 +343,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
         if (soldierReceives.getCurrentHealth() <= 0) {
             soldierAttacks.heal();
+            selectedTile.setImageAndhealth(soldierAttacks.getTypeFile(), soldierAttacks.getCurrentHealth());
             otherTile.setImageAndhealth("tile", 0);
             setStyleColor(otherTile, null);
 
