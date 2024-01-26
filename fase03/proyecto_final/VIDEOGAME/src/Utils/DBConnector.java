@@ -67,6 +67,9 @@ public class DBConnector {
     }
 
     private void writeLogin() throws IOException {
+        File directory = new File("data/");
+        if (!directory.exists())
+            directory.mkdirs();
         DataOutputStream out = new DataOutputStream(new FileOutputStream("data/dblogin.dat"));
         out.writeChars(user);
         out.writeChar(0);
