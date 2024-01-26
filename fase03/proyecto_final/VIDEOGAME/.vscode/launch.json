@@ -6,10 +6,32 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "VIDEOGAME_db6a0ce6",
+            "vmArgs": "--module-path JavaFX/lib --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "DBConnector",
+            "request": "launch",
+            "mainClass": "Utils.DBConnector",
+            "projectName": "VIDEOGAME_db6a0ce6"
+        },
+        {
+            "type": "java",
+            "name": "MainServer",
+            "request": "launch",
+            "mainClass": "MainServer",
+            "projectName": "VIDEOGAME_db6a0ce6"
+        },
+        {
+            "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "mainClass": "FX.Videogame",
-            "vmArgs": "--module-path JavaFX/lib --add-modules javafx.controls,javafx.fxml",
+            "mainClass": "Videogame",
+            "vmArgs": "--module-path JavaFX/lib --add-modules javafx.controls,javafx.fxml"
         }
     ]
 }

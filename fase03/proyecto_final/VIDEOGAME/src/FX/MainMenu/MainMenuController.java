@@ -66,18 +66,24 @@ public class MainMenuController implements MainMenuOperation {
         this.stage = stage;
     }
 
-    public void initialize() {
-        RESOLUTIONS.addAll(new Resolution(850, 480), new Resolution(1280, 720), new Resolution(1366, 768),
-                new Resolution(1920, 1080));
-        resolutionInput.setItems(RESOLUTIONS);
-        resolutionInput.setValue(RESOLUTIONS.get(0));
-        resolution = resolutionInput.getValue();
+    public void initialize() throws IOException {
+        try {
+            RESOLUTIONS.addAll(new Resolution(850, 480), new Resolution(1280, 720), new Resolution(1366, 768),
+                    new Resolution(1920, 1080));
+            resolutionInput.setItems(RESOLUTIONS);
+            resolutionInput.setValue(RESOLUTIONS.get(0));
+            resolution = resolutionInput.getValue();
 
-        KINGDOMS.addAll("INGLATERRA", "FRANCIA", "CASTILLA-ARAGÓN", "MOROS", "SACRO IMPERIO");
-        kingdomInput.setItems(KINGDOMS);
+            KINGDOMS.addAll("INGLATERRA", "FRANCIA", "CASTILLA-ARAGÓN", "MOROS", "SACRO IMPERIO");
+            kingdomInput.setItems(KINGDOMS);
 
-        dbConnector = new DBConnector();
-        setConnection();
+            dbConnector = new DBConnector();
+            setConnection();
+        } catch (Exception e) {
+            FileWriter writer = new FileWriter("error.log");
+            writer.write(e.getMessage());
+            writer.close();
+        }
     }
 
     public void setKingdom() {
@@ -320,7 +326,7 @@ public class MainMenuController implements MainMenuOperation {
         public MainGame(MainMenuController mainMenuController) {
             try {
                 // Carga el archivo FXML del juego principal y configura la escena
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../MainGame/MainGame.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FX/MainGame/MainGame.fxml"));
                 Parent root = loader.load();
 
                 Stage mainGame = new Stage();
@@ -330,7 +336,8 @@ public class MainMenuController implements MainMenuOperation {
                 mainGame.show();
 
                 MainGameController controller = loader.getController();
-                controller.init(mainMenuController, resolution, stage, mainGame, board, idConnection, matchCode, pName, eName,
+                controller.init(mainMenuController, resolution, stage, mainGame, board, idConnection, matchCode, pName,
+                        eName,
                         idPlayer, idEnemy);
             } catch (Exception e) {
                 e.printStackTrace();
