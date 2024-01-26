@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -16,61 +15,104 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FX.MainMenu.MainMenuController">
    <children>
-      <Label layoutX="106.0" layoutY="7.0" text="VIDEOJUEGO">
+      <Label layoutX="99.0" layoutY="9.0" text="VIDEOJUEGO">
          <font>
-            <Font size="20.0" />
+            <Font name="Book Antiqua" size="20.0" />
          </font>
       </Label>
-      <Button layoutX="27.0" layoutY="248.0" mnemonicParsing="false" onAction="#createMatch" text="Crear partida" />
-      <Button layoutX="27.0" layoutY="286.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida" />
-      <TextField fx:id="createMatchCode" editable="false" layoutX="150.0" layoutY="248.0" promptText="Código" />
-      <TextField fx:id="joinMatchCode" layoutX="150.0" layoutY="286.0" promptText="Código" />
+      <Button layoutX="27.0" layoutY="248.0" mnemonicParsing="false" onAction="#createMatch" text="Crear partida">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></Button>
+      <Button layoutX="27.0" layoutY="286.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></Button>
+      <TextField fx:id="createMatchCode" editable="false" layoutX="150.0" layoutY="248.0" prefHeight="25.0" prefWidth="150.0" promptText="Código">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></TextField>
+      <TextField fx:id="joinMatchCode" layoutX="150.0" layoutY="286.0" prefHeight="25.0" prefWidth="150.0" promptText="Código">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></TextField>
       <Label layoutX="113.0" layoutY="223.0" text="SALA DE ESPERA">
          <font>
-            <Font size="14.0" />
+            <Font name="Book Antiqua" size="14.0" />
          </font></Label>
       <ImageView fitHeight="225.0" fitWidth="225.0" layoutX="52.0" layoutY="326.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../img/waiting.png" />
          </image>
       </ImageView>
-      <Button fx:id="startButton" layoutX="141.0" layoutY="568.0" mnemonicParsing="false" onAction="#startMatch" text="Iniciar" />
-      <TextField fx:id="nameInput" layoutX="60.0" layoutY="66.0" prefHeight="25.0" prefWidth="212.0" promptText="Nombre" />
-      <Label fx:id="playerName" layoutX="67.0" layoutY="339.0" text="Nombre" />
-      <Label layoutX="146.0" layoutY="416.0" text="VS">
+      <Button fx:id="startButton" layoutX="141.0" layoutY="564.0" mnemonicParsing="false" onAction="#startMatch" text="Iniciar">
          <font>
-            <Font size="30.0" />
+            <Font name="Book Antiqua" size="12.0" />
+         </font></Button>
+      <TextField fx:id="nameInput" layoutX="60.0" layoutY="66.0" prefHeight="25.0" prefWidth="212.0" promptText="Nombre">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></TextField>
+      <Label fx:id="playerName" layoutX="71.0" layoutY="343.0" prefHeight="17.0" prefWidth="150.0">
+         <font>
+            <Font name="Book Antiqua" size="16.0" />
+         </font></Label>
+      <Label layoutX="141.0" layoutY="416.0" text="VS">
+         <font>
+            <Font name="Gill Sans MT" size="40.0" />
          </font>
       </Label>
-      <Label fx:id="enemyName" alignment="CENTER_RIGHT" layoutX="216.0" layoutY="523.0" text="Nombre" />
-      <Label layoutX="135.0" layoutY="39.0" text="USUARIO">
+      <Label fx:id="enemyName" alignment="CENTER_RIGHT" layoutX="110.0" layoutY="512.0" prefHeight="17.0" prefWidth="150.0">
          <font>
-            <Font size="14.0" />
+            <Font name="Book Antiqua" size="16.0" />
+         </font></Label>
+      <Label layoutX="131.0" layoutY="39.0" text="USUARIO">
+         <font>
+            <Font name="Book Antiqua" size="14.0" />
          </font>
       </Label>
-      <PasswordField fx:id="passwordInput" layoutX="61.0" layoutY="100.0" prefHeight="25.0" prefWidth="212.0" promptText="Contraseña" />
-      <Button layoutX="10.0" layoutY="135.0" mnemonicParsing="false" onAction="#register" text="Crear cuenta" />
-      <Button layoutX="102.0" layoutY="135.0" mnemonicParsing="false" onAction="#login" text="Ingresar a cuenta" />
-      <Button layoutX="218.0" layoutY="135.0" mnemonicParsing="false" onAction="#getStatistics" text="Ver estadísticas" />
-      <Label fx:id="playerKingdom" layoutX="67.0" layoutY="361.0" text="Reino" />
-      <Label fx:id="enemyKingdom" alignment="CENTER_RIGHT" layoutX="229.0" layoutY="501.0" text="Reino" />
+      <PasswordField fx:id="passwordInput" layoutX="61.0" layoutY="100.0" prefHeight="25.0" prefWidth="212.0" promptText="Contraseña">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></PasswordField>
+      <Button layoutX="10.0" layoutY="135.0" mnemonicParsing="false" onAction="#register" text="Crear cuenta">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></Button>
+      <Button layoutX="102.0" layoutY="135.0" mnemonicParsing="false" onAction="#login" text="Ingresar a cuenta">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></Button>
+      <Button layoutX="218.0" layoutY="135.0" mnemonicParsing="false" onAction="#getStatistics" text="Ver estadísticas">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font></Button>
+      <Label fx:id="playerKingdom" layoutX="71.0" layoutY="363.0" prefHeight="17.0" prefWidth="150.0">
+         <font>
+            <Font name="Book Antiqua" size="16.0" />
+         </font></Label>
+      <Label fx:id="enemyKingdom" alignment="CENTER_RIGHT" layoutX="110.0" layoutY="492.0" prefHeight="17.0" prefWidth="150.0">
+         <font>
+            <Font name="Book Antiqua" size="16.0" />
+         </font></Label>
       <ComboBox fx:id="kingdomInput" layoutX="90.0" layoutY="189.0" onAction="#setKingdom" prefWidth="150.0" promptText="Reino" />
       <Label layoutX="143.0" layoutY="165.0" text="REINO">
          <font>
-            <Font size="14.0" />
+            <Font name="Book Antiqua" size="14.0" />
          </font>
       </Label>
-      <Pane fx:id="settingsPane" prefHeight="156.0" prefWidth="325.0" style="-fx-background-color: white;" visible="false">
+      <Pane fx:id="settingsPane" prefHeight="116.0" prefWidth="325.0" style="-fx-background-color: white;" visible="false">
          <children>
-            <Label layoutX="100.0" layoutY="15.0" text="CONFIGURACIONES">
+            <Label layoutX="93.0" layoutY="14.0" text="CONFIGURACIONES">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Book Antiqua" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="133.0" layoutY="46.0" text="Resolución" />
+            <Label layoutX="133.0" layoutY="41.0" text="Resolución">
+               <font>
+                  <Font name="Book Antiqua" size="12.0" />
+               </font></Label>
             <ComboBox fx:id="resolutionInput" layoutX="88.0" layoutY="63.0" onAction="#setResolution" prefWidth="150.0" promptText="Resolución" />
-            <Slider fx:id="volumeInput" layoutX="92.0" layoutY="120.0" onDragDone="#setVolume" />
-            <Label layoutX="139.0" layoutY="103.0" text="Volumen" />
          </children>
       </Pane>
       <Pane layoutX="295.0" layoutY="7.0" onMouseClicked="#toggleSettings" prefHeight="25.0" prefWidth="25.0">
@@ -86,11 +128,20 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TextArea fx:id="messageOutput" layoutX="-1.0" prefHeight="81.0" prefWidth="279.0" wrapText="true" />
-                  <Button layoutX="122.0" layoutY="84.0" mnemonicParsing="false" onAction="#closeMessage" text="OK" />
+                  <TextArea fx:id="messageOutput" layoutX="-1.0" prefHeight="81.0" prefWidth="279.0" wrapText="true">
+                     <font>
+                        <Font name="Book Antiqua" size="14.0" />
+                     </font></TextArea>
+                  <Button layoutX="122.0" layoutY="84.0" mnemonicParsing="false" onAction="#closeMessage" text="OK">
+                     <font>
+                        <Font name="Book Antiqua" size="12.0" />
+                     </font></Button>
                </children>
             </AnchorPane>
         </content>
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font>
       </TitledPane>
    </children>
 </AnchorPane>

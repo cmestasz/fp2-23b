@@ -1,9 +1,9 @@
 package Utils;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
+
 import java.util.HashMap;
 
 public class Tile extends Pane implements VideogameConstants {
@@ -20,7 +20,7 @@ public class Tile extends Pane implements VideogameConstants {
         this.type = type;
         for (int n = 0; n < TYPE_FILES.length; n++)
             images.put(TYPE_FILES[n], generateImageView(size, TYPE_FILES[n]));
-        this.health = generateHealthLabel();
+        this.health = generateHealthLabel(size);
         setImageAndhealth(type, health);
     }
 
@@ -64,9 +64,11 @@ public class Tile extends Pane implements VideogameConstants {
         return imageView;
     }
 
-    private Label generateHealthLabel() {
+    private Label generateHealthLabel(double size) {
         Label label = new Label();
-        label.setAlignment(Pos.CENTER);
+        label.setLayoutX(size / 18);
+        label.setLayoutY(size / 18);
+        label.setTextFill(BACKGROUND_COLOR.getColor());
         return label;
     }
 

@@ -6,10 +6,8 @@ import FX.MainGame.Board;
 import FX.MainGame.MainGameController;
 import javafx.application.*;
 import javafx.collections.*;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -24,7 +22,6 @@ public class MainMenuController implements MainMenuOperation {
     private String pKingdom;
     private String eKingdom;
     private Resolution resolution;
-    private double volume;
     private int idConnection;
     private int idPlayer;
     private int idEnemy;
@@ -44,8 +41,6 @@ public class MainMenuController implements MainMenuOperation {
     private Pane settingsPane;
     @FXML
     private ComboBox<Resolution> resolutionInput;
-    @FXML
-    private Slider volumeInput;
     @FXML
     private ComboBox<String> kingdomInput;
     @FXML
@@ -96,10 +91,6 @@ public class MainMenuController implements MainMenuOperation {
 
     public void setResolution() {
         resolution = resolutionInput.getValue();
-    }
-
-    public void setVolume() {
-        volume = volumeInput.getValue();
     }
 
     public void createMatch() {

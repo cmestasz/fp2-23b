@@ -1,8 +1,8 @@
 package FX.MainGame.Classes;
 
 public class Knight extends Soldier {
-    private static final int HEALTH = 12;
-    private static final int ATTACK = 13;
+    private static final int HEALTH = 3;
+    private static final int ATTACK = 10;
     private static final int DEFENSE = 7;
     private boolean mounted = false;
 

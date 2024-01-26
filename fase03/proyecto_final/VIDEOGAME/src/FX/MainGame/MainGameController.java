@@ -4,22 +4,16 @@ import java.io.*;
 import java.util.HashMap;
 import FX.MainGame.Classes.Soldier;
 import FX.MainMenu.MainMenuController;
-import Utils.BetterColor;
-import Utils.DBConnector;
-import Utils.MainGameOperation;
-import Utils.Resolution;
-import Utils.Tile;
-import Utils.Utils;
-import Utils.VideogameConstants;
+import Utils.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 public class MainGameController implements MainGameOperation, VideogameConstants {
@@ -53,9 +47,9 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     @FXML
     private GridPane uiBoard;
     @FXML
-    private Rectangle boardBackground;
+    private ImageView boardBackground;
     @FXML
-    private Rectangle dataBackground;
+    private ImageView dataBackground;
     @FXML
     private TextArea playerData;
     @FXML
@@ -102,6 +96,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         initBackground();
         initDataFields();
         initChat();
+
         actionsPane.setPrefWidth(width * 0.15);
         actionsPane.setPrefHeight(width * 0.05);
         setStyleColor(moveActionPane, SELECTED_COLOR);
@@ -188,13 +183,13 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     }
 
     private void initBackground() {
-        boardBackground.setWidth(width);
-        boardBackground.setHeight(height);
-        boardBackground.setFill(board.getBackground().getColor());
+        boardBackground.setFitWidth(width);
+        boardBackground.setFitHeight(height);
+        boardBackground.setImage(new Image(String.format("img/background_%s.png", board.getTerrainFile())));
 
-        dataBackground.setWidth(width - height);
-        dataBackground.setHeight(height);
-
+        dataBackground.setFitWidth(width - height);
+        dataBackground.setFitHeight(height);
+        dataBackground.setImage(new Image("img/background_data.png"));
     }
 
     private void initDataFields() {
@@ -381,12 +376,13 @@ public class MainGameController implements MainGameOperation, VideogameConstants
 
     private void printMessage(String message, BetterColor color) {
         Text messageText = new Text(message);
+        messageText.setFont(Font.font("Book Antiqua"));
         messageText.setFill(color.getColor());
         messageText.setWrappingWidth(width - height);
 
         ObservableList<Node> children = chatOutput.getChildren();
         children.add(children.size() - 1, messageText);
-        chatOutputPane.setVvalue(0.99);
+        chatOutputPane.setVvalue(1);
     }
 
     private void setConnection() {

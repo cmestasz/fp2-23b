@@ -18,13 +18,12 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FX.MainGame.MainGameController">
    <children>
-      <Rectangle fx:id="boardBackground" arcHeight="5.0" arcWidth="5.0" fill="#93bbe1" stroke="#808080" strokeType="INSIDE" strokeWidth="0.0" />
+      <ImageView fx:id="boardBackground" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
       <HBox>
          <children>
             <GridPane fx:id="uiBoard" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
@@ -55,24 +54,24 @@
             </GridPane>
             <StackPane>
                <children>
-                  <Rectangle fx:id="dataBackground" arcHeight="5.0" arcWidth="5.0" fill="#898d90" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" StackPane.alignment="CENTER_RIGHT" />
+                  <ImageView fx:id="dataBackground" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                   <VBox>
                      <children>
                         <HBox>
                            <children>
                               <TextArea fx:id="playerData" blendMode="MULTIPLY">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font name="Book Antiqua" size="10.0" />
                                  </font></TextArea>
                               <TextArea fx:id="enemyData" blendMode="MULTIPLY">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font name="Book Antiqua" size="10.0" />
                                  </font></TextArea>
                            </children>
                         </HBox>
                         <VBox alignment="CENTER">
                            <children>
-                              <ScrollPane fx:id="chatOutputPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
+                              <ScrollPane fx:id="chatOutputPane" blendMode="MULTIPLY" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
                                  <content>
                                     <VBox fx:id="chatOutput" style="-fx-background-color: white;">
                                        <children>
@@ -88,13 +87,19 @@
                               <TextField fx:id="chatInput" blendMode="MULTIPLY" onAction="#sendMessage" promptText="Envia un mensaje!">
                                  <VBox.margin>
                                     <Insets bottom="15.0" />
-                                 </VBox.margin></TextField>
-                              <TilePane fx:id="actionsPane" alignment="CENTER" hgap="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false">
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="Book Antiqua" size="12.0" />
+                                 </font></TextField>
+                              <TilePane fx:id="actionsPane" alignment="CENTER" hgap="30.0">
                                  <children>
                                     <VBox fx:id="moveActionPane" onMouseClicked="#setActionMove" TilePane.alignment="CENTER">
                                        <children>
-                                          <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Mover" />
-                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                          <Label alignment="CENTER" prefWidth="50.0" text="Mover">
+                                             <font>
+                                                <Font name="Book Antiqua" size="12.0" />
+                                             </font></Label>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../img/action_move.png" />
                                              </image>
@@ -103,8 +108,11 @@
                                     </VBox>
                                     <VBox fx:id="attackActionPane" onMouseClicked="#setActionAttack" TilePane.alignment="CENTER">
                                        <children>
-                                          <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Atacar" />
-                                          <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                          <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="50.0" text="Atacar">
+                                             <font>
+                                                <Font name="Book Antiqua" size="12.0" />
+                                             </font></Label>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../../img/action_attack.png" />
                                              </image>
@@ -123,15 +131,26 @@
       </HBox>
       <Pane fx:id="messagePane" visible="false">
          <children>
-            <TitledPane animated="false" collapsible="false" layoutX="339.0" layoutY="69.0" prefHeight="139.0" prefWidth="279.0" text="Mensaje">
+            <TitledPane animated="false" collapsible="false" layoutX="274.0" layoutY="74.0" prefHeight="139.0" prefWidth="279.0" text="Mensaje">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea fx:id="messageOutput" layoutX="-1.0" prefHeight="81.0" prefWidth="279.0" wrapText="true" />
-                        <Button layoutX="122.0" layoutY="84.0" mnemonicParsing="false" onAction="#closeMessage" text="OK" />
+                        <TextArea fx:id="messageOutput" layoutX="-1.0" prefHeight="81.0" prefWidth="279.0" wrapText="true">
+                           <font>
+                              <Font name="Book Antiqua" size="14.0" />
+                           </font>
+                        </TextArea>
+                        <Button layoutX="122.0" layoutY="84.0" mnemonicParsing="false" onAction="#closeMessage" text="OK">
+                           <font>
+                              <Font name="Book Antiqua" size="12.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </content>
+               <font>
+                  <Font name="Book Antiqua" size="12.0" />
+               </font>
             </TitledPane>
          </children>
       </Pane>

@@ -9,6 +9,7 @@ public class Board implements Serializable, VideogameConstants {
     private final Random RANDOM = new Random();
     
     private String terrain;
+    private String terrainFile;
     private BetterColor background;
     private HashMap<String, Soldier> army1 = new HashMap<String, Soldier>();
     private HashMap<String, Soldier> army2 = new HashMap<String, Soldier>();
@@ -18,7 +19,7 @@ public class Board implements Serializable, VideogameConstants {
     public Board(String kingdom1, String kingdom2) {
         int idxTerrain = RANDOM.nextInt(TERRAINS.length);
         terrain = TERRAINS[idxTerrain];
-        background = BACKGROUNDS[idxTerrain];
+        terrainFile = TERRAIN_FILES[idxTerrain];
 
         this.kingdomPlayer = kingdom1;
         this.kingdomEnemy = kingdom2;
@@ -48,6 +49,10 @@ public class Board implements Serializable, VideogameConstants {
 
     public String getTerrain() {
         return terrain;
+    }
+
+    public String getTerrainFile() {
+        return terrainFile;
     }
 
     public String getKingdomPlayer() {

@@ -60,7 +60,7 @@ public abstract class Soldier implements Serializable {
     }
 
     public int attack(Soldier other) {
-        int damage = Math.max(1, attack - other.getDefense() / 3);
+        int damage = Math.max(1, attack - other.getDefense() / 2);
         other.hurt(damage);
         return damage;
     }
