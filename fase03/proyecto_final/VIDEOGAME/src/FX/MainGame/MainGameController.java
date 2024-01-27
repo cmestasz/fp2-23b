@@ -282,9 +282,7 @@ public class MainGameController implements MainGameOperation, VideogameConstants
         return false;
     }
 
-    // dont doubt these, they work both ways so they can be used when the other
-    // person receives the actions
-    // always "selected" interacts on "other"
+    // Métodos que funcionan en ambos sentidos, host -> guest o guest -> host
     private void moveSoldier(boolean isPlayer, int iSelected, int jSelected, int iOther, int jOther) {
         Tile selectedTile = tiles[iSelected][jSelected];
         Tile otherTile = tiles[iOther][jOther];
@@ -349,7 +347,6 @@ public class MainGameController implements MainGameOperation, VideogameConstants
             if (isPlayer) {
                 playerData.appendText(message);
                 army2.remove(otherKey);
-                // fix these, they dont get sent
                 if (army2.size() == 0) {
                     if (idEnemy != 0)
                         dbConnector.createMatch(idPlayer, idEnemy);
@@ -358,7 +355,6 @@ public class MainGameController implements MainGameOperation, VideogameConstants
             } else {
                 enemyData.appendText(message);
                 army1.remove(otherKey);
-                // fix these, they dont get sent
                 if (army1.size() == 0) {
                     if (idEnemy != 0)
                         dbConnector.createMatch(idEnemy, idPlayer);

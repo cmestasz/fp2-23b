@@ -25,18 +25,11 @@ public class DBConnector {
                             JOptionPane.QUESTION_MESSAGE);
                     password = JOptionPane.showInputDialog(null, "Ingrese clave", "Primera conexión",
                             JOptionPane.QUESTION_MESSAGE);
-                    // usuario = "query";
-                    // clave = "123456789";
                     connection = login("");
                 }
                 createDatabase();
                 writeLogin();
             }
-
-            // connection.prepareStatement("CREATE DATABASE test").execute();
-            // ResultSet resultados = conexion.prepareStatement("SELECT * FROM alumnos WHERE
-            // nombre='Juan'")
-            // .executeQuery();
 
             System.out.println("Conexion exitosa");
         } catch (Exception e) {

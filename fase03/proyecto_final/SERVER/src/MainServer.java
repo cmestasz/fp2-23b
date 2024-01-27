@@ -7,9 +7,7 @@ import FX.MainGame.Board;
 
 public class MainServer extends Thread implements MainMenuOperation, MainGameOperation {
     private ArrayList<ServerConnection> connectionsList = new ArrayList<ServerConnection>();
-    private HashMap<Integer, Long> lastModifiedMap = new HashMap<Integer, Long>(); // really bad name, use it to store
-                                                                                   // when ANY file is modified or
-                                                                                   // received
+    private HashMap<Integer, Long> lastModifiedMap = new HashMap<Integer, Long>(); // Guarda CUALQUIER archivo que es recibido o cambiado
     private int totalConnections;
     private boolean active = true;
     private int tickRate;

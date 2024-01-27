@@ -28,7 +28,6 @@ public class Board implements Serializable, VideogameConstants {
         initSoldiers(army2, 2);
     }
 
-    // Inverts the board for the guest
     public void invertBoard() {
         HashMap<String, Soldier> armyt = army1;
         army1 = army2;

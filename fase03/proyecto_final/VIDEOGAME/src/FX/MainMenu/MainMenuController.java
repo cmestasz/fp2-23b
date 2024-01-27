@@ -132,7 +132,6 @@ public class MainMenuController implements MainMenuOperation {
     }
 
     public void startMatch() {
-        // createGameStage();
         if (checkName() && checkEnemy() && checkKingdom()) {
             try {
                 DataOutputStream out = new DataOutputStream(new FileOutputStream(connectionFile));
