@@ -492,3 +492,24 @@ remote: warning: File fase03/proyecto_final/VIDEOGAME/VIDEOGAME.jar is 86.40 MB 
 remote: warning: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
 To https://github.com/cmestasz/fp2-23b.git
    fd709bc..68308c2  main -> main
+
+$ git commit -m "Sistema de guardado y cargado de partidas"
+[main 2186d87] Sistema de guardado y cargado de partidas
+ 13 files changed, 93 insertions(+), 16 deletions(-)
+ create mode 100644 fase03/proyecto_final/EJECUTABLES/data/dbinit.dat
+ create mode 100644 fase03/proyecto_final/EJECUTABLES/data/partida1.sav
+
+$ git push
+Enumerating objects: 47, done.
+Counting objects: 100% (47/47), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (24/24), done.
+Writing objects: 100% (26/26), 361.22 KiB | 374.00 KiB/s, done.
+Total 26 (delta 14), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (14/14), completed with 13 local objects.
+remote: warning: See https://gh.io/lfs for more information.
+remote: warning: File fase03/proyecto_final/EJECUTABLES/VIDEOGAME.jar is 50.32 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB
+remote: warning: GH001: Large files detected. You may want to try Git Large File
+ Storage - https://git-lfs.github.com.
+To https://github.com/cmestasz/fp2-23b.git
+   df9144e..2186d87  main -> main
