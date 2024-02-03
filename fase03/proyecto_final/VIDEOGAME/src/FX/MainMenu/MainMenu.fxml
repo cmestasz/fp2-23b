@@ -20,19 +20,29 @@
             <Font name="Book Antiqua" size="20.0" />
          </font>
       </Label>
-      <Button layoutX="27.0" layoutY="248.0" mnemonicParsing="false" onAction="#createMatch" text="Crear partida">
+      <Button layoutX="26.0" layoutY="307.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida">
          <font>
             <Font name="Book Antiqua" size="12.0" />
          </font></Button>
-      <Button layoutX="27.0" layoutY="286.0" mnemonicParsing="false" onAction="#joinMatch" text="Unirse a partida">
+      <Button layoutX="26.0" layoutY="276.0" mnemonicParsing="false" onAction="#createMatch" text="Crear partida">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font>
+      </Button>
+      <TextField fx:id="createMatchCode" editable="false" layoutX="149.0" layoutY="276.0" prefHeight="25.0" prefWidth="150.0" promptText="Código">
+         <font>
+            <Font name="Book Antiqua" size="12.0" />
+         </font>
+      </TextField>
+      <Button layoutX="26.0" layoutY="244.0" mnemonicParsing="false" onAction="#loadMatch" text="Cargar partida">
          <font>
             <Font name="Book Antiqua" size="12.0" />
          </font></Button>
-      <TextField fx:id="createMatchCode" editable="false" layoutX="150.0" layoutY="248.0" prefHeight="25.0" prefWidth="150.0" promptText="Código">
+      <TextField fx:id="joinMatchCode" layoutX="149.0" layoutY="307.0" prefHeight="25.0" prefWidth="150.0" promptText="Código">
          <font>
             <Font name="Book Antiqua" size="12.0" />
          </font></TextField>
-      <TextField fx:id="joinMatchCode" layoutX="150.0" layoutY="286.0" prefHeight="25.0" prefWidth="150.0" promptText="Código">
+      <TextField fx:id="fileNameInput" layoutX="149.0" layoutY="244.0" prefHeight="25.0" prefWidth="150.0" promptText="Nombre del archivo">
          <font>
             <Font name="Book Antiqua" size="12.0" />
          </font></TextField>
@@ -40,7 +50,7 @@
          <font>
             <Font name="Book Antiqua" size="14.0" />
          </font></Label>
-      <ImageView fitHeight="225.0" fitWidth="225.0" layoutX="52.0" layoutY="326.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="211.0" fitWidth="317.0" layoutX="61.0" layoutY="343.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../img/waiting.png" />
          </image>
@@ -53,16 +63,16 @@
          <font>
             <Font name="Book Antiqua" size="12.0" />
          </font></TextField>
-      <Label fx:id="playerName" layoutX="71.0" layoutY="343.0" prefHeight="17.0" prefWidth="150.0">
+      <Label fx:id="playerName" layoutX="74.0" layoutY="357.0" prefHeight="17.0" prefWidth="150.0">
          <font>
             <Font name="Book Antiqua" size="16.0" />
          </font></Label>
-      <Label layoutX="141.0" layoutY="416.0" text="VS">
+      <Label layoutX="146.0" layoutY="426.0" text="VS">
          <font>
             <Font name="Gill Sans MT" size="40.0" />
          </font>
       </Label>
-      <Label fx:id="enemyName" alignment="CENTER_RIGHT" layoutX="110.0" layoutY="512.0" prefHeight="17.0" prefWidth="150.0">
+      <Label fx:id="enemyName" alignment="CENTER_RIGHT" layoutX="110.0" layoutY="519.0" prefHeight="17.0" prefWidth="150.0">
          <font>
             <Font name="Book Antiqua" size="16.0" />
          </font></Label>
@@ -87,11 +97,11 @@
          <font>
             <Font name="Book Antiqua" size="12.0" />
          </font></Button>
-      <Label fx:id="playerKingdom" layoutX="71.0" layoutY="363.0" prefHeight="17.0" prefWidth="150.0">
+      <Label fx:id="playerKingdom" layoutX="74.0" layoutY="377.0" prefHeight="17.0" prefWidth="150.0">
          <font>
             <Font name="Book Antiqua" size="12.0" />
          </font></Label>
-      <Label fx:id="enemyKingdom" alignment="CENTER_RIGHT" layoutX="110.0" layoutY="492.0" prefHeight="17.0" prefWidth="150.0">
+      <Label fx:id="enemyKingdom" alignment="CENTER_RIGHT" layoutX="110.0" layoutY="502.0" prefHeight="17.0" prefWidth="150.0">
          <font>
             <Font name="Book Antiqua" size="12.0" />
          </font></Label>

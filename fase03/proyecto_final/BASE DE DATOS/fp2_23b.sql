@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-02-2024 a las 17:10:15
+-- Tiempo de generación: 03-02-2024 a las 01:05:01
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -78,6 +78,17 @@ ALTER TABLE `matches_videogame`
 --
 ALTER TABLE `players_videogame`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `matches_videogame`
+--
+ALTER TABLE `matches_videogame`
+  ADD CONSTRAINT `matches_videogame_ibfk_1` FOREIGN KEY (`winner_id`) REFERENCES `players_videogame` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `matches_videogame_ibfk_2` FOREIGN KEY (`loser_id`) REFERENCES `players_videogame` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

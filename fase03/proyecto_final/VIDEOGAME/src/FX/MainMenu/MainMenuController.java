@@ -61,6 +61,8 @@ public class MainMenuController implements MainMenuOperation {
     private TitledPane messagePane;
     @FXML
     private TextArea messageOutput;
+    @FXML
+    private TextField fileNameInput;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -131,6 +133,24 @@ public class MainMenuController implements MainMenuOperation {
         }
     }
 
+    public void loadMatch() {
+        try {
+            String fileName = fileNameInput.getText();
+            ObjectInputStream out = new ObjectInputStream(new FileInputStream(String.format("data/%s.sav", fileName)));
+            board = (Board) out.readObject();
+            out.close();
+
+            pKingdom = board.getKingdomPlayer();
+            eKingdom = board.getKingdomEnemy();
+            playerKingdom.setText(pKingdom);
+            enemyKingdom.setText(eKingdom);
+
+            showMessage("Partida cargada correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void startMatch() {
         if (checkName() && checkEnemy() && checkKingdom()) {
             try {
@@ -139,7 +159,9 @@ public class MainMenuController implements MainMenuOperation {
                 Utils.writeString(out, matchCode);
                 out.close();
 
-                board = new Board(pKingdom, eKingdom);
+                if (board == null)
+                    board = new Board(pKingdom, eKingdom);
+
                 ObjectOutputStream outObj = new ObjectOutputStream(
                         new FileOutputStream("connections/" + idConnection + ".obj"));
                 outObj.writeObject(board);

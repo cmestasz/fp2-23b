@@ -70,6 +70,8 @@ public class MainGameController implements MainGameOperation, VideogameConstants
     private VBox moveActionPane;
     @FXML
     private VBox attackActionPane;
+    @FXML
+    private TextField fileNameInput;
 
     public void init(MainMenuController menuController, Resolution resolution, Stage menuStage, Stage gameStage,
             Board board,
@@ -171,6 +173,19 @@ public class MainGameController implements MainGameOperation, VideogameConstants
                 tile.setOnMouseClicked(this::handleClick);
                 uiBoard.add(tile, i, j);
             }
+        }
+    }
+
+    public void saveMatch() {
+        try {
+            String fileName = fileNameInput.getText();
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(String.format("data/%s.sav", fileName)));
+            out.writeObject(board);
+            out.close();
+
+            showMessage("Partida guardada correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

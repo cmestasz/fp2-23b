@@ -35,6 +35,9 @@ public class DBConnector {
     }
 
     private void writeInitialized() throws IOException {
+        File dir = new File("data/");
+        if (!dir.exists())
+            dir.mkdirs();
         File initFile = new File("data/dbinit.dat");
         initFile.createNewFile();
     }
@@ -47,10 +50,10 @@ public class DBConnector {
                 "CREATE TABLE matches_videogame (id int NOT NULL AUTO_INCREMENT, winner_id int NOT NULL, loser_id int NOT NULL, PRIMARY KEY (id), INDEX winner_id (winner_id), INDEX loser_id (loser_id))")
                 .execute();
         connection.prepareStatement(
-                "ALTER TABLE matches_videogame ADD CONSTRAINT winner_id FOREIGN KEY (winner_id) REFERENCES players(id) ON DELETE RESTRICT ON UPDATE RESTRICT")
+                "ALTER TABLE matches_videogame ADD CONSTRAINT winner_id FOREIGN KEY (winner_id) REFERENCES players_videogame(id) ON DELETE CASCADE ON UPDATE CASCADE")
                 .execute();
         connection.prepareStatement(
-                "ALTER TABLE matches_videogame ADD CONSTRAINT loser_id FOREIGN KEY (loser_id) REFERENCES players(id) ON DELETE RESTRICT ON UPDATE RESTRICT")
+                "ALTER TABLE matches_videogame ADD CONSTRAINT loser_id FOREIGN KEY (loser_id) REFERENCES players_videogame(id) ON DELETE CASCADE ON UPDATE CASCADE")
                 .execute();
     }
 
